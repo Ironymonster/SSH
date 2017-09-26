@@ -1,6 +1,6 @@
-Ext.define('Admin.view.forms.WizardFormModel', {
+Ext.define('Admin.view.profile.ProfileFormModel', {
     extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.wizardform',
+    alias: 'viewmodel.profileform',
     data: {
         atBeginning: true,
         atEnd: false

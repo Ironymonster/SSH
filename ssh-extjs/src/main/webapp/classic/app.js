@@ -99338,13 +99338,125 @@ topMovies:{autoLoad:true, model:'Admin.model.DataXY', proxy:{type:'api', url:'~a
 url:'~api/subscriptions'}}, todos:{autoLoad:true, fields:[{type:'int', name:'id'}, {type:'string', name:'task'}, {type:'boolean', name:'done'}], proxy:{type:'api', url:'~api/dashboard/tasks'}}}});
 Ext.define('Admin.view.dashboard.Weather', {extend:Ext.Component, xtype:'weather', baseCls:'weather-panel', border:false, height:80, data:{icon:'cloud-icon.png', forecast:'Partly Cloudy', temperature:25}, tpl:'\x3cdiv class\x3d"weather-image-container"\x3e\x3cimg src\x3d"resources/images/icons/{icon}" alt\x3d"{forecast}"/\x3e\x3c/div\x3e' + '\x3cdiv class\x3d"weather-details-container"\x3e' + '\x3cdiv\x3e{temperature}\x26#176;\x3c/div\x3e' + '\x3cdiv\x3e{forecast}\x3c/div\x3e' + '\x3c/div\x3e'});
 Ext.define('Admin.view.email.EmailModel', {extend:Ext.app.ViewModel, alias:'viewmodel.email', stores:{inbox:{type:'inbox'}, friends:{type:'emailfriends'}}});
-Ext.define('Admin.view.forms.SpecialOffer', {extend:Ext.Component, xtype:'specialoffer', isSpecialOffer:true, cls:'forms-specialoffer', minWidth:200, html:'\x3cdiv class\x3d"specialoffer-outer"\x3e' + '\x3cdiv class\x3d"specialoffer-inner"\x3e' + '\x3ch3\x3eRegister Today\x3c/h3\x3e' + '\x3cspan class\x3d"specialoffer-icon-wrap circular"\x3e' + '\x3ci class\x3d"fa fa-gift fa-5x"\x3e\x3c/i\x3e' + '\x3c/span\x3e' + '\x3cdiv class\x3d"specialoffer-text"\x3e' + 'Members get \x3cspan class\x3d"specialoffer-discount"\x3e50%\x3c/span\x3e more points, ' + 
+Ext.define('Admin.view.forms.SpecialOffer', 
+		{extend:Ext.Component, xtype:'specialoffer', isSpecialOffer:true, cls:'forms-specialoffer', minWidth:200, html:'\x3cdiv class\x3d"specialoffer-outer"\x3e' + '\x3cdiv class\x3d"specialoffer-inner"\x3e' + '\x3ch3\x3eRegister Today\x3c/h3\x3e' + '\x3cspan class\x3d"specialoffer-icon-wrap circular"\x3e' + '\x3ci class\x3d"fa fa-gift fa-5x"\x3e\x3c/i\x3e' + '\x3c/span\x3e' + '\x3cdiv class\x3d"specialoffer-text"\x3e' + 'Members get \x3cspan class\x3d"specialoffer-discount"\x3e50%\x3c/span\x3e more points, ' + 
 'so register today and start earning points for savings on great rewards!' + '\x3c/div\x3e' + '\x3ca class\x3d"specialoffer-link x-fa fa-arrow-right" href\x3d"#faq"\x3e' + 'Learn More...\x3c/a\x3e' + '\x3c/div\x3e' + '\x3c/div\x3e'});
-Ext.define('Admin.view.profile.Description', {extend:Ext.Panel, xtype:'profiledescription', layout:{type:'vbox', align:'stretch'}, cls:'timeline-items-wrap user-profile-desc', height:320, items:[{xtype:'component', userCls:'box x-fa fa-home', html:'San Jose, CA', padding:'0 0 12 0'}, {xtype:'component', userCls:'box x-fa fa-clock-o', html:'Member since 1 years ago', padding:'0 0 12 0'}, {xtype:'component', userCls:'box x-fa fa-globe', html:'\x3ca href\x3d"#"\'\x3ehttp://www.sencha-dash.com/\x3c/a\x3e', 
-padding:'0 0 12 0'}, {xtype:'container', flex:1, cls:'about-me-wrap', html:'\x3ch3 class\x3d"x-fa fa-user"\x3eAbout Me\x3c/h3\x3e\x3cp\x3eLorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\x3c/p\x3e'}, {xtype:'toolbar', ui:'plain', layout:{type:'hbox', pack:'center'}, userCls:'profiledescription-social-toolbar', items:[{xtype:'component', cls:'large-icon icon-padding', userCls:'x-fa fa-thumbs-up', padding:'8 0 8 0'}, 
-{xtype:'container', layout:{type:'vbox', align:'center', pack:'center'}, items:[{xtype:'component', cls:'likes-value', html:'523'}, {xtype:'component', cls:'likes-label', html:'Likes'}]}, {xtype:'component', cls:'icon-padding', userCls:'x-fa fa-ellipsis-v', padding:'8 0 8 0'}, {xtype:'component', cls:'large-icon icon-padding', userCls:'x-fa fa-user-plus', padding:'8 0 8 0'}, {xtype:'container', layout:{type:'vbox', align:'center', pack:'center'}, items:[{xtype:'component', cls:'friends-value', html:'734'}, 
-{xtype:'component', cls:'friends-label', html:'Friends'}]}]}]});
-Ext.define('Admin.view.profile.Notifications', {extend:Ext.DataView, xtype:'profilenotifications', cls:'user-notifications', scrollable:false, bind:{store:'{userSharedItems}'}, itemSelector:'div.timeline-item', itemTpl:["\x3cdiv class\x3d'comments {[values._id !\x3d\x3d values.parent_id ? 'sub-comments' : '']}'\x3e", "\x3cimg src\x3d'resources/images/user-profile/15.png' alt\x3d'Smiley face' class\x3d'profile-icon'\x3e", "\x3cdiv class\x3d'content-wrap'\x3e", '\x3cdiv\x3e', "\x3ch4 class\x3d'profilenotifications-username'\x3e{name}\x3cspan class\x3d'x-fa fa-mobile'\x3e\x3c/span\x3e\x3c/h4\x3e", 
+Ext.define('Admin.view.profile.Description', {
+    extend: 'Ext.Panel',
+    xtype: 'profiledescription',
+
+    requires: [
+        'Ext.Button',
+        'Ext.Img'
+    ],
+
+    layout: {
+        type: 'vbox',
+        align: 'stretch'
+    },
+
+    cls: 'timeline-items-wrap user-profile-desc',
+
+    height: 320,
+
+    items: [
+        {
+            xtype: 'component',
+            userCls: 'box x-fa fa-home',
+            html: 'San Jose, CA',
+            padding: '0 0 12 0'
+        },
+        {
+            xtype: 'component',
+            userCls: 'box x-fa fa-clock-o',
+            html: 'Member since 1 years ago',
+            padding: '0 0 12 0'
+        },
+        {
+            xtype: 'component',
+            userCls: 'box x-fa fa-globe',
+            html: '<a href="#"\'>http://www.sencha-dash.com/</a>',
+            padding: '0 0 12 0'
+        },
+        {
+            xtype: 'container',
+            flex: 1,
+            cls: 'about-me-wrap',
+            html: '<h3 class="x-fa fa-user">About Me</h3><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>'
+        },
+        {
+            xtype:'toolbar',
+            ui: 'plain',
+            layout : {
+                type : 'hbox',
+                pack : 'center'
+            },
+            userCls: 'profiledescription-social-toolbar',
+            items:[
+                {
+                    xtype: 'component',
+                    cls: 'large-icon icon-padding',
+                    userCls:'x-fa fa-thumbs-up',
+                    padding: '8 0 8 0'
+                },
+                {
+                    xtype: 'container',
+                    layout: {
+                        type: 'vbox',
+                        align: 'center',
+                        pack: 'center'
+                    },
+                    items: [
+                        {
+                            xtype: 'component',
+                            cls: 'likes-value',
+                            html: '523'
+                        },
+                        {
+                            xtype: 'component',
+                            cls: 'likes-label',
+                            html: 'Likes'
+                        }
+                    ]
+                },
+
+                {
+                    xtype: 'component',
+                    cls: 'icon-padding',
+                    userCls:'x-fa fa-ellipsis-v',
+                    padding: '8 0 8 0'
+                },
+
+                {
+                    xtype: 'component',
+                    cls: 'large-icon icon-padding',
+                    userCls:'x-fa fa-user-plus',
+                    padding: '8 0 8 0'
+                },
+                {
+                    xtype: 'container',
+                    layout: {
+                        type: 'vbox',
+                        align: 'center',
+                        pack: 'center'
+                    },
+                    items: [
+                        {
+                            xtype: 'component',
+                            cls: 'friends-value',
+                            html: '734'
+                        },
+                        {
+                            xtype: 'component',
+                            cls: 'friends-label',
+                            html: 'Friends'
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+});Ext.define('Admin.view.profile.Notifications', {extend:Ext.DataView, xtype:'profilenotifications', cls:'user-notifications', scrollable:false, bind:{store:'{userSharedItems}'}, itemSelector:'div.timeline-item', itemTpl:["\x3cdiv class\x3d'comments {[values._id !\x3d\x3d values.parent_id ? 'sub-comments' : '']}'\x3e", "\x3cimg src\x3d'resources/images/user-profile/15.png' alt\x3d'Smiley face' class\x3d'profile-icon'\x3e", "\x3cdiv class\x3d'content-wrap'\x3e", '\x3cdiv\x3e', "\x3ch4 class\x3d'profilenotifications-username'\x3e{name}\x3cspan class\x3d'x-fa fa-mobile'\x3e\x3c/span\x3e\x3c/h4\x3e", 
 "\x3cspan class\x3d'from-now'\x3e\x3cspan class\x3d'x-fa fa-clock-o'\x3e\x3c/span\x3e3 Hours Ago\x3c/span\x3e", '\x3c/div\x3e', "\x3cdiv class\x3d'content'\x3e{content}\x3c/div\x3e", "\x3cdiv class\x3d'like-comment-btn-wrap'\x3e", "\x3cbutton type\x3d'button' class\x3d'x-fa fa-thumbs-up' onclick\x3d''\x3e\x3c/button\x3e", "\x3cbutton type\x3d'button' class\x3d'x-fa fa-thumbs-down' onclick\x3d''\x3e\x3c/button\x3e", "\x3cbutton type\x3d'button' onclick\x3d'' class\x3d'x-fa fa-comments'\x3e\x3c/button\x3e", 
 '\x3c/div\x3e', '\x3c/div\x3e', '\x3c/div\x3e']});
 Ext.define('Admin.view.profile.Social', {extend:Ext.panel.Panel, xtype:'profilesocial', layout:{type:'vbox', align:'middle'}, height:320, bodyPadding:20, items:[{xtype:'image', cls:'userProfilePic', height:120, width:120, alt:'profile-picture', src:'resources/images/user-profile/20.png'}, {xtype:'component', cls:'userProfileName', height:'', html:'Jessica Warren'}, {xtype:'component', cls:'userProfileDesc', html:'CO-FOUNDER, CEO'}, {xtype:'container', layout:'hbox', defaults:{xtype:'button', margin:5}, 
@@ -99610,55 +99722,670 @@ Ext.define('Admin.view.email.Window', {extend:Ext.window.Window, alias:'widget.e
   this.setXY([Math.floor(width * 0.05), Math.floor(height * 0.05)]);
 }});
 Ext.define('Admin.view.forms.WizardFormModel', {extend:Ext.app.ViewModel, alias:'viewmodel.wizardform', data:{atBeginning:true, atEnd:false}});
-Ext.define('Admin.view.forms.WizardForm', {extend:Ext.panel.Panel, xtype:'wizardform', bodyPadding:15, height:340, layout:'card', viewModel:{type:'wizardform'}, controller:'wizardform', defaults:{defaultFocus:'textfield:not([value]):focusable:not([disabled])', defaultButton:'nextbutton'}, items:[{xtype:'form', defaultType:'textfield', defaults:{labelWidth:90, labelAlign:'top', labelSeparator:'', submitEmptyText:false, anchor:'100%'}, items:[{emptyText:'Username must be unique.'}, {emptyText:'ex: me@somewhere.com', 
-vtype:'email'}, {emptyText:'Enter a password', inputType:'password', cls:'wizard-form-break'}, {emptyText:'Passwords must match', inputType:'password'}]}, {xtype:'form', defaultType:'textfield', defaults:{labelWidth:90, labelAlign:'top', labelSeparator:'', submitEmptyText:false, anchor:'100%'}, items:[{emptyText:'First Name'}, {emptyText:'Last Name'}, {emptyText:'Company'}, {xtype:'fieldcontainer', cls:'wizard-form-break', fieldLabel:'MemberType', defaultType:'radiofield', defaults:{flex:1}, layout:'hbox', 
-items:[{boxLabel:'Free', name:'MemberType', inputValue:'Free'}, {boxLabel:'Personal', name:'MemberType', inputValue:'Perosnal'}, {boxLabel:'Black', name:'MemberType', inputValue:'Business'}]}]}, {xtype:'form', defaultType:'textfield', defaults:{labelWidth:90, labelAlign:'top', labelSeparator:'', submitEmptyText:false, anchor:'100%'}, items:[{emptyText:'Phone number'}, {emptyText:'Address'}, {emptyText:'City'}, {emptyText:'Postal Code / Zip Code'}]}, {xtype:'form', items:[{html:'\x3ch2\x3eThank You\x3c/h2\x3e\x3cp\x3eLorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\x3c/p\x3e'}]}], 
-initComponent:function() {
-  this.tbar = {reference:'progress', defaultButtonUI:'wizard-' + this.colorScheme, cls:'wizardprogressbar', defaults:{disabled:true, iconAlign:'top'}, layout:{pack:'center'}, items:[{step:0, iconCls:'fa fa-info', pressed:true, enableToggle:true, text:'Account'}, {step:1, iconCls:'fa fa-user', enableToggle:true, text:'Profile'}, {step:2, iconCls:'fa fa-home', enableToggle:true, text:'Address'}, {step:3, iconCls:'fa fa-heart', enableToggle:true, text:'Finish'}]};
-  this.bbar = {reference:'navigation-toolbar', margin:8, items:['-\x3e', {text:'Previous', ui:this.colorScheme, formBind:true, bind:{disabled:'{atBeginning}'}, listeners:{click:'onPreviousClick'}}, {text:'Next', ui:this.colorScheme, formBind:true, reference:'nextbutton', bind:{disabled:'{atEnd}'}, listeners:{click:'onNextClick'}}]};
-  this.callParent();
-}});
-Ext.define('Admin.view.forms.WizardFormController', {extend:Ext.app.ViewController, alias:'controller.wizardform', init:function(view) {
-  var tb = this.lookupReference('navigation-toolbar'), buttons = tb.items.items, ui = view.colorScheme;
-  if (ui) {
-    buttons[1].setUI(ui);
-    buttons[2].setUI(ui);
-  }
-}, onNextClick:function(button) {
-  var panel = button.up('panel');
-  panel.getViewModel().set('atBeginning', false);
-  this.navigate(button, panel, 'next');
-}, onPreviousClick:function(button) {
-  var panel = button.up('panel');
-  panel.getViewModel().set('atEnd', false);
-  this.navigate(button, panel, 'prev');
-}, navigate:function(button, panel, direction) {
-  var layout = panel.getLayout(), progress = this.lookupReference('progress'), model = panel.getViewModel(), progressItems = progress.items.items, item, i, activeItem, activeIndex;
-  layout[direction]();
-  activeItem = layout.getActiveItem();
-  activeIndex = panel.items.indexOf(activeItem);
-  for (i = 0; i < progressItems.length; i++) {
-    item = progressItems[i];
-    if (activeIndex === item.step) {
-      item.setPressed(true);
-    } else {
-      item.setPressed(false);
-    }
-    if (Ext.isIE8) {
-      item.btnIconEl.syncRepaint();
-    }
-  }
-  activeItem.focus();
-  if (activeIndex === 0) {
-    model.set('atBeginning', true);
-  }
-  if (activeIndex === 3) {
-    model.set('atEnd', true);
-  }
-}});
-Ext.define('Admin.view.forms.WizardOne', {extend:Ext.panel.Panel, alias:'widget.formswizardone', cls:'wizardone shadow', plugins:{responsive:true}, responsiveConfig:{'width \x3e\x3d 1000':{layout:{type:'box', align:'stretch', vertical:false}}, 'width \x3c 1000':{layout:{type:'box', align:'stretch', vertical:true}}}, items:[{xtype:'specialoffer', plugins:{responsive:true}, height:338, responsiveConfig:{'width \x3c 1000':{flex:null}, 'width \x3e\x3d 1000':{flex:1}}}, {xtype:'wizardform', cls:'wizardone', 
+
+Ext.define('Admin.view.forms.WizardForm', 
+		{
+			extend:Ext.panel.Panel, 
+			xtype:'wizardform', 
+			requires: [
+                'Ext.button.Button',
+                'Ext.form.field.Text',
+                'Ext.form.field.File',
+                'Ext.form.field.HtmlEditor',
+                'Ext.form.field.TextArea',
+                'Ext.form.field.Time',
+                'Ext.form.field.ComboBox',
+                'Ext.form.field.Date',
+                'Ext.form.field.Radio',
+                'Ext.form.field.Hidden'],
+                
+			bodyPadding:15, 
+			height:340,
+			layout:'card', 
+			viewModel:{type:'wizardform'}, 
+			controller:'wizardform', 
+			defaults:{
+				defaultFocus:'textfield:not([value]):focusable:not([disabled])',
+				defaultButton:'nextbutton'},				
+				items:[
+				{
+					xtype:'form', 
+					defaultType:'textfield',
+					defaults:{
+					labelWidth:90,
+					labelAlign:'left', 
+					labelSeparator:'', 
+					submitEmptyText:false, 
+					anchor:'90%'}, 
+				
+				items:[
+				{
+                    fieldLabel: '手机号码  ',
+                    emptyText : 'Username must be unique.',
+                    name:'staffNumber'
+                }, 
+                
+				{                   	
+                	fieldLabel: '邮箱',
+					emptyText:'ex: me@somewhere.com', 
+					vtype:'email',
+					name:'mail'	
+				}, 
+				{
+					fieldLabel: '更改密码   ',
+					emptyText:'Enter a password',
+					inputType:'password', 
+					cls:'wizard-form-break'}, 
+				{	
+					fieldLabel: '再输入一次',
+					emptyText:'Passwords must match', 
+					inputType:'password'}]},
+				{
+					xtype:'form', 
+					defaultType:'textfield', 
+					defaults:{
+						labelWidth:90, 
+						labelAlign:'left', 
+						labelSeparator:'',
+						submitEmptyText:false,
+						anchor:'90%'},
+				items:[
+				{
+					fieldLabel: '名字',
+					emptyText:'Name',
+					name :'staffName'}, 
+				{
+					xtype: 'datefield',
+					format: 'Y/m/d H:i:s',
+					fieldLabel: '生日',
+					name:'createTime'
+				},
+				{
+					xtype: 'datefield',
+					format: 'Y/m/d H:i:s',
+					fieldLabel: '入职时间',
+					name:'createTime'
+				}, 		 
+				{					
+					xtype:'fieldcontainer', 
+					cls:'wizard-form-break', 
+					fieldLabel:'性别', 
+					defaultType:'radiofield', 
+					defaults:{flex:1}, 
+					layout:'hbox',
+					
+				items:[
+				{
+					boxLabel:'男', 
+					name:'SexType', 
+					inputValue:'Free'
+				},
+				{
+					boxLabel:'女', 
+					name:'SexType',
+					inputValue:'Perosnal'
+				}, 			
+			]}]},
+				{
+					xtype:'form', 
+					defaultType:'textfield',
+					defaults:{labelWidth:90, 
+					labelAlign:'left',
+					labelSeparator:'', 
+					submitEmptyText:false,
+					anchor:'90%'},
+			
+			items:[
+			
+				{
+					fieldLabel:'家庭住址',
+					emptyText:'Address'
+				}, 
+				{
+					fieldLabel:'籍贯',
+					emptyText:'City'
+				},
+				{
+					xtype: 'combobox',
+					fieldLabel: '身份证类型',
+					name:'idType',
+					store:  Ext.create('Ext.data.Store', {
+						fields: ['value', 'name'],
+						data : [
+							{"value":"HIGH", 	"name":"大陆"},
+							{"value":"MEDIUM",  "name":"港澳"},
+							{"value":"LOW", 	"name":"国外"}
+								]
+					}),
+					queryMode: 	  'local',
+					displayField: 'name',
+					valueField:   'value'
+				},
+				{
+					fieldLabel: '身份证号码',					
+				}
+				]}, 
+				 {
+					xtype:'form',
+					defaultType:'textfield',
+					defaults:{
+					labelWidth:90,
+					height:'80%',
+					labelAlign:'top',
+					labelSeparator:'', 					
+					anchor:'90%'},
+					
+			        items:[{
+			        	
+						fieldLabel:'ABout me',
+						
+					}]
+				 }], 
+			        initComponent:function() {
+			        this.tbar = {
+			        		reference:'progress', 
+			        		defaultButtonUI:'wizard-' + this.colorScheme, 
+			        		cls:'wizardprogressbar', 
+			        		defaults:{disabled:true, iconAlign:'top'},
+			        		layout:{pack:'center'}, 
+			        		items:[
+			        			{
+			        				step:0, iconCls:'fa fa-info', 
+			        				pressed:true, enableToggle:true, 
+			        				text:'Account'
+			        			}, 
+			        			{
+			        				step:1, iconCls:'fa fa-user',
+			        				enableToggle:true, text:'Profile'
+			        			}, 
+			        			{
+			        				step:2, iconCls:'fa fa-home',
+			        				enableToggle:true, text:'Address'
+			        			}, 
+			        			{
+			        				step:3, iconCls:'fa fa-heart', 
+			        				enableToggle:true, text:'Message'
+			        			}
+			        		]};
+			        this.bbar = 
+			        	{
+			        		reference:'navigation-toolbar',
+			        		margin:8, 
+			        		items:['->', 
+			        				{
+					        			text:'Previous', 
+					        			ui:this.colorScheme, 
+					        			formBind:true, 
+					        			bind:{
+					        				disabled:'{atBeginning}'}, 
+				        				listeners:{click:'onPreviousClick'}
+			        				},
+			        				'|',
+			        				{
+			        					text:'Next', 
+			        					ui:this.colorScheme,
+			        					formBind:true, 
+			        					reference:'nextbutton', 
+			        					bind:{
+			        						disabled:'{atEnd}'},	        			
+			        				listeners:{click:'onNextClick'}
+			        				},
+			        				
+			        				]};
+			        			this.callParent();
+			        		},
+				 
+				  });
+		Ext.define('Admin.view.forms.WizardFormController',
+				{
+					extend:Ext.app.ViewController, 
+					alias:'controller.wizardform', 
+					init:function(view) {
+						var tb = this.lookupReference('navigation-toolbar'),
+						buttons = tb.items.items, 
+						ui = view.colorScheme;
+						  if (ui) {
+						    buttons[1].setUI(ui);
+						    buttons[2].setUI(ui);
+						    buttons[3].setUI(ui);    
+						  	}
+						}, 
+			onNextClick:function(button) {
+			  var panel = button.up('panel');
+			  panel.getViewModel().set('atBeginning', false);
+			  this.navigate(button, panel, 'next');
+			}, 
+			  onPreviousClick:function(button)
+			  {
+				  var panel = button.up('panel');
+				  panel.getViewModel().set('atEnd', false);
+				  this.navigate(button, panel, 'prev');
+			}, 
+				navigate:function(button, panel, direction) 
+				{
+					var layout = panel.getLayout(), 
+					progress = this.lookupReference('progress'), 
+					model = panel.getViewModel(), 
+					progressItems = progress.items.items, item, i, activeItem, activeIndex;
+					layout[direction]();
+					activeItem = layout.getActiveItem();
+					activeIndex = panel.items.indexOf(activeItem);
+					for (i = 0; i < progressItems.length; i++) {
+						item = progressItems[i];
+				  			if (activeIndex === item.step) {
+				  				item.setPressed(true);
+				  		} else {
+				  			item.setPressed(false);
+				  		}
+				  		if (Ext.isIE8) {
+				  			item.btnIconEl.syncRepaint();
+				  		}
+			  		}
+			  	activeItem.focus();
+			  	if (activeIndex === 0) {
+			  		model.set('atBeginning', true);
+			  	}
+			  	if (activeIndex === 3) {
+			  		model.set('atEnd', true);
+			  	}
+				}});
+
+Ext.define('Admin.view.forms.WizardOne', 
+		{extend:Ext.panel.Panel, alias:'widget.formswizardone', cls:'wizardone shadow', plugins:{responsive:true}, responsiveConfig:{'width \x3e\x3d 1000':{layout:{type:'box', align:'stretch', vertical:false}}, 'width \x3c 1000':{layout:{type:'box', align:'stretch', vertical:true}}}, items:[{xtype:'specialoffer', plugins:{responsive:true}, height:338, responsiveConfig:{'width \x3c 1000':{flex:null}, 'width \x3e\x3d 1000':{flex:1}}}, {xtype:'wizardform', cls:'wizardone', 
 colorScheme:'blue', flex:1}]});
-Ext.define('Admin.view.forms.Wizards', {extend:Ext.container.Container, xtype:'forms', cls:'wizards', defaultFocus:'wizardform', layout:'responsivecolumn', items:[{xtype:'formswizardone', userCls:'big-100'}, {xtype:'wizardform', cls:'wizardtwo shadow', colorScheme:'soft-purple', userCls:'big-50 small-100'}, {xtype:'wizardform', cls:'wizardthree shadow', colorScheme:'soft-green', userCls:'big-50 small-100'}]});
+Ext.define('Admin.view.forms.Wizards', {extend:Ext.container.Container, 
+	xtype:'forms', cls:'wizards', defaultFocus:'wizardform', layout:'responsivecolumn', 
+	items:[{xtype:'formswizardone', userCls:'big-100'}, 
+		   {xtype:'wizardform', cls:'wizardtwo shadow', 
+		   colorScheme:'soft-purple', userCls:'big-50 small-100'},
+		   {xtype:'wizardform', cls:'wizardthree shadow', colorScheme:'soft-green', userCls:'big-50 small-100'}
+		   ]});
+
+Ext.define('Admin.view.profile.ProfileForm', {
+    extend: 'Ext.panel.Panel',
+    xtype: 'profileform',
+    requires: [
+    			'Admin.view.profile.ProfileFormModel',
+		    	'Ext.button.Button',
+		        'Ext.form.field.Text',
+		        'Ext.form.field.File',
+		        'Ext.form.field.HtmlEditor',
+		        'Ext.form.field.TextArea',
+		        'Ext.form.field.Time',
+		        'Ext.form.field.ComboBox',
+		        'Ext.form.field.Date',
+		        'Ext.form.field.Radio',
+		        'Ext.form.field.Hidden'
+    ],
+
+    bodyPadding: 15,
+
+    height: 340,
+
+    layout: 'card',
+
+    viewModel: {
+        type: 'profileform'
+    },
+
+    controller: 'profileform',
+
+    defaults : {
+        /*
+         * Seek out the first enabled, focusable, empty textfield when the form is focused
+         */
+        defaultFocus: 'textfield:not([value]):focusable:not([disabled])',
+
+        defaultButton : 'nextbutton'
+    },
+
+    items: [
+        {
+        	xtype:'form',
+            defaultType:'textfield',
+            defaults: {
+                labelWidth: 90,
+                labelAlign: 'right',
+                labelSeparator: '',
+                submitEmptyText: false,
+                anchor: '100%'
+            },
+            items:[
+                {
+                    xtype: 'hidden',
+                    fieldLabel: 'Id',
+                    name:'id'
+                },
+                {
+                    fieldLabel: 'profileName',
+                    emptyText : ' unique.',
+                    name:'profileName'
+                },
+                {
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    fieldLabel: 'createTime',
+                    name:'createTime'
+                },
+                {
+                    emptyText : 'ex: me@somewhere.com',
+                    vtype: 'email'
+                },
+                {
+                    emptyText : 'Enter a password',
+                    inputType: 'password',
+                    cls: 'profile-form-break'
+                },
+                {
+                    emptyText : 'Passwords must match',
+                    inputType: 'password'
+                }
+            ]
+        },
+        {
+            xtype: 'form',
+            defaultType: 'textfield',
+            defaults: {
+                labelWidth: 90,
+                labelAlign: 'top',
+                labelSeparator: '',
+                submitEmptyText: false,
+                anchor: '100%'
+            },
+            items:[
+                {
+                    emptyText : 'First Name'
+                },
+                {
+                    emptyText : 'Last Name'
+                },
+                {
+                    emptyText : 'Company'
+                },
+                {
+                    xtype      : 'fieldcontainer',
+                    cls: 'profile-form-break',
+                    fieldLabel : 'MemberType',
+                    defaultType: 'radiofield',
+                    defaults: {
+                        flex: 1
+                    },
+                    layout: 'hbox',
+                    items: [
+                        {
+                            boxLabel  : 'Free',
+                            name      : 'MemberType',
+                            inputValue: 'Free'
+                        }, {
+                            boxLabel  : 'Personal',
+                            name      : 'MemberType',
+                            inputValue: 'Perosnal'
+                        }, {
+                            boxLabel  : 'Black',
+                            name      : 'MemberType',
+                            inputValue: 'Business'
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            xtype: 'form',
+            defaultType: 'textfield',
+            defaults: {
+                labelWidth: 90,
+                labelAlign: 'top',
+                labelSeparator: '',
+                submitEmptyText: false,
+                anchor: '100%'
+            },
+            items:[
+                {
+                    emptyText : 'Phone number'
+                },
+                {
+                    emptyText : 'Address'
+                },
+                {
+                    emptyText : 'City'
+                },
+                {
+                    emptyText : 'Postal Code / Zip Code'
+                }
+            ]
+        },
+        {
+            xtype: 'form',
+            items:[
+                {
+                    html : '<h2>Thank You</h2><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>'
+                	
+                }
+            ]
+        }
+    ],
+
+    initComponent: function() {
+
+        this.tbar = {
+            reference: 'progress',
+            defaultButtonUI: 'profile-' + this.colorScheme,
+            cls: 'profileprogressbar',
+            defaults: {
+                disabled: true,
+                iconAlign:'top'
+            },
+            layout: {
+                pack: 'center'
+            },
+            items: [
+                {
+                    step: 0,
+                    iconCls: 'fa fa-info',
+                    pressed: true,
+                    enableToggle: true,
+                    text: 'Account'
+                },
+                {
+                    step: 1,
+                    iconCls: 'fa fa-user',
+                    enableToggle: true,
+                    text: 'Profile'
+                },
+                {
+                    step: 2,
+                    iconCls: 'fa fa-home',
+                    enableToggle: true,
+                    text: 'Address'
+                },
+                {
+                    step: 3,
+                    iconCls: 'fa fa-heart',
+                    enableToggle: true,
+                    text: 'Finish'
+                }
+            ]
+        };
+
+        this.bbar = {
+            reference: 'navigation-toolbar',
+            margin: 8,
+            items: [
+                '->',
+                {
+                    text: 'Previous',
+                    ui: this.colorScheme,
+                    formBind: true,
+                    bind: {
+                        disabled: '{atBeginning}'
+                    },
+                    listeners: {
+                        click: 'onPreviousClick'
+                    }
+                },
+                {
+                    text: 'Next',
+                    ui: this.colorScheme,
+                    formBind: true,
+                    reference : 'nextbutton',
+                    bind: {
+                        disabled: '{atEnd}'
+                    },
+                    listeners: {
+                        click: 'onNextClick'
+                    }
+                }
+            ]
+        };
+
+        this.callParent();
+    }
+});
+
+/**
+ * @class Admin.view.forms.profileformController
+ */
+Ext.define('Admin.view.profile.ProfileFormController', {
+    extend: 'Ext.app.ViewController',
+    alias: 'controller.profileform',
+
+
+    init: function(view) {
+        var tb = this.lookupReference('navigation-toolbar'),
+            buttons = tb.items.items,
+            ui = view.colorScheme;
+
+        //Apply styling buttons
+        if (ui) {
+            buttons[1].setUI(ui);
+            buttons[2].setUI(ui);
+        }
+    },
+
+    onNextClick: function(button) {
+        //This is where you can handle any logic prior to moving to the next card
+        var panel = button.up('panel');
+
+        panel.getViewModel().set('atBeginning', false);
+        
+        this.navigate(button, panel, 'next');
+    },
+
+    onPreviousClick: function(button) {
+        var panel = button.up('panel');
+
+        panel.getViewModel().set('atEnd', false);
+        
+        this.navigate(button, panel, 'prev');
+    },
+
+    navigate: function(button, panel, direction) {
+        var layout = panel.getLayout(),
+            progress = this.lookupReference('progress'),
+            model = panel.getViewModel(),
+            progressItems = progress.items.items,
+            item, i, activeItem, activeIndex;
+
+        layout[direction]();
+
+        activeItem = layout.getActiveItem();
+        activeIndex = panel.items.indexOf(activeItem);
+
+        for (i = 0; i < progressItems.length; i++) {
+            item = progressItems[i];
+
+            if (activeIndex === item.step) {
+                item.setPressed(true);
+            }
+            else {
+                item.setPressed(false);
+            }
+            if (Ext.isIE8) {
+                item.btnIconEl.syncRepaint();
+            }
+        }
+
+        activeItem.focus();
+
+        // beginning disables previous
+        if (activeIndex === 0) {
+            model.set('atBeginning', true);
+        }
+        
+        // wizard is 4 steps. Disable next at end.
+        if (activeIndex === 3) {
+            model.set('atEnd', true);
+        }
+    }
+});
+
+Ext.define('Admin.view.profile.ProfileFormModel', {
+    extend: 'Ext.app.ViewModel',
+    alias: 'viewmodel.profileform',
+    data: {
+        atBeginning: true,
+        atEnd: false
+    }
+});
+
+Ext.define('Admin.view.profile.ProfileOne', {
+    extend: 'Ext.panel.Panel',
+    alias: 'widget.formsprofiledone',
+    requires: [
+        'Ext.form.field.Radio'
+    ],
+
+    cls: 'profileone shadow',
+
+    plugins: {
+        responsive: true
+    },
+
+    responsiveConfig: {
+        'width >= 1000': {
+            layout: {
+                type: 'box',
+                align: 'stretch',
+                vertical: false
+            }
+        },
+
+        'width < 1000': {
+            layout: {
+                type: 'box',
+                align: 'stretch',
+                vertical: true
+            }
+        }
+    },
+
+    items: [
+        {
+            xtype: 'specialoffer',
+            plugins: {
+                responsive: true
+            },
+            height: 338,
+
+            responsiveConfig: {
+                'width < 1000': {
+                    flex: null
+                },
+
+                'width >= 1000': {
+                    flex: 1
+                }
+            }
+        },
+        {
+            xtype: 'profileform',
+            cls: 'profileone',
+            colorScheme: 'blue',
+            flex: 1
+        }
+    ]
+});
+
 Ext.define('Admin.view.main.MainContainerWrap', {extend:Ext.container.Container, xtype:'maincontainerwrap', scrollable:'y', layout:{type:'hbox', align:'stretchmax', animate:true, animatePolicy:{x:true, width:true}}, beforeLayout:function() {
   var me = this, height = Ext.Element.getViewportHeight() - 64, navTree = me.getComponent('navigationTreeList');
   me.minHeight = height;
@@ -99927,7 +100654,27 @@ items:[{title:'How can I access high resolution images?', iconCls:'x-fa fa-caret
 items:[{title:'What are the different membership plans?', iconCls:'x-fa fa-caret-down'}, {title:'Can I change my plan in between?', iconCls:'x-fa fa-caret-down'}, {title:'How can I deactivate my account?', iconCls:'x-fa fa-caret-down'}, {title:'Can I transfer my account to another user?', iconCls:'x-fa fa-caret-down'}]}, {xtype:'panel', cls:'FAQPanel', layout:'accordion', title:'Payment', height:300, bodyPadding:10, ui:'light', defaults:{html:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}, 
 items:[{title:'What are the payment methods you accept?', iconCls:'x-fa fa-caret-down'}, {title:'What is the refund policy?', iconCls:'x-fa fa-caret-down'}, {title:'How long does it take to process my payment?', iconCls:'x-fa fa-caret-down'}]}]}]});
 Ext.define('Admin.view.profile.ShareUpdate', {extend:Ext.panel.Panel, xtype:'profileshare', bodyPadding:10, layout:'fit', cls:'share-panel', items:[{xtype:'textareafield', emptyText:"What's on your mind?"}], bbar:{defaults:{margin:'0 10 5 0'}, items:[{ui:'header', iconCls:'x-fa fa-video-camera'}, {ui:'header', iconCls:'x-fa fa-camera'}, {ui:'header', iconCls:'x-fa fa-file'}, '-\x3e', {text:'Share', ui:'soft-blue'}]}});
-Ext.define('Admin.view.profile.UserProfile', {extend:Admin.view.profile.UserProfileBase, xtype:'profile', cls:'userProfile-container', layout:'responsivecolumn', items:[{xtype:'profileshare', userCls:'big-100 small-100 shadow'}, {xtype:'profilesocial', userCls:'big-50 small-100 shadow'}, {xtype:'profiledescription', userCls:'big-50 small-100 shadow'}, {xtype:'profilenotifications', userCls:'big-50 small-100 shadow'}, {xtype:'profiletimeline', userCls:'big-50 small-100 shadow'}]});
+Ext.define('Admin.view.profile.UserProfile', 
+		{extend:Admin.view.profile.UserProfileBase, 
+		xtype:'profile', cls:'userProfile-container', 
+		layout:'responsivecolumn', 
+		items:[ {
+					xtype:'profilesocial', 
+					userCls:'big-50 small-100 shadow'},
+				{
+					xtype:'profiledescription', 
+					userCls:'big-50 small-100 shadow'},				
+				{
+					xtype:'wizardform', 
+					cls:'wizardtwo shadow', 
+				    colorScheme:'soft-purple', 
+				    userCls:'big-50 small-100'},
+			    {
+				    xtype: 'profileform',
+                    cls: 'wizardthree shadow',
+                    colorScheme: 'soft-green',
+                    userCls: 'big-50 small-100'}
+				]});
 Ext.define('Admin.view.search.Results', {extend:Ext.tab.Panel, xtype:'searchresults', controller:'searchresults', viewModel:{type:'searchresults'}, cls:'shadow', activeTab:0, margin:20, items:[{xtype:'gridpanel', cls:'allRecordsCls', scrollable:false, hideHeaders:true, border:false, title:'All', routeId:'all', bind:'{allResults}', viewConfig:{preserveScrollOnRefresh:true, stripeRows:false}, columns:[{xtype:'gridcolumn', renderer:function(value, metaData, record, rowIndex) {
   var page = "\x3cdiv class\x3d'resultsItemCls'\x3e\x3cdiv class\x3d'resultsTitleCls'\x3e" + record.data.title + "\x3c/div\x3e\x3cdiv class\x3d'resultsUrlCls'\x3e\x3ca href\x3d'#'\x3e" + record.data.url + "\x3c/a\x3e\x3c/div\x3e\x3cdiv class\x3d'resultsContentCls'\x3e" + record.data.content + '\x3c/div\x3e\x3c/div\x3e';
   if (rowIndex === 3) {

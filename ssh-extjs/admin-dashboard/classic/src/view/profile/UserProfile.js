@@ -7,7 +7,8 @@ Ext.define('Admin.view.profile.UserProfile', {
         'Ext.ux.layout.ResponsiveColumn'
     ],
 
-    layout: 'responsivecolumn',
+    layout: 'card',
+
 
     items: [
         {

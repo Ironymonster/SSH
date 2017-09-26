@@ -1,7 +1,17 @@
-Ext.define('Admin.view.forms.WizardForm', {
+Ext.define('Admin.view.profile.ProfileForm', {
     extend: 'Ext.panel.Panel',
-    xtype: 'wizardform',
-    requires: ['Admin.view.forms.WizardFormModel'],
+    xtype: 'profileform',
+    requires: [
+                'Ext.button.Button',
+                'Ext.form.field.Text',
+                'Ext.form.field.File',
+                'Ext.form.field.HtmlEditor',
+                'Ext.form.field.TextArea',
+                'Ext.form.field.Time',
+                'Ext.form.field.ComboBox',
+                'Ext.form.field.Date',
+                'Ext.form.field.Radio',
+                'Ext.form.field.Hidden'],
 
     bodyPadding: 15,
 
@@ -26,18 +36,31 @@ Ext.define('Admin.view.forms.WizardForm', {
 
     items: [
         {
-            xtype: 'form',
-            defaultType: 'textfield',
+            xtype:'form',
+            defaultType:'textfield',
             defaults: {
                 labelWidth: 90,
-                labelAlign: 'top',
+                labelAlign: 'right',
                 labelSeparator: '',
                 submitEmptyText: false,
                 anchor: '100%'
             },
             items:[
                 {
-                    emptyText : 'Username must be unique.'
+                    xtype: 'hidden',
+                    fieldLabel: 'Id',
+                    name:'id'
+                },
+                {
+                    fieldLabel: 'profileName',
+                    emptyText : 'Username must be unique.',
+                    name:'profileName'
+                },
+                {
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    fieldLabel: 'createTime',
+                    name:'createTime'
                 },
                 {
                     emptyText : 'ex: me@somewhere.com',
@@ -46,7 +69,7 @@ Ext.define('Admin.view.forms.WizardForm', {
                 {
                     emptyText : 'Enter a password',
                     inputType: 'password',
-                    cls: 'wizard-form-break'
+                    cls: 'profile-form-break'
                 },
                 {
                     emptyText : 'Passwords must match',
@@ -76,7 +99,7 @@ Ext.define('Admin.view.forms.WizardForm', {
                 },
                 {
                     xtype      : 'fieldcontainer',
-                    cls: 'wizard-form-break',
+                    cls: 'profile-form-break',
                     fieldLabel : 'MemberType',
                     defaultType: 'radiofield',
                     defaults: {
@@ -141,8 +164,8 @@ Ext.define('Admin.view.forms.WizardForm', {
 
         this.tbar = {
             reference: 'progress',
-            defaultButtonUI: 'wizard-' + this.colorScheme,
-            cls: 'wizardprogressbar',
+            defaultButtonUI: 'profile-' + this.colorScheme,
+            cls: 'profileprogressbar',
             defaults: {
                 disabled: true,
                 iconAlign:'top'
