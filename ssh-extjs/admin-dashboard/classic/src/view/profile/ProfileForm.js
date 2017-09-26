@@ -12,18 +12,14 @@ Ext.define('Admin.view.profile.ProfileForm', {
                 'Ext.form.field.Date',
                 'Ext.form.field.Radio',
                 'Ext.form.field.Hidden'],
-
     bodyPadding: 15,
-
     height: 340,
-
     layout: 'card',
+    // viewModel: {
+    //     type: 'wizardform'
+    // },
 
-    viewModel: {
-        type: 'wizardform'
-    },
-
-    controller: 'wizardform',
+    controller: 'orderViewController',
 
     defaults : {
         /*

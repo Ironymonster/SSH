@@ -100503,9 +100503,318 @@ bbar:Ext.create('Ext.PagingToolbar',{
     iconCls:'x-fa fa-trash',
     handler:'orderGridOpenDeleteDate'
   }]
-})     
-
+}) 
 });
+
+Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
+    extend: 'Ext.grid.Panel',         //2.继承的组件类型
+		//3.重写继承组件的属性：
+		  xtype: 'profileGrid',
+		  bodyPadding: 15,
+		  height: 340,
+		  layout: 'card',
+		  id:'profileGrid',
+		title:'<b>资产列表</b>',
+		bind:'{profileGrid}',
+		
+		columns: [			
+		  {text: 'ID',sortable:true ,dataIndex:'id',hidden:true},
+		  {text: '资产编号' ,sortable:true ,dataIndex:'orderNumber' ,width:100},
+		  {text: '资产名称' ,sortable:true ,dataIndex:'orderName' ,width:100},
+		  {text: '创建时间'  ,sortable:true ,dataIndex:'createTime'  ,width:125
+		    ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
+		  {text: '资产类型',sortable:true ,dataIndex:'level'    ,width:125},
+		  {text: '估计价值',sortable:true ,dataIndex:'price' ,flex:1}
+		],
+		bbar:Ext.create('Ext.PagingToolbar',{
+		  bind:'{profileLists}',
+		  displayInfo:true,
+		  displayMsg:'第{0}-{1}条 共{2}条',
+		  emptyMsg:"没有任何记录",
+		  items:['-',{
+		    //xtype:'button',
+		    ////text:'add'
+		    iconCls:'x-fa fa-plus',
+		    handler:'profileGridOpenAddWindow'
+		  },
+		  '-',
+		  {
+		    iconCls:'x-fa fa-edit',
+		    handler:'profileGridOpenEditWindow'
+		  },
+		  '-',
+		  {
+		    iconCls:'x-fa fa-trash',
+		    handler:'profileGridOpenDeleteDate'
+		  }]
+		})
+		});
+
+Ext.define('Admin.view.profile.ProfileViewController', {
+    extend: 'Ext.app.ViewController',
+    alias: 'controller.profileViewController',
+	
+    profileGridOpenAddWindow: function(btn) {
+			
+			Ext.widget('profileGridWindow',{
+				title:'创建订单',
+				items: [Ext.apply({xtype: 'profileGridForm'})]
+			});
+    },
+
+	profileGridOpenEditWindow: function(btn) {
+		var grid = btn.up('gridpanel');//获取Grid视图
+		var selModel = grid.getSelectionModel();//获取Grid的SelectionModel
+        if (selModel.hasSelection()) {//判断是否选中记录
+           var record = selModel.getSelection()[0];//获取选中的第一条记录
+           //创建修改window和form
+		   var profileGridWindow = Ext.widget('profileGridWindow',{
+				title:'修改订单',
+				items: [{xtype: 'profileGridForm'}]
+			});
+		   //让form加载选中记录
+           profileGridWindow.down("form").getForm().loadRecord(record);
+        }else{
+        	Ext.Msg.alert('提示',"请选择一行数据进行编辑!");
+        }
+    },
+	
+	profileGridDeleteDate: function(btn) {
+		var grid = btn.up('gridpanel');
+		var selModel = grid.getSelectionModel();
+        if (selModel.hasSelection()) {
+            Ext.Msg.confirm("警告", "确定要删除吗？", function (button) {
+                if (button == "yes") {
+                    var selected = selModel.getSelection();
+                    var selectIds = []; //要删除的id
+                    Ext.each(selected, function (record) {
+                        selectIds.push(record.data.id);
+                    })
+                  	Ext.Ajax.request({ 
+						url : 'profile/delete', 
+						method : 'post', 
+						params : { 
+							ids:selectIds
+						}, 
+						success: function(response, options) {
+			                var json = Ext.util.JSON.decode(response.responseText);
+				            if(json.success){
+				            	Ext.Msg.alert('操作成功', json.msg);
+				                grid.getStore().reload();
+					        }else{
+					        	Ext.Msg.alert('操作失败', json.msg);
+					        }
+			            }
+					});
+
+                }
+            });
+		}
+    },
+	
+	profileGridFormSubmit: function(btn) {
+		
+		var profileGridForm = btn.up('form').getForm();
+		var win = btn.up('window');
+			//this.lookupReference('profileGrid').store.reload();  //lookupReference配合reference属性
+			profileGridForm.submit( { 
+				//waitTitle : '请稍后...', 
+				//waitMsg : '正在保存订单信息,请稍后...', 
+				url : 'profile/saveOrUpdate', 
+				method : 'post', 
+				success : function(form, action) { 
+					Ext.Msg.alert("提示",action.result.msg); 
+					win.close();
+					Ext.getCmp("profileGrid").store.reload();
+				}, 
+				failure : function(form, action) { 
+					Ext.Msg.alert("提示",action.result.msg); 
+					
+				} 
+			}); 
+    },
+	
+	profileGridWindowClose: function(btn) {
+		var win = btn.up('window');
+		if(win){
+			win.close();
+		}
+    }
+});
+
+/**
+1.绑定到主视图
+2.通过bind属性绑定到具体的子视图
+8*/
+Ext.define('Admin.view.profile.ProfileViewModel', {
+extend: 'Ext.app.ViewModel',
+alias: 'viewmodel.profileViewModel',
+stores: {
+    profileLists: {
+        type: 'profileStore',//Store reference ==Store的属性 alias: 'store.profileStore',		
+        autoLoad: true //Auto load
+    }
+}
+});
+
+Ext.define('Admin.view.profile.ProfileGridWindow', {
+    extend: 'Ext.window.Window',
+    alias: 'widget.ProfileGridWindow',
+    autoShow: true,
+    modal: true,
+
+    layout: 'fit',
+
+    width: 200,
+    height: 200,
+
+    afterRender: function () {
+        var me = this;
+
+        me.callParent(arguments);
+
+        me.syncSize();
+
+        // Since we want to always be a %age of the viewport, we have to watch for
+        // resize events.
+        Ext.on(me.resizeListeners = {
+            resize: me.onViewportResize,
+            scope: me,
+            buffer: 50
+        });
+    },
+
+    doDestroy: function () {
+        Ext.un(this.resizeListeners);
+
+        this.callParent();
+    },
+
+    onViewportResize: function () {
+        this.syncSize();
+    },
+
+    syncSize: function () {
+        var width = Ext.Element.getViewportWidth(),
+            height = Ext.Element.getViewportHeight();
+
+        // We use percentage sizes so we'll never overflow the screen (potentially
+        // clipping buttons and locking the user in to the dialog).
+
+        this.setSize(Math.floor(width * 0.5), Math.floor(height * 0.5));
+        this.setXY([ Math.floor(width * 0.05), Math.floor(height * 0.05) ]);
+    }
+});
+
+Ext.define('Admin.view.profile.ProfileGridForm', {
+    extend: 'Ext.form.Panel',
+    alias: 'widget.profileGridForm',
+	//id:'profileGridForm',//Ext.getCmp('profileGridForm');
+    requires: [
+        'Ext.button.Button',
+        'Ext.form.field.Text',
+        'Ext.form.field.File',
+        'Ext.form.field.HtmlEditor',
+		'Ext.form.field.TextArea',
+		'Ext.form.field.Time',
+		'Ext.form.field.ComboBox',
+		'Ext.form.field.Date',
+		'Ext.form.field.Radio',
+		'Ext.form.field.Hidden'
+    ],
+    //viewModel: {type: 'emailcompose'},
+    //cls: 'email-compose',
+	controller: 'profileViewController',
+    layout: {
+        type:'vbox',
+        align:'stretch'
+    },
+
+    bodyPadding: 10,
+    scrollable: true,
+
+    defaults: {
+        labelWidth: 60,
+        labelSeparator: ''
+    },
+    items: [{
+		xtype: 'hidden',
+		fieldLabel: 'Id',
+		//allowBlank: false,
+		name:'id'
+	},{
+		xtype: 'textfield',
+		fieldLabel: 'Profile Number',
+		name:'profileNumber'
+	},{
+		xtype: 'datefield',
+		format: 'Y/m/d H:i:s',
+		fieldLabel: 'Create Time',
+		name:'createTime'
+	},{
+		xtype: 'combobox',
+		fieldLabel: 'Level',
+		name:'level',
+		store:  Ext.create('Ext.data.Store', {
+			fields: ['value', 'name'],
+			data : [
+				{"value":"HIGH", 	"name":"高"},
+				{"value":"MEDIUM",  "name":"中"},
+				{"value":"LOW", 	"name":"低"}
+			]
+		}),
+		queryMode: 	  'local',
+		displayField: 'name',
+		valueField:   'value'
+		
+		
+	},{
+		xtype: 'textfield',
+		fieldLabel: 'Price',
+		name:'price'
+    }],
+    bbar: {
+        overflowHandler: 'menu',
+        items: ['->',{
+			xtype: 'button',
+			//ui: 'soft-red',
+			text: '提交',
+			handler: 'profileGridFormSubmit'
+		},{
+			xtype: 'button',
+			//ui: 'gray',
+			text: '取消',
+			handler: 'profileGridWindowClose'
+		}]
+    }
+});
+
+Ext.define('Admin.store.profile.ProfileStore', {
+    extend: 'Ext.data.Store',
+    alias: 'store.profileStore',			  //1.Store取别名（reference）
+    model: 'Admin.model.profile.ProfileModel',//2.设置model的全路径
+	proxy: {
+		type: 'ajax',
+		url: 'profile/findPage.json',	//后台ProfileController中的接口url地址
+		reader: {
+			type:'json',
+			rootProperty: 'content',		//结果集名字的属性
+			totalProperty: 'totalElements'	//一共多少条记录的属性
+		},
+		simpleSortMode: true	//简单排序模式
+	},
+	pageSize: 25,
+	autoLoad: true,
+	remoteSort: true,//全局排序
+    sorters: {
+        direction: 'DESC',
+        property: 'id'
+    }
+});
+
+
+
+
 Ext.define('Admin.view.main.MainModel', {extend:Ext.app.ViewModel, alias:'viewmodel.main', data:{currentView:null}});
 Ext.define('Admin.view.order.Order', {extend:Ext.container.Container, xtype:'order', controller:'orderViewController', viewModel:{type:'orderViewModel'}, layout:'fit', margin:'20 20 20 20', items:[{xtype:'orderGrid'}]});
 Ext.define('Admin.view.order.OrderGridForm', {
@@ -100670,7 +100979,7 @@ Ext.define('Admin.view.profile.UserProfile',
 				    colorScheme:'soft-purple', 
 				    userCls:'big-50 small-100'},
 			    {
-				    xtype: 'profileform',
+				    xtype: 'profileGrid',
                     cls: 'wizardthree shadow',
                     colorScheme: 'soft-green',
                     userCls: 'big-50 small-100'}

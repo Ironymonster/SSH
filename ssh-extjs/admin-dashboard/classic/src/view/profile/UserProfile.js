@@ -13,13 +13,11 @@ Ext.define('Admin.view.profile.UserProfile', {
     items: [
         {
             xtype: 'profileshare',
-            
             // Always 100% of container
             userCls: 'big-100 small-100 shadow'
         },
         {
             xtype: 'profilesocial',
-            
             // Use 50% of container when viewport is big enough, 100% otherwise
             userCls: 'big-50 small-100 shadow'
         },

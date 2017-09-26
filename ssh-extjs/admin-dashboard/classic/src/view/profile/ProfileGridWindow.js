@@ -1,6 +1,6 @@
-Ext.define('Admin.view.order.OrderGridWindow', {
+Ext.define('Admin.view.profile.ProfileGridWindow', {
     extend: 'Ext.window.Window',
-    alias: 'widget.OrderGridWindow',
+    alias: 'widget.ProfileGridWindow',
     autoShow: true,
     modal: true,
 
