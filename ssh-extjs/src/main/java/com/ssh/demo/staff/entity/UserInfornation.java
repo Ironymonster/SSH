@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.ssh.demo.util.IdType;
+
 @Entity
 @Table(name="t_user")
 public class UserInfornation {
@@ -18,7 +20,7 @@ public class UserInfornation {
 	private String sex;
 	private String mail;
 	private String mobilePhone;
-	private String idType;
+	private IdType idType;
 	private String idNumber;
 	private Date birthday;
 	private String nativePlace;
@@ -46,7 +48,7 @@ public class UserInfornation {
 	public String getMobilePhone() {
 		return mobilePhone;
 	}
-	public String getIdType() {
+	public IdType getIdType() {
 		return idType;
 	}
 	public String getIdNumber() {
@@ -86,7 +88,7 @@ public class UserInfornation {
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
-	public void setIdType(String idType) {
+	public void setIdType(IdType idType) {
 		this.idType = idType;
 	}
 	public void setIdNumber(String idNumber) {
