@@ -11,9 +11,9 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.ssh.demo.staff.entity.Asset;
+import com.ssh.demo.staff.entity.Assets;
 
-public class AssetQueryDTO {
+public class AssetsQueryDTO {
 
 	private String assetsNumber;
 	private String assetsName;
@@ -53,27 +53,27 @@ public class AssetQueryDTO {
 	}
 
 	@SuppressWarnings("unused")
-	public static Specification<Asset> getWhereClause(AssetQueryDTO assetQueryDTO) {
-		return new Specification<Asset>() {
-			public Predicate toPredicate(Root<Asset> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+	public static Specification<Assets> getWhereClause(AssetsQueryDTO assetsQueryDTO) {
+		return new Specification<Assets>() {
+			public Predicate toPredicate(Root<Assets> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				// 1.声明Predicate集合
 				List<Predicate> predicate = new ArrayList<>();
 				// 2.根据orderQueryDTO查询条件动态添加Predicate
-				if (assetQueryDTO.getAssetsNumber() != null) {
-					predicate.add(cb.like(root.get("assetNumber").as(String.class),
-							"%" + assetQueryDTO.getAssetsNumber() + "%"));
+				if (assetsQueryDTO.getAssetsNumber() != null) {
+					predicate.add(cb.like(root.get("assetsNumber").as(String.class),
+							"%" + assetsQueryDTO.getAssetsNumber() + "%"));
 				}
-				if (assetQueryDTO.getAssetsUsedTime() != null) {
+				if (assetsQueryDTO.getAssetsUsedTime() != null) {
 					predicate.add(cb.greaterThanOrEqualTo(root.get("assetsUsedTime").as(Date.class),
-							assetQueryDTO.getAssetsUsedTime()));
+							assetsQueryDTO.getAssetsUsedTime()));
 				}
 
-				if (assetQueryDTO.getAssetsPrice() != null) {
-					predicate.add(cb.equal(root.get("assetprice").as(Float.class), assetQueryDTO.getAssetsPrice()));
+				if (assetsQueryDTO.getAssetsPrice() != null) {
+					predicate.add(cb.equal(root.get("assetsprice").as(Float.class), assetsQueryDTO.getAssetsPrice()));
 				}
 
-				if (assetQueryDTO.getAssetsName() != null) {
-					predicate.add(cb.equal(root.get("assetName").as(Float.class), assetQueryDTO.getAssetsName()));
+				if (assetsQueryDTO.getAssetsName() != null) {
+					predicate.add(cb.equal(root.get("assetsName").as(Float.class), assetsQueryDTO.getAssetsName()));
 				}
 
 				// 3.根据Predicate集合生成并返回and 连接的 where条件

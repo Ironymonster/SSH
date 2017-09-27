@@ -9,34 +9,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ssh.demo.staff.entity.Asset;
-import com.ssh.demo.staff.service.IAssetService;
+import com.ssh.demo.staff.entity.Assets;
+import com.ssh.demo.staff.service.IAssetsService;
 import com.ssh.demo.util.web.ExtjsAjaxResult;
 import com.ssh.demo.util.web.ExtjsPageable;
 
 @Controller
-@RequestMapping("/asset")
-public class AssetController {
+@RequestMapping("/assets")
+public class AssetsController {
 	@Autowired
-	private IAssetService assetService;
+	private IAssetsService assetsService;
 
 	@RequestMapping("/findAll")
-	public @ResponseBody List<Asset> findAll()
+	public @ResponseBody List<Assets> findAll()
 	{
-		return assetService.findAll();
+		return assetsService.findAll();
 	}
 	
 	@RequestMapping("/findPage")
-	public @ResponseBody Page<Asset> findAll(ExtjsPageable pageable)
+	public @ResponseBody Page<Assets> findAll(ExtjsPageable pageable)
 	{
-		return assetService.findAll(pageable.getPageable());
+		return assetsService.findAll(pageable.getPageable());
 	}
 	
 	@PostMapping("/saveOrUpdate")
-	public @ResponseBody ExtjsAjaxResult saveOrUpdate(Asset asset)
+	public @ResponseBody ExtjsAjaxResult saveOrUpdate(Assets assets)
 	{
 		try {
-			assetService.save(asset);
+			assetsService.save(assets);
 			 return new ExtjsAjaxResult(true,"操作成功！");
 		} catch (Exception e) {
 			 e.printStackTrace();
@@ -48,7 +48,7 @@ public class AssetController {
 	public @ResponseBody ExtjsAjaxResult delete(Long[] ids)
 	{
 		try {
-			assetService.delete(ids);
+			assetsService.delete(ids);
 			 return new ExtjsAjaxResult(true,"操作成功！");
 		} catch (Exception e) {
 			 e.printStackTrace();

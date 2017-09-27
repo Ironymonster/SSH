@@ -13,11 +13,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssh.demo.util.Type;
 
 @Entity
-@Table(name="t_asset")
-public class Asset {
+@Table(name="t_assets")
+public class Assets {
 
-	private Integer assetId;
-	private String assetNumber;
+	private Integer assetsId;
+	private String assetsNumber;
 	private String assetsName;
 	private Type assetsType;
 	private Double assetsPrice;
@@ -27,8 +27,8 @@ public class Asset {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Integer getAssetId() {
-		return assetId;
+	public Integer getAssetsId() {
+		return assetsId;
 	}
 	public String getAssetsName() {
 		return assetsName;
@@ -47,18 +47,16 @@ public class Asset {
 		return user;
 	}	
 	
-	
-
-	public String getAssetNumber() {
-		return assetNumber;
+	public String getAssetsNumber() {
+		return assetsNumber;
 	}
 	@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
 	public Date getAssetsUsedTime() {
 		return assetsUsedTime;
 	}
 	
-	public void setAssetId(Integer assetId) {
-		this.assetId = assetId;
+	public void setAssetsId(Integer assetsId) {
+		this.assetsId = assetsId;
 	}
 	public void setAssetsName(String assetsName) {
 		this.assetsName = assetsName;
@@ -75,15 +73,15 @@ public class Asset {
 	public void setUser(UserInfornation user) {
 		this.user = user;
 	}			
-	public void setAssetNumber(String assetNumber) {
-		this.assetNumber = assetNumber;
+	public void setAssetsNumber(String assetsNumber) {
+		this.assetsNumber = assetsNumber;
 	}
 	public void setAssetsUsedTime(Date assetsUsedTime) {
 		this.assetsUsedTime = assetsUsedTime;
 	}
 	@Override
 	public String toString() {
-		return "Asset [assetId=" + assetId + ", assetNumber=" + assetNumber + ", assetsName=" + assetsName
+		return "Asset [assetsId=" + assetsId + ", assetsNumber=" + assetsNumber + ", assetsName=" + assetsName
 				+ ", assetsType=" + assetsType + ", assetsPrice=" + assetsPrice + ", assetsState=" + assetsState
 				+ ", assetsUsedTime=" + assetsUsedTime + ", user=" + user + "]";
 	}
