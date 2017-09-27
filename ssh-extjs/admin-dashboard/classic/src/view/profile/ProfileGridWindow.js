@@ -1,6 +1,6 @@
 Ext.define('Admin.view.profile.ProfileGridWindow', {
     extend: 'Ext.window.Window',
-    alias: 'widget.ProfileGridWindow',
+    alias: 'widget.profileGridWindow',
     autoShow: true,
     modal: true,
 
@@ -15,9 +15,6 @@ Ext.define('Admin.view.profile.ProfileGridWindow', {
         me.callParent(arguments);
 
         me.syncSize();
-
-        // Since we want to always be a %age of the viewport, we have to watch for
-        // resize events.
         Ext.on(me.resizeListeners = {
             resize: me.onViewportResize,
             scope: me,

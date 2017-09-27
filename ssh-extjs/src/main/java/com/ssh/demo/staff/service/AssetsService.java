@@ -38,6 +38,9 @@ public class AssetsService implements IAssetsService {
 
 	@Override
 	public void delete(Long[] ids) {
+		for(Long id : ids) {
+			assetsDao.delete(id);
+		}
 	}
 
 	@Transactional(readOnly=true)
@@ -59,21 +62,21 @@ public class AssetsService implements IAssetsService {
 	public Page<Assets> findAll(Pageable pageable) {
 		return assetsDao.findAll(pageable);
 	}
-
-	@Override
-	public Page<Assets> findAll(Specification<Assets> spec, Pageable pageable) {
-		return assetsDao.findAll(spec, pageable);
-	}
-
-	@Override
-	public Page<Assets> findByAssetsNumberLikeAndPrice(String assetsNumber, Double assetsPrice, Pageable pageable) {
-		return assetsDao.findByAssetsNumberLikeAndPrice(assetsNumber, assetsPrice, pageable);
-	}
-
-	@Override
-	public Page<Assets> findByQuery(String assetsNumber, Double assetsPrice, Pageable pageable) {
-		return assetsDao.findByQuery(assetsNumber, assetsPrice, pageable);
-	}
+//
+//	@Override
+//	public Page<Assets> findAll(Specification<Assets> spec, Pageable pageable) {
+//		return assetsDao.findAll(spec, pageable);
+//	}
+//
+//	@Override
+//	public Page<Assets> findByAssetsNumberLikeAndPrice(String assetsNumber, Double assetsPrice, Pageable pageable) {
+//		return assetsDao.findByAssetsNumberLikeAndPrice(assetsNumber, assetsPrice, pageable);
+//	}
+//
+//	@Override
+//	public Page<Assets> findByQuery(String assetsNumber, Double assetsPrice, Pageable pageable) {
+//		return assetsDao.findByQuery(assetsNumber, assetsPrice, pageable);
+//	}
 
 
 

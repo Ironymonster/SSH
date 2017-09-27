@@ -86,6 +86,5 @@ http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 	<tx:annotation-driven proxy-target-class="true" />
 
 	<!--制定JPA实现的持久层的根目录 -->
-	<jpa:repositories base-package="com.ssh.demo.*.dao"  />
-	
+	<jpa:repositories base-package="com.ssh.demo.*.dao"  />	
 </beans>

@@ -100555,9 +100555,8 @@ Ext.define('Admin.view.profile.ProfileViewController', {
     alias: 'controller.profileViewController',
 	
     profileGridOpenAddWindow: function(btn) {
-			
 			Ext.widget('profileGridWindow',{
-				title:'创建订单',
+				title:'新建资产',
 				items: [Ext.apply({xtype: 'profileGridForm'})]
 			});
     },
@@ -100569,7 +100568,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {
            var record = selModel.getSelection()[0];//获取选中的第一条记录
            //创建修改window和form
 		   var profileGridWindow = Ext.widget('profileGridWindow',{
-				title:'修改订单',
+				title:'修改资产',
 				items: [{xtype: 'profileGridForm'}]
 			});
 		   //让form加载选中记录
@@ -100579,7 +100578,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {
         }
     },
 	
-	profileGridDeleteDate: function(btn) {
+    profileGridOpenDeleteDate: function(btn) {
 		var grid = btn.up('gridpanel');
 		var selModel = grid.getSelectionModel();
         if (selModel.hasSelection()) {
@@ -100659,7 +100658,7 @@ stores: {
 
 Ext.define('Admin.view.profile.ProfileGridWindow', {
     extend: 'Ext.window.Window',
-    alias: 'widget.ProfileGridWindow',
+    alias: 'widget.profileGridWindow',
     autoShow: true,
     modal: true,
 
@@ -100697,10 +100696,6 @@ Ext.define('Admin.view.profile.ProfileGridWindow', {
     syncSize: function () {
         var width = Ext.Element.getViewportWidth(),
             height = Ext.Element.getViewportHeight();
-
-        // We use percentage sizes so we'll never overflow the screen (potentially
-        // clipping buttons and locking the user in to the dialog).
-
         this.setSize(Math.floor(width * 0.5), Math.floor(height * 0.5));
         this.setXY([ Math.floor(width * 0.05), Math.floor(height * 0.05) ]);
     }
@@ -100742,36 +100737,41 @@ Ext.define('Admin.view.profile.ProfileGridForm', {
 		fieldLabel: 'Id',
 		//allowBlank: false,
 		name:'id'
-	},{
+	},
+	{
 		xtype: 'textfield',
-		fieldLabel: 'Profile Number',
-		name:'profileNumber'
+		fieldLabel: '资产编号',
+		name:'assetsNumber'
+	},
+	{
+		xtype: 'textfield',
+		fieldLabel: '资产名称',
+		name:'assetsName'
 	},{
 		xtype: 'datefield',
 		format: 'Y/m/d H:i:s',
-		fieldLabel: 'Create Time',
-		name:'createTime'
+		fieldLabel: '开始使用时间',
+		name:'assetsUsedTime'
 	},{
 		xtype: 'combobox',
-		fieldLabel: 'Level',
-		name:'level',
+		fieldLabel: '资产类型',
+		name:'assetsType',
 		store:  Ext.create('Ext.data.Store', {
 			fields: ['value', 'name'],
 			data : [
-				{"value":"HIGH", 	"name":"高"},
-				{"value":"MEDIUM",  "name":"中"},
-				{"value":"LOW", 	"name":"低"}
+				{"value":"eProduct", 	    "name":"电子产品"},
+				{"value":"oAppliances",     "name":"办公用具"},
+				{"value":"bEquipment", 	    "name":"基本设备"},
+				{"value":"transportation", 	"name":"交通工具"}
 			]
 		}),
 		queryMode: 	  'local',
 		displayField: 'name',
-		valueField:   'value'
-		
-		
+		valueField:   'value'				
 	},{
 		xtype: 'textfield',
-		fieldLabel: 'Price',
-		name:'price'
+		fieldLabel: '资产估价',
+		name:'assetsPrice'
     }],
     bbar: {
         overflowHandler: 'menu',
@@ -100795,7 +100795,7 @@ Ext.define('Admin.store.profile.ProfileStore', {
     model: 'Admin.model.profile.ProfileModel',//2.设置model的全路径
 	proxy: {
 		type: 'ajax',
-		url: 'profile/findPage.json',	//后台ProfileController中的接口url地址
+		url: 'assets/findPage.json',	//后台ProfileController中的接口url地址
 		reader: {
 			type:'json',
 			rootProperty: 'content',		//结果集名字的属性
@@ -100963,10 +100963,14 @@ items:[{title:'How can I access high resolution images?', iconCls:'x-fa fa-caret
 items:[{title:'What are the different membership plans?', iconCls:'x-fa fa-caret-down'}, {title:'Can I change my plan in between?', iconCls:'x-fa fa-caret-down'}, {title:'How can I deactivate my account?', iconCls:'x-fa fa-caret-down'}, {title:'Can I transfer my account to another user?', iconCls:'x-fa fa-caret-down'}]}, {xtype:'panel', cls:'FAQPanel', layout:'accordion', title:'Payment', height:300, bodyPadding:10, ui:'light', defaults:{html:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}, 
 items:[{title:'What are the payment methods you accept?', iconCls:'x-fa fa-caret-down'}, {title:'What is the refund policy?', iconCls:'x-fa fa-caret-down'}, {title:'How long does it take to process my payment?', iconCls:'x-fa fa-caret-down'}]}]}]});
 Ext.define('Admin.view.profile.ShareUpdate', {extend:Ext.panel.Panel, xtype:'profileshare', bodyPadding:10, layout:'fit', cls:'share-panel', items:[{xtype:'textareafield', emptyText:"What's on your mind?"}], bbar:{defaults:{margin:'0 10 5 0'}, items:[{ui:'header', iconCls:'x-fa fa-video-camera'}, {ui:'header', iconCls:'x-fa fa-camera'}, {ui:'header', iconCls:'x-fa fa-file'}, '-\x3e', {text:'Share', ui:'soft-blue'}]}});
+
 Ext.define('Admin.view.profile.UserProfile', 
 		{extend:Admin.view.profile.UserProfileBase, 
-		xtype:'profile', cls:'userProfile-container', 
-		layout:'responsivecolumn', 
+		xtype:'profile', 
+		cls:'userProfile-container', 
+		layout:'responsivecolumn',
+		controller: 'profileViewController',
+//	    viewModel : {type: 'profileViewModel'},
 		items:[ {
 					xtype:'profilesocial', 
 					userCls:'big-50 small-100 shadow'},

@@ -21,10 +21,10 @@ public interface IAssetsService {
 		public List<Assets> findAll();
 		public List<Assets> findAll(Sort sort);
 		public Page<Assets> findAll(Pageable pageable);
-		//高级查询（动态条件查询）
-		public Page<Assets> findAll(Specification<Assets> spec, Pageable pageable);
-		
-		//自定义查询
-		public Page<Assets> findByQuery(String assetsNumber,Double assetsPrice,Pageable pageable);
-		public Page<Assets> findByAssetsNumberLikeAndPrice(String assetsNumber, Double assetsPrice, Pageable pageable);
+//		//高级查询（动态条件查询）
+//		public Page<Assets> findAll(Specification<Assets> spec, Pageable pageable);
+//		
+//		//自定义查询
+//		public Page<Assets> findByQuery(String assetsNumber,Double assetsPrice,Pageable pageable);
+//		public Page<Assets> findByAssetsNumberLikeAndPrice(String assetsNumber, Double assetsPrice, Pageable pageable);
 }

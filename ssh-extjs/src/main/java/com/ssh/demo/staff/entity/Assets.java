@@ -16,18 +16,18 @@ import com.ssh.demo.util.Type;
 @Table(name="t_assets")
 public class Assets {
 
-	private Integer assetsId;
-	private String assetsNumber;
-	private String assetsName;
-	private Type assetsType;
-	private Double assetsPrice;
-	private String assetsState;
-	private Date assetsUsedTime;
-	private UserInfornation user;
+	private Long assetsId;
+	private String assetsNumber; //资产编号
+	private String assetsName;   //资产名称
+	private Type assetsType;     //资产类型
+	private Double assetsPrice;  //资产估价
+	private String assetsState;  //资产状态
+	private Date assetsUsedTime; //使用时间
+	private UserInfornation user;//外键关联到用户
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Integer getAssetsId() {
+	public Long getAssetsId() {
 		return assetsId;
 	}
 	public String getAssetsName() {
@@ -55,7 +55,7 @@ public class Assets {
 		return assetsUsedTime;
 	}
 	
-	public void setAssetsId(Integer assetsId) {
+	public void setAssetsId(Long assetsId) {
 		this.assetsId = assetsId;
 	}
 	public void setAssetsName(String assetsName) {
@@ -84,7 +84,5 @@ public class Assets {
 		return "Asset [assetsId=" + assetsId + ", assetsNumber=" + assetsNumber + ", assetsName=" + assetsName
 				+ ", assetsType=" + assetsType + ", assetsPrice=" + assetsPrice + ", assetsState=" + assetsState
 				+ ", assetsUsedTime=" + assetsUsedTime + ", user=" + user + "]";
-	}
-	
-	
+	}	
 }

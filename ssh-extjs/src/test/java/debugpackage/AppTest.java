@@ -1,20 +1,21 @@
-package IAssetsServiceTest;
-
+package debugpackage;
 import java.util.Date;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ssh.demo.staff.entity.Assets;
-import com.ssh.demo.staff.entity.dto.AssetsQueryDTO;
 import com.ssh.demo.staff.service.IAssetsService;
 import com.ssh.demo.util.Type;
 
+@RunWith(MyJUnit4ClassRunner.class)
+@ContextConfiguration(locations={
+		"classpath*:spring/applicationContext-spring.xml",
+		"classpath*:spring/applicationContext-springmvc.xml"})
 public class AppTest {
 	
 	@Test
@@ -30,17 +31,17 @@ public class AppTest {
 			assets.setAssetsName("my assets" + i);
 			assets.setAssetsUsedTime(new Date());
 			if(i%2==0) {
-				assets.setAssetsType(Type.交通工具);			
+				assets.setAssetsType(Type.eProduct);			
 			}else if (i%3==0) {
-				assets.setAssetsType(Type.办公用具);				
+				assets.setAssetsType(Type.oAppliances);				
 			}else if (i%5==0){
-				assets.setAssetsType(Type.基本设备);
+				assets.setAssetsType(Type.bEquipment);
 			}else {
-				assets.setAssetsType(Type.电子产品);
+				assets.setAssetsType(Type.transportation);
 			}
 			assets.setAssetsPrice((Double)Math.random()*10000);			
 			assetsService.save(assets);
 		}		
 	}
-	
+
 }

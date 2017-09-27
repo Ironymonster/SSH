@@ -52,7 +52,6 @@ public class AssetsQueryDTO {
 		this.assetsUsedTime = assetsUsedTime;
 	}
 
-	@SuppressWarnings("unused")
 	public static Specification<Assets> getWhereClause(AssetsQueryDTO assetsQueryDTO) {
 		return new Specification<Assets>() {
 			public Predicate toPredicate(Root<Assets> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

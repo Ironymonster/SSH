@@ -49,6 +49,14 @@
 	    <scope>provided</scope>
 	</dependency>
 	
+	<!-- spring测试 -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<scope>test</scope>
+		<version>${spring.version}</version>
+	</dependency>
+	
 	<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>javax.servlet-api</artifactId>
@@ -145,7 +153,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<port>8080</port>
+					<port>8081</port>
 					<uriEncoding>UTF-8</uriEncoding>
 				</configuration>
 			</plugin>
