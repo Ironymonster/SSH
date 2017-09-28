@@ -99271,11 +99271,24 @@ Ext.define('Admin.model.email.Friend', {extend:Admin.model.Base, fields:[{type:'
 Ext.define('Admin.model.faq.Category', {extend:Admin.model.Base, fields:[{type:'string', name:'name'}], hasMany:{name:'questions', model:'faq.Question'}});
 Ext.define('Admin.model.faq.Question', {extend:Admin.model.Base, fields:[{type:'string', name:'name'}]});
 Ext.define('Admin.model.order.OrderModel', {extend:Admin.model.Base, fields:[{name:'id', type:'int'}, {name:'orderNumber', type:'string'}, {name:'createTime', type:'date'}, {name:'level', type:'string'}, {name:'price', type:'float'}]});
+
+Ext.define('Admin.model.profile.ProfileModel', {
+    extend: 'Admin.model.Base',
+    fields: [
+		{name:'assetsId'			,type: 'int'},
+        {name:'assetsNumber' ,type: 'string'},
+        {name:'assetsUsedTime'	,type: 'date'},
+		{name:'assetsName'		,type: 'string'},
+		{name:'assetsPrice'		,type: 'float'},
+		{name:'assetsType'		,type: 'string'}
+    ]
+});
+
 Ext.define('Admin.model.search.Attachment', {extend:Admin.model.Base, fields:[{type:'int', name:'id'}, {type:'string', name:'url'}, {type:'string', name:'title'}]});
 Ext.define('Admin.model.search.Result', {extend:Admin.model.Base, fields:[{type:'int', name:'id'}, {type:'string', name:'title'}, {type:'string', name:'thumbnail'}, {type:'string', name:'url'}, {type:'string', name:'content'}], hasMany:{name:'attachments', model:'search.Attachment'}});
 Ext.define('Admin.model.search.User', {extend:Admin.model.Base, fields:[{type:'int', name:'identifier'}, {type:'string', name:'fullname'}, {type:'string', name:'email'}, {name:'subscription'}, {type:'date', name:'joinDate'}, {type:'boolean', name:'isActive'}, {name:'profile_pic'}]});
 Ext.define('Admin.proxy.API', {extend:Ext.data.proxy.Ajax, alias:'proxy.api', reader:{type:'json', rootProperty:'data'}});
-Ext.define('Admin.store.NavigationTree', {extend:Ext.data.TreeStore, storeId:'NavigationTree', fields:[{name:'text'}], root:{expanded:true, children:[{text:'Dashboard', iconCls:'x-fa fa-desktop', rowCls:'nav-tree-badge nav-tree-badge-new', viewType:'admindashboard', routeId:'dashboard', leaf:true}, {text:'订单管理模块', iconCls:'x-fa fa-balance-scale', viewType:'order', leaf:true}, {text:'Email', iconCls:'x-fa fa-send', rowCls:'nav-tree-badge nav-tree-badge-hot', viewType:'email', leaf:true}, {text:'Profile', 
+Ext.define('Admin.store.NavigationTree', {extend:Ext.data.TreeStore, storeId:'NavigationTree', fields:[{name:'text'}], root:{expanded:true, children:[{text:'Dashboard', iconCls:'x-fa fa-desktop', rowCls:'nav-tree-badge nav-tree-badge-new', viewType:'admindashboard', routeId:'dashboard', leaf:true}, {text:'订单管理模块', iconCls:'x-fa fa-balance-scale', viewType:'order', leaf:true}, {text:'Email', iconCls:'x-fa fa-send', rowCls:'nav-tree-badge nav-tree-badge-hot', viewType:'email', leaf:true}, {text:'个人中心', 
 iconCls:'x-fa fa-user', viewType:'profile', leaf:true}, {text:'Search results', iconCls:'x-fa fa-search', viewType:'searchresults', leaf:true}, {text:'FAQ', iconCls:'x-fa fa-question', viewType:'faq', leaf:true}, {text:'Pages', iconCls:'x-fa fa-leanpub', expanded:false, selectable:false, children:[{text:'Blank Page', iconCls:'x-fa fa-file-o', viewType:'pageblank', leaf:true}, {text:'404 Error', iconCls:'x-fa fa-exclamation-triangle', viewType:'page404', leaf:true}, {text:'500 Error', iconCls:'x-fa fa-times-circle', 
 viewType:'page500', leaf:true}, {text:'Lock Screen', iconCls:'x-fa fa-lock', viewType:'lockscreen', leaf:true}, {text:'Login', iconCls:'x-fa fa-check', viewType:'login', leaf:true}, {text:'Register', iconCls:'x-fa fa-pencil-square-o', viewType:'register', leaf:true}, {text:'Password Reset', iconCls:'x-fa fa-lightbulb-o', viewType:'passwordreset', leaf:true}]}, {text:'Widgets', iconCls:'x-fa fa-flask', viewType:'widgets', leaf:true}, {text:'Forms', iconCls:'x-fa fa-edit', viewType:'forms', leaf:true}, 
 {text:'Charts', iconCls:'x-fa fa-pie-chart', viewType:'charts', leaf:true}]}});
@@ -99283,6 +99296,8 @@ Ext.define('Admin.store.email.Friends', {extend:Ext.data.Store, alias:'store.ema
 Ext.define('Admin.store.email.Inbox', {extend:Ext.data.Store, alias:'store.inbox', model:'Admin.model.email.Email', pageSize:20, autoLoad:true, proxy:{type:'api', url:'~api/email/inbox'}});
 Ext.define('Admin.store.faq.FAQ', {extend:Ext.data.Store, alias:'store.faq', model:'Admin.model.faq.Category', proxy:{type:'api', url:'~api/faq/faq'}});
 Ext.define('Admin.store.order.OrderStore', {extend:Ext.data.Store, alias:'store.orderStore', model:'Admin.model.order.OrderModel', proxy:{type:'ajax', url:'order/findPage.json', reader:{type:'json', rootProperty:'content', totalProperty:'totalElements'}, simpleSortMode:true}, pageSize:25, autoLoad:true, remoteSort:true, sorters:{direction:'DESC', property:'id'}});
+Ext.define('Admin.store.profile.ProfileStore', {extend:Ext.data.Store, alias:'store.profileStore', model:'Admin.model.profile.ProfileModel', proxy:{type:'ajax', url:'assets/findPage.json', reader:{type:'json', rootProperty:'content', totalProperty:'totalElements'}, simpleSortMode:true}, pageSize:4, autoLoad:true, remoteSort:true, sorters:{direction:'DESC', property:'assetsId'}});
+
 Ext.define('Admin.store.search.Results', {extend:Ext.data.Store, alias:'store.searchresults', model:'Admin.model.search.Result', proxy:{type:'api', url:'~api/search/results'}, autoLoad:'true', sorters:{direction:'ASC', property:'title'}});
 Ext.define('Admin.store.search.Users', {extend:Ext.data.Store, alias:'store.searchusers', model:'Admin.model.search.User', proxy:{type:'api', url:'~api/search/users'}, autoLoad:'true', sorters:{direction:'ASC', property:'fullname'}});
 Ext.define('Admin.view.chart.Bounces', {extend:Ext.chart.CartesianChart, xtype:'chartbounces', animation:!Ext.isIE9m && Ext.os.is.Desktop, height:22, background:'rgba(255, 255, 255, 1)', colors:['rgba(250,222,225, 0.8)'], insetPadding:{top:0, left:0, right:0, bottom:0}, axes:[{type:'category', fields:['xvalue'], hidden:true, position:'bottom'}, {type:'numeric', fields:['y2value'], grid:{odd:{fill:'#e8e8e8'}}, hidden:true, position:'left'}], series:[{type:'area', xField:'xvalue', yField:['y2value']}], 
@@ -99338,125 +99353,13 @@ topMovies:{autoLoad:true, model:'Admin.model.DataXY', proxy:{type:'api', url:'~a
 url:'~api/subscriptions'}}, todos:{autoLoad:true, fields:[{type:'int', name:'id'}, {type:'string', name:'task'}, {type:'boolean', name:'done'}], proxy:{type:'api', url:'~api/dashboard/tasks'}}}});
 Ext.define('Admin.view.dashboard.Weather', {extend:Ext.Component, xtype:'weather', baseCls:'weather-panel', border:false, height:80, data:{icon:'cloud-icon.png', forecast:'Partly Cloudy', temperature:25}, tpl:'\x3cdiv class\x3d"weather-image-container"\x3e\x3cimg src\x3d"resources/images/icons/{icon}" alt\x3d"{forecast}"/\x3e\x3c/div\x3e' + '\x3cdiv class\x3d"weather-details-container"\x3e' + '\x3cdiv\x3e{temperature}\x26#176;\x3c/div\x3e' + '\x3cdiv\x3e{forecast}\x3c/div\x3e' + '\x3c/div\x3e'});
 Ext.define('Admin.view.email.EmailModel', {extend:Ext.app.ViewModel, alias:'viewmodel.email', stores:{inbox:{type:'inbox'}, friends:{type:'emailfriends'}}});
-Ext.define('Admin.view.forms.SpecialOffer', 
-		{extend:Ext.Component, xtype:'specialoffer', isSpecialOffer:true, cls:'forms-specialoffer', minWidth:200, html:'\x3cdiv class\x3d"specialoffer-outer"\x3e' + '\x3cdiv class\x3d"specialoffer-inner"\x3e' + '\x3ch3\x3eRegister Today\x3c/h3\x3e' + '\x3cspan class\x3d"specialoffer-icon-wrap circular"\x3e' + '\x3ci class\x3d"fa fa-gift fa-5x"\x3e\x3c/i\x3e' + '\x3c/span\x3e' + '\x3cdiv class\x3d"specialoffer-text"\x3e' + 'Members get \x3cspan class\x3d"specialoffer-discount"\x3e50%\x3c/span\x3e more points, ' + 
+Ext.define('Admin.view.forms.SpecialOffer', {extend:Ext.Component, xtype:'specialoffer', isSpecialOffer:true, cls:'forms-specialoffer', minWidth:200, html:'\x3cdiv class\x3d"specialoffer-outer"\x3e' + '\x3cdiv class\x3d"specialoffer-inner"\x3e' + '\x3ch3\x3eRegister Today\x3c/h3\x3e' + '\x3cspan class\x3d"specialoffer-icon-wrap circular"\x3e' + '\x3ci class\x3d"fa fa-gift fa-5x"\x3e\x3c/i\x3e' + '\x3c/span\x3e' + '\x3cdiv class\x3d"specialoffer-text"\x3e' + 'Members get \x3cspan class\x3d"specialoffer-discount"\x3e50%\x3c/span\x3e more points, ' + 
 'so register today and start earning points for savings on great rewards!' + '\x3c/div\x3e' + '\x3ca class\x3d"specialoffer-link x-fa fa-arrow-right" href\x3d"#faq"\x3e' + 'Learn More...\x3c/a\x3e' + '\x3c/div\x3e' + '\x3c/div\x3e'});
-Ext.define('Admin.view.profile.Description', {
-    extend: 'Ext.Panel',
-    xtype: 'profiledescription',
-
-    requires: [
-        'Ext.Button',
-        'Ext.Img'
-    ],
-
-    layout: {
-        type: 'vbox',
-        align: 'stretch'
-    },
-
-    cls: 'timeline-items-wrap user-profile-desc',
-
-    height: 320,
-
-    items: [
-        {
-            xtype: 'component',
-            userCls: 'box x-fa fa-home',
-            html: 'San Jose, CA',
-            padding: '0 0 12 0'
-        },
-        {
-            xtype: 'component',
-            userCls: 'box x-fa fa-clock-o',
-            html: 'Member since 1 years ago',
-            padding: '0 0 12 0'
-        },
-        {
-            xtype: 'component',
-            userCls: 'box x-fa fa-globe',
-            html: '<a href="#"\'>http://www.sencha-dash.com/</a>',
-            padding: '0 0 12 0'
-        },
-        {
-            xtype: 'container',
-            flex: 1,
-            cls: 'about-me-wrap',
-            html: '<h3 class="x-fa fa-user">About Me</h3><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>'
-        },
-        {
-            xtype:'toolbar',
-            ui: 'plain',
-            layout : {
-                type : 'hbox',
-                pack : 'center'
-            },
-            userCls: 'profiledescription-social-toolbar',
-            items:[
-                {
-                    xtype: 'component',
-                    cls: 'large-icon icon-padding',
-                    userCls:'x-fa fa-thumbs-up',
-                    padding: '8 0 8 0'
-                },
-                {
-                    xtype: 'container',
-                    layout: {
-                        type: 'vbox',
-                        align: 'center',
-                        pack: 'center'
-                    },
-                    items: [
-                        {
-                            xtype: 'component',
-                            cls: 'likes-value',
-                            html: '523'
-                        },
-                        {
-                            xtype: 'component',
-                            cls: 'likes-label',
-                            html: 'Likes'
-                        }
-                    ]
-                },
-
-                {
-                    xtype: 'component',
-                    cls: 'icon-padding',
-                    userCls:'x-fa fa-ellipsis-v',
-                    padding: '8 0 8 0'
-                },
-
-                {
-                    xtype: 'component',
-                    cls: 'large-icon icon-padding',
-                    userCls:'x-fa fa-user-plus',
-                    padding: '8 0 8 0'
-                },
-                {
-                    xtype: 'container',
-                    layout: {
-                        type: 'vbox',
-                        align: 'center',
-                        pack: 'center'
-                    },
-                    items: [
-                        {
-                            xtype: 'component',
-                            cls: 'friends-value',
-                            html: '734'
-                        },
-                        {
-                            xtype: 'component',
-                            cls: 'friends-label',
-                            html: 'Friends'
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-});Ext.define('Admin.view.profile.Notifications', {extend:Ext.DataView, xtype:'profilenotifications', cls:'user-notifications', scrollable:false, bind:{store:'{userSharedItems}'}, itemSelector:'div.timeline-item', itemTpl:["\x3cdiv class\x3d'comments {[values._id !\x3d\x3d values.parent_id ? 'sub-comments' : '']}'\x3e", "\x3cimg src\x3d'resources/images/user-profile/15.png' alt\x3d'Smiley face' class\x3d'profile-icon'\x3e", "\x3cdiv class\x3d'content-wrap'\x3e", '\x3cdiv\x3e', "\x3ch4 class\x3d'profilenotifications-username'\x3e{name}\x3cspan class\x3d'x-fa fa-mobile'\x3e\x3c/span\x3e\x3c/h4\x3e", 
+Ext.define('Admin.view.profile.Description', {extend:Ext.Panel, xtype:'profiledescription', layout:{type:'vbox', align:'stretch'}, cls:'timeline-items-wrap user-profile-desc', height:320, items:[{xtype:'component', userCls:'box x-fa fa-home', html:'San Jose, CA', padding:'0 0 12 0'}, {xtype:'component', userCls:'box x-fa fa-clock-o', html:'Member since 1 years ago', padding:'0 0 12 0'}, {xtype:'component', userCls:'box x-fa fa-globe', html:'\x3ca href\x3d"#"\'\x3ehttp://www.sencha-dash.com/\x3c/a\x3e', 
+padding:'0 0 12 0'}, {xtype:'container', flex:1, cls:'about-me-wrap', html:'\x3ch3 class\x3d"x-fa fa-user"\x3eAbout Me\x3c/h3\x3e\x3cp\x3eLorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\x3c/p\x3e'}, {xtype:'toolbar', ui:'plain', layout:{type:'hbox', pack:'center'}, userCls:'profiledescription-social-toolbar', items:[{xtype:'component', cls:'large-icon icon-padding', userCls:'x-fa fa-thumbs-up', padding:'8 0 8 0'}, 
+{xtype:'container', layout:{type:'vbox', align:'center', pack:'center'}, items:[{xtype:'component', cls:'likes-value', html:'523'}, {xtype:'component', cls:'likes-label', html:'Likes'}]}, {xtype:'component', cls:'icon-padding', userCls:'x-fa fa-ellipsis-v', padding:'8 0 8 0'}, {xtype:'component', cls:'large-icon icon-padding', userCls:'x-fa fa-user-plus', padding:'8 0 8 0'}, {xtype:'container', layout:{type:'vbox', align:'center', pack:'center'}, items:[{xtype:'component', cls:'friends-value', html:'734'}, 
+{xtype:'component', cls:'friends-label', html:'Friends'}]}]}]});
+Ext.define('Admin.view.profile.Notifications', {extend:Ext.DataView, xtype:'profilenotifications', cls:'user-notifications', scrollable:false, bind:{store:'{userSharedItems}'}, itemSelector:'div.timeline-item', itemTpl:["\x3cdiv class\x3d'comments {[values._id !\x3d\x3d values.parent_id ? 'sub-comments' : '']}'\x3e", "\x3cimg src\x3d'resources/images/user-profile/15.png' alt\x3d'Smiley face' class\x3d'profile-icon'\x3e", "\x3cdiv class\x3d'content-wrap'\x3e", '\x3cdiv\x3e', "\x3ch4 class\x3d'profilenotifications-username'\x3e{name}\x3cspan class\x3d'x-fa fa-mobile'\x3e\x3c/span\x3e\x3c/h4\x3e", 
 "\x3cspan class\x3d'from-now'\x3e\x3cspan class\x3d'x-fa fa-clock-o'\x3e\x3c/span\x3e3 Hours Ago\x3c/span\x3e", '\x3c/div\x3e', "\x3cdiv class\x3d'content'\x3e{content}\x3c/div\x3e", "\x3cdiv class\x3d'like-comment-btn-wrap'\x3e", "\x3cbutton type\x3d'button' class\x3d'x-fa fa-thumbs-up' onclick\x3d''\x3e\x3c/button\x3e", "\x3cbutton type\x3d'button' class\x3d'x-fa fa-thumbs-down' onclick\x3d''\x3e\x3c/button\x3e", "\x3cbutton type\x3d'button' onclick\x3d'' class\x3d'x-fa fa-comments'\x3e\x3c/button\x3e", 
 '\x3c/div\x3e', '\x3c/div\x3e', '\x3c/div\x3e']});
 Ext.define('Admin.view.profile.Social', {extend:Ext.panel.Panel, xtype:'profilesocial', layout:{type:'vbox', align:'middle'}, height:320, bodyPadding:20, items:[{xtype:'image', cls:'userProfilePic', height:120, width:120, alt:'profile-picture', src:'resources/images/user-profile/20.png'}, {xtype:'component', cls:'userProfileName', height:'', html:'Jessica Warren'}, {xtype:'component', cls:'userProfileDesc', html:'CO-FOUNDER, CEO'}, {xtype:'container', layout:'hbox', defaults:{xtype:'button', margin:5}, 
@@ -99718,674 +99621,61 @@ Ext.define('Admin.view.email.Window', {extend:Ext.window.Window, alias:'widget.e
   this.syncSize();
 }, syncSize:function() {
   var width = Ext.Element.getViewportWidth(), height = Ext.Element.getViewportHeight();
-  this.setSize(Math.floor(width * 0.5), Math.floor(height * 0.5));
+  this.setSize(Math.floor(width * 0.9), Math.floor(height * 0.9));
   this.setXY([Math.floor(width * 0.05), Math.floor(height * 0.05)]);
 }});
+Ext.define('Admin.view.forms.WizardForm', {extend:Ext.panel.Panel, xtype:'wizardform', bodyPadding:15, height:340, layout:'card', viewModel:{type:'wizardform'}, controller:'wizardform', defaults:{defaultFocus:'textfield:not([value]):focusable:not([disabled])', defaultButton:'nextbutton'}, items:[{xtype:'form', defaultType:'textfield', defaults:{labelWidth:90, labelAlign:'left', labelSeparator:'', submitEmptyText:false, anchor:'90%'}, items:[{fieldLabel:'手机号码  ', emptyText:'Username must be unique.', 
+name:'staffNumber'}, {fieldLabel:'邮箱', emptyText:'ex: me@somewhere.com', vtype:'email', name:'mail'}, {fieldLabel:'更改密码   ', emptyText:'Enter a password', inputType:'password', cls:'wizard-form-break'}, {fieldLabel:'再输入一次', emptyText:'Passwords must match', inputType:'password'}]}, {xtype:'form', defaultType:'textfield', defaults:{labelWidth:90, labelAlign:'left', labelSeparator:'', submitEmptyText:false, anchor:'90%'}, items:[{fieldLabel:'名字', emptyText:'Name', name:'staffName'}, {xtype:'datefield', 
+format:'Y/m/d H:i:s', fieldLabel:'生日', name:'createTime'}, {xtype:'datefield', format:'Y/m/d H:i:s', fieldLabel:'入职时间', name:'createTime'}, {xtype:'fieldcontainer', cls:'wizard-form-break', fieldLabel:'性别', defaultType:'radiofield', defaults:{flex:1}, layout:'hbox', items:[{boxLabel:'男', name:'SexType', inputValue:'Free'}, {boxLabel:'女', name:'SexType', inputValue:'Perosnal'}]}]}, {xtype:'form', defaultType:'textfield', defaults:{labelWidth:90, labelAlign:'left', labelSeparator:'', submitEmptyText:false, 
+anchor:'90%'}, items:[{fieldLabel:'家庭住址', emptyText:'Address'}, {fieldLabel:'籍贯', emptyText:'City'}, {xtype:'combobox', fieldLabel:'身份证类型', name:'idType', store:Ext.create('Ext.data.Store', {fields:['value', 'name'], data:[{'value':'HIGH', 'name':'大陆'}, {'value':'MEDIUM', 'name':'港澳'}, {'value':'LOW', 'name':'国外'}]}), queryMode:'local', displayField:'name', valueField:'value'}, {fieldLabel:'身份证号码'}]}, {xtype:'form', defaultType:'textareafield', defaults:{labelWidth:90, height:'80%', labelAlign:'top', 
+labelSeparator:'', anchor:'90%'}, items:[{fieldLabel:'ABout me'}]}], initComponent:function() {
+  this.tbar = {reference:'progress', defaultButtonUI:'wizard-' + this.colorScheme, cls:'wizardprogressbar', defaults:{disabled:true, iconAlign:'top'}, layout:{pack:'center'}, items:[{step:0, iconCls:'fa fa-info', pressed:true, enableToggle:true, text:'Account'}, {step:1, iconCls:'fa fa-user', enableToggle:true, text:'Profile'}, {step:2, iconCls:'fa fa-home', enableToggle:true, text:'Address'}, {step:3, iconCls:'fa fa-heart', enableToggle:true, text:'Message'}]};
+  this.bbar = {reference:'navigation-toolbar', margin:8, items:['-\x3e', {text:'Previous', ui:this.colorScheme, formBind:true, bind:{disabled:'{atBeginning}'}, listeners:{click:'onPreviousClick'}}, '|', {text:'Next', ui:this.colorScheme, formBind:true, reference:'nextbutton', bind:{disabled:'{atEnd}'}, listeners:{click:'onNextClick'}}]};
+  this.callParent();
+}});
+Ext.define('Admin.view.forms.WizardFormController', {extend:Ext.app.ViewController, alias:'controller.wizardform', init:function(view) {
+  var tb = this.lookupReference('navigation-toolbar'), buttons = tb.items.items, ui = view.colorScheme;
+  if (ui) {
+    buttons[1].setUI(ui);
+    buttons[2].setUI(ui);
+    buttons[3].setUI(ui);
+  }
+}, onNextClick:function(button) {
+  var panel = button.up('panel');
+  panel.getViewModel().set('atBeginning', false);
+  this.navigate(button, panel, 'next');
+}, onPreviousClick:function(button) {
+  var panel = button.up('panel');
+  panel.getViewModel().set('atEnd', false);
+  this.navigate(button, panel, 'prev');
+}, navigate:function(button, panel, direction) {
+  var layout = panel.getLayout(), progress = this.lookupReference('progress'), model = panel.getViewModel(), progressItems = progress.items.items, item, i, activeItem, activeIndex;
+  layout[direction]();
+  activeItem = layout.getActiveItem();
+  activeIndex = panel.items.indexOf(activeItem);
+  for (i = 0; i < progressItems.length; i++) {
+    item = progressItems[i];
+    if (activeIndex === item.step) {
+      item.setPressed(true);
+    } else {
+      item.setPressed(false);
+    }
+    if (Ext.isIE8) {
+      item.btnIconEl.syncRepaint();
+    }
+  }
+  activeItem.focus();
+  if (activeIndex === 0) {
+    model.set('atBeginning', true);
+  }
+  if (activeIndex === 3) {
+    model.set('atEnd', true);
+  }
+}});
 Ext.define('Admin.view.forms.WizardFormModel', {extend:Ext.app.ViewModel, alias:'viewmodel.wizardform', data:{atBeginning:true, atEnd:false}});
-
-Ext.define('Admin.view.forms.WizardForm', 
-		{
-			extend:Ext.panel.Panel, 
-			xtype:'wizardform', 
-			requires: [
-                'Ext.button.Button',
-                'Ext.form.field.Text',
-                'Ext.form.field.File',
-                'Ext.form.field.HtmlEditor',
-                'Ext.form.field.TextArea',
-                'Ext.form.field.Time',
-                'Ext.form.field.ComboBox',
-                'Ext.form.field.Date',
-                'Ext.form.field.Radio',
-                'Ext.form.field.Hidden'],
-                
-			bodyPadding:15, 
-			height:340,
-			layout:'card', 
-			viewModel:{type:'wizardform'}, 
-			controller:'wizardform', 
-			defaults:{
-				defaultFocus:'textfield:not([value]):focusable:not([disabled])',
-				defaultButton:'nextbutton'},				
-				items:[
-				{
-					xtype:'form', 
-					defaultType:'textfield',
-					defaults:{
-					labelWidth:90,
-					labelAlign:'left', 
-					labelSeparator:'', 
-					submitEmptyText:false, 
-					anchor:'90%'}, 
-				
-				items:[
-				{
-                    fieldLabel: '手机号码  ',
-                    emptyText : 'Username must be unique.',
-                    name:'staffNumber'
-                }, 
-                
-				{                   	
-                	fieldLabel: '邮箱',
-					emptyText:'ex: me@somewhere.com', 
-					vtype:'email',
-					name:'mail'	
-				}, 
-				{
-					fieldLabel: '更改密码   ',
-					emptyText:'Enter a password',
-					inputType:'password', 
-					cls:'wizard-form-break'}, 
-				{	
-					fieldLabel: '再输入一次',
-					emptyText:'Passwords must match', 
-					inputType:'password'}]},
-				{
-					xtype:'form', 
-					defaultType:'textfield', 
-					defaults:{
-						labelWidth:90, 
-						labelAlign:'left', 
-						labelSeparator:'',
-						submitEmptyText:false,
-						anchor:'90%'},
-				items:[
-				{
-					fieldLabel: '名字',
-					emptyText:'Name',
-					name :'staffName'}, 
-				{
-					xtype: 'datefield',
-					format: 'Y/m/d H:i:s',
-					fieldLabel: '生日',
-					name:'createTime'
-				},
-				{
-					xtype: 'datefield',
-					format: 'Y/m/d H:i:s',
-					fieldLabel: '入职时间',
-					name:'createTime'
-				}, 		 
-				{					
-					xtype:'fieldcontainer', 
-					cls:'wizard-form-break', 
-					fieldLabel:'性别', 
-					defaultType:'radiofield', 
-					defaults:{flex:1}, 
-					layout:'hbox',
-					
-				items:[
-				{
-					boxLabel:'男', 
-					name:'SexType', 
-					inputValue:'Free'
-				},
-				{
-					boxLabel:'女', 
-					name:'SexType',
-					inputValue:'Perosnal'
-				}, 			
-			]}]},
-				{
-					xtype:'form', 
-					defaultType:'textfield',
-					defaults:{labelWidth:90, 
-					labelAlign:'left',
-					labelSeparator:'', 
-					submitEmptyText:false,
-					anchor:'90%'},
-			
-			items:[
-			
-				{
-					fieldLabel:'家庭住址',
-					emptyText:'Address'
-				}, 
-				{
-					fieldLabel:'籍贯',
-					emptyText:'City'
-				},
-				{
-					xtype: 'combobox',
-					fieldLabel: '身份证类型',
-					name:'idType',
-					store:  Ext.create('Ext.data.Store', {
-						fields: ['value', 'name'],
-						data : [
-							{"value":"HIGH", 	"name":"大陆"},
-							{"value":"MEDIUM",  "name":"港澳"},
-							{"value":"LOW", 	"name":"国外"}
-								]
-					}),
-					queryMode: 	  'local',
-					displayField: 'name',
-					valueField:   'value'
-				},
-				{
-					fieldLabel: '身份证号码',					
-				}
-				]}, 
-				 {
-					xtype:'form',
-					defaultType:'textfield',
-					defaults:{
-					labelWidth:90,
-					height:'80%',
-					labelAlign:'top',
-					labelSeparator:'', 					
-					anchor:'90%'},
-					
-			        items:[{
-			        	
-						fieldLabel:'ABout me',
-						
-					}]
-				 }], 
-			        initComponent:function() {
-			        this.tbar = {
-			        		reference:'progress', 
-			        		defaultButtonUI:'wizard-' + this.colorScheme, 
-			        		cls:'wizardprogressbar', 
-			        		defaults:{disabled:true, iconAlign:'top'},
-			        		layout:{pack:'center'}, 
-			        		items:[
-			        			{
-			        				step:0, iconCls:'fa fa-info', 
-			        				pressed:true, enableToggle:true, 
-			        				text:'Account'
-			        			}, 
-			        			{
-			        				step:1, iconCls:'fa fa-user',
-			        				enableToggle:true, text:'Profile'
-			        			}, 
-			        			{
-			        				step:2, iconCls:'fa fa-home',
-			        				enableToggle:true, text:'Address'
-			        			}, 
-			        			{
-			        				step:3, iconCls:'fa fa-heart', 
-			        				enableToggle:true, text:'Message'
-			        			}
-			        		]};
-			        this.bbar = 
-			        	{
-			        		reference:'navigation-toolbar',
-			        		margin:8, 
-			        		items:['->', 
-			        				{
-					        			text:'Previous', 
-					        			ui:this.colorScheme, 
-					        			formBind:true, 
-					        			bind:{
-					        				disabled:'{atBeginning}'}, 
-				        				listeners:{click:'onPreviousClick'}
-			        				},
-			        				'|',
-			        				{
-			        					text:'Next', 
-			        					ui:this.colorScheme,
-			        					formBind:true, 
-			        					reference:'nextbutton', 
-			        					bind:{
-			        						disabled:'{atEnd}'},	        			
-			        				listeners:{click:'onNextClick'}
-			        				},
-			        				
-			        				]};
-			        			this.callParent();
-			        		},
-				 
-				  });
-		Ext.define('Admin.view.forms.WizardFormController',
-				{
-					extend:Ext.app.ViewController, 
-					alias:'controller.wizardform', 
-					init:function(view) {
-						var tb = this.lookupReference('navigation-toolbar'),
-						buttons = tb.items.items, 
-						ui = view.colorScheme;
-						  if (ui) {
-						    buttons[1].setUI(ui);
-						    buttons[2].setUI(ui);
-						    buttons[3].setUI(ui);    
-						  	}
-						}, 
-			onNextClick:function(button) {
-			  var panel = button.up('panel');
-			  panel.getViewModel().set('atBeginning', false);
-			  this.navigate(button, panel, 'next');
-			}, 
-			  onPreviousClick:function(button)
-			  {
-				  var panel = button.up('panel');
-				  panel.getViewModel().set('atEnd', false);
-				  this.navigate(button, panel, 'prev');
-			}, 
-				navigate:function(button, panel, direction) 
-				{
-					var layout = panel.getLayout(), 
-					progress = this.lookupReference('progress'), 
-					model = panel.getViewModel(), 
-					progressItems = progress.items.items, item, i, activeItem, activeIndex;
-					layout[direction]();
-					activeItem = layout.getActiveItem();
-					activeIndex = panel.items.indexOf(activeItem);
-					for (i = 0; i < progressItems.length; i++) {
-						item = progressItems[i];
-				  			if (activeIndex === item.step) {
-				  				item.setPressed(true);
-				  		} else {
-				  			item.setPressed(false);
-				  		}
-				  		if (Ext.isIE8) {
-				  			item.btnIconEl.syncRepaint();
-				  		}
-			  		}
-			  	activeItem.focus();
-			  	if (activeIndex === 0) {
-			  		model.set('atBeginning', true);
-			  	}
-			  	if (activeIndex === 3) {
-			  		model.set('atEnd', true);
-			  	}
-				}});
-
-Ext.define('Admin.view.forms.WizardOne', 
-		{extend:Ext.panel.Panel, alias:'widget.formswizardone', cls:'wizardone shadow', plugins:{responsive:true}, responsiveConfig:{'width \x3e\x3d 1000':{layout:{type:'box', align:'stretch', vertical:false}}, 'width \x3c 1000':{layout:{type:'box', align:'stretch', vertical:true}}}, items:[{xtype:'specialoffer', plugins:{responsive:true}, height:338, responsiveConfig:{'width \x3c 1000':{flex:null}, 'width \x3e\x3d 1000':{flex:1}}}, {xtype:'wizardform', cls:'wizardone', 
+Ext.define('Admin.view.forms.WizardOne', {extend:Ext.panel.Panel, alias:'widget.formswizardone', cls:'wizardone shadow', plugins:{responsive:true}, responsiveConfig:{'width \x3e\x3d 1000':{layout:{type:'box', align:'stretch', vertical:false}}, 'width \x3c 1000':{layout:{type:'box', align:'stretch', vertical:true}}}, items:[{xtype:'specialoffer', plugins:{responsive:true}, height:338, responsiveConfig:{'width \x3c 1000':{flex:null}, 'width \x3e\x3d 1000':{flex:1}}}, {xtype:'wizardform', cls:'wizardone', 
 colorScheme:'blue', flex:1}]});
-Ext.define('Admin.view.forms.Wizards', {extend:Ext.container.Container, 
-	xtype:'forms', cls:'wizards', defaultFocus:'wizardform', layout:'responsivecolumn', 
-	items:[{xtype:'formswizardone', userCls:'big-100'}, 
-		   {xtype:'wizardform', cls:'wizardtwo shadow', 
-		   colorScheme:'soft-purple', userCls:'big-50 small-100'},
-		   {xtype:'wizardform', cls:'wizardthree shadow', colorScheme:'soft-green', userCls:'big-50 small-100'}
-		   ]});
-
-Ext.define('Admin.view.profile.ProfileForm', {
-    extend: 'Ext.panel.Panel',
-    xtype: 'profileform',
-    requires: [
-    			'Admin.view.profile.ProfileFormModel',
-		    	'Ext.button.Button',
-		        'Ext.form.field.Text',
-		        'Ext.form.field.File',
-		        'Ext.form.field.HtmlEditor',
-		        'Ext.form.field.TextArea',
-		        'Ext.form.field.Time',
-		        'Ext.form.field.ComboBox',
-		        'Ext.form.field.Date',
-		        'Ext.form.field.Radio',
-		        'Ext.form.field.Hidden'
-    ],
-
-    bodyPadding: 15,
-
-    height: 340,
-
-    layout: 'card',
-
-    viewModel: {
-        type: 'profileform'
-    },
-
-    controller: 'profileform',
-
-    defaults : {
-        /*
-         * Seek out the first enabled, focusable, empty textfield when the form is focused
-         */
-        defaultFocus: 'textfield:not([value]):focusable:not([disabled])',
-
-        defaultButton : 'nextbutton'
-    },
-
-    items: [
-        {
-        	xtype:'form',
-            defaultType:'textfield',
-            defaults: {
-                labelWidth: 90,
-                labelAlign: 'right',
-                labelSeparator: '',
-                submitEmptyText: false,
-                anchor: '100%'
-            },
-            items:[
-                {
-                    xtype: 'hidden',
-                    fieldLabel: 'Id',
-                    name:'id'
-                },
-                {
-                    fieldLabel: 'profileName',
-                    emptyText : ' unique.',
-                    name:'profileName'
-                },
-                {
-                    xtype: 'datefield',
-                    format: 'Y/m/d H:i:s',
-                    fieldLabel: 'createTime',
-                    name:'createTime'
-                },
-                {
-                    emptyText : 'ex: me@somewhere.com',
-                    vtype: 'email'
-                },
-                {
-                    emptyText : 'Enter a password',
-                    inputType: 'password',
-                    cls: 'profile-form-break'
-                },
-                {
-                    emptyText : 'Passwords must match',
-                    inputType: 'password'
-                }
-            ]
-        },
-        {
-            xtype: 'form',
-            defaultType: 'textfield',
-            defaults: {
-                labelWidth: 90,
-                labelAlign: 'top',
-                labelSeparator: '',
-                submitEmptyText: false,
-                anchor: '100%'
-            },
-            items:[
-                {
-                    emptyText : 'First Name'
-                },
-                {
-                    emptyText : 'Last Name'
-                },
-                {
-                    emptyText : 'Company'
-                },
-                {
-                    xtype      : 'fieldcontainer',
-                    cls: 'profile-form-break',
-                    fieldLabel : 'MemberType',
-                    defaultType: 'radiofield',
-                    defaults: {
-                        flex: 1
-                    },
-                    layout: 'hbox',
-                    items: [
-                        {
-                            boxLabel  : 'Free',
-                            name      : 'MemberType',
-                            inputValue: 'Free'
-                        }, {
-                            boxLabel  : 'Personal',
-                            name      : 'MemberType',
-                            inputValue: 'Perosnal'
-                        }, {
-                            boxLabel  : 'Black',
-                            name      : 'MemberType',
-                            inputValue: 'Business'
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            xtype: 'form',
-            defaultType: 'textfield',
-            defaults: {
-                labelWidth: 90,
-                labelAlign: 'top',
-                labelSeparator: '',
-                submitEmptyText: false,
-                anchor: '100%'
-            },
-            items:[
-                {
-                    emptyText : 'Phone number'
-                },
-                {
-                    emptyText : 'Address'
-                },
-                {
-                    emptyText : 'City'
-                },
-                {
-                    emptyText : 'Postal Code / Zip Code'
-                }
-            ]
-        },
-        {
-            xtype: 'form',
-            items:[
-                {
-                    html : '<h2>Thank You</h2><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>'
-                	
-                }
-            ]
-        }
-    ],
-
-    initComponent: function() {
-
-        this.tbar = {
-            reference: 'progress',
-            defaultButtonUI: 'profile-' + this.colorScheme,
-            cls: 'profileprogressbar',
-            defaults: {
-                disabled: true,
-                iconAlign:'top'
-            },
-            layout: {
-                pack: 'center'
-            },
-            items: [
-                {
-                    step: 0,
-                    iconCls: 'fa fa-info',
-                    pressed: true,
-                    enableToggle: true,
-                    text: 'Account'
-                },
-                {
-                    step: 1,
-                    iconCls: 'fa fa-user',
-                    enableToggle: true,
-                    text: 'Profile'
-                },
-                {
-                    step: 2,
-                    iconCls: 'fa fa-home',
-                    enableToggle: true,
-                    text: 'Address'
-                },
-                {
-                    step: 3,
-                    iconCls: 'fa fa-heart',
-                    enableToggle: true,
-                    text: 'Finish'
-                }
-            ]
-        };
-
-        this.bbar = {
-            reference: 'navigation-toolbar',
-            margin: 8,
-            items: [
-                '->',
-                {
-                    text: 'Previous',
-                    ui: this.colorScheme,
-                    formBind: true,
-                    bind: {
-                        disabled: '{atBeginning}'
-                    },
-                    listeners: {
-                        click: 'onPreviousClick'
-                    }
-                },
-                {
-                    text: 'Next',
-                    ui: this.colorScheme,
-                    formBind: true,
-                    reference : 'nextbutton',
-                    bind: {
-                        disabled: '{atEnd}'
-                    },
-                    listeners: {
-                        click: 'onNextClick'
-                    }
-                }
-            ]
-        };
-
-        this.callParent();
-    }
-});
-
-/**
- * @class Admin.view.forms.profileformController
- */
-Ext.define('Admin.view.profile.ProfileFormController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.profileform',
-
-
-    init: function(view) {
-        var tb = this.lookupReference('navigation-toolbar'),
-            buttons = tb.items.items,
-            ui = view.colorScheme;
-
-        //Apply styling buttons
-        if (ui) {
-            buttons[1].setUI(ui);
-            buttons[2].setUI(ui);
-        }
-    },
-
-    onNextClick: function(button) {
-        //This is where you can handle any logic prior to moving to the next card
-        var panel = button.up('panel');
-
-        panel.getViewModel().set('atBeginning', false);
-        
-        this.navigate(button, panel, 'next');
-    },
-
-    onPreviousClick: function(button) {
-        var panel = button.up('panel');
-
-        panel.getViewModel().set('atEnd', false);
-        
-        this.navigate(button, panel, 'prev');
-    },
-
-    navigate: function(button, panel, direction) {
-        var layout = panel.getLayout(),
-            progress = this.lookupReference('progress'),
-            model = panel.getViewModel(),
-            progressItems = progress.items.items,
-            item, i, activeItem, activeIndex;
-
-        layout[direction]();
-
-        activeItem = layout.getActiveItem();
-        activeIndex = panel.items.indexOf(activeItem);
-
-        for (i = 0; i < progressItems.length; i++) {
-            item = progressItems[i];
-
-            if (activeIndex === item.step) {
-                item.setPressed(true);
-            }
-            else {
-                item.setPressed(false);
-            }
-            if (Ext.isIE8) {
-                item.btnIconEl.syncRepaint();
-            }
-        }
-
-        activeItem.focus();
-
-        // beginning disables previous
-        if (activeIndex === 0) {
-            model.set('atBeginning', true);
-        }
-        
-        // wizard is 4 steps. Disable next at end.
-        if (activeIndex === 3) {
-            model.set('atEnd', true);
-        }
-    }
-});
-
-Ext.define('Admin.view.profile.ProfileFormModel', {
-    extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.profileform',
-    data: {
-        atBeginning: true,
-        atEnd: false
-    }
-});
-
-Ext.define('Admin.view.profile.ProfileOne', {
-    extend: 'Ext.panel.Panel',
-    alias: 'widget.formsprofiledone',
-    requires: [
-        'Ext.form.field.Radio'
-    ],
-
-    cls: 'profileone shadow',
-
-    plugins: {
-        responsive: true
-    },
-
-    responsiveConfig: {
-        'width >= 1000': {
-            layout: {
-                type: 'box',
-                align: 'stretch',
-                vertical: false
-            }
-        },
-
-        'width < 1000': {
-            layout: {
-                type: 'box',
-                align: 'stretch',
-                vertical: true
-            }
-        }
-    },
-
-    items: [
-        {
-            xtype: 'specialoffer',
-            plugins: {
-                responsive: true
-            },
-            height: 338,
-
-            responsiveConfig: {
-                'width < 1000': {
-                    flex: null
-                },
-
-                'width >= 1000': {
-                    flex: 1
-                }
-            }
-        },
-        {
-            xtype: 'profileform',
-            cls: 'profileone',
-            colorScheme: 'blue',
-            flex: 1
-        }
-    ]
-});
-
+Ext.define('Admin.view.forms.Wizards', {extend:Ext.container.Container, xtype:'forms', cls:'wizards', defaultFocus:'wizardform', layout:'responsivecolumn', items:[{xtype:'formswizardone', userCls:'big-100'}, {xtype:'wizardform', cls:'wizardtwo shadow', colorScheme:'soft-purple', userCls:'big-50 small-100'}, {xtype:'wizardform', cls:'wizardthree shadow', colorScheme:'soft-green', userCls:'big-50 small-100'}]});
 Ext.define('Admin.view.main.MainContainerWrap', {extend:Ext.container.Container, xtype:'maincontainerwrap', scrollable:'y', layout:{type:'hbox', align:'stretchmax', animate:true, animatePolicy:{x:true, width:true}}, beforeLayout:function() {
   var me = this, height = Ext.Element.getViewportHeight() - 64, navTree = me.getComponent('navigationTreeList');
   me.minHeight = height;
@@ -100470,486 +99760,8 @@ Ext.define('Admin.view.main.MainController', {extend:Ext.app.ViewController, ali
 }, onEmailRouteChange:function() {
   this.setCurrentView('email');
 }});
-
-Ext.define('Admin.view.order.OrderGrid', {    //1.修改文件路径
-    extend: 'Ext.grid.Panel',         //2.继承的组件类型
-//3.重写继承组件的属性：
-  xtype: 'orderGrid',
-  id:'orderGrid',
-title:'<b>订单列表</b>',
-bind:'{orderLists}',
-columns: [
-  {text: 'ID'       ,sortable:true ,dataIndex:'id',hidden:true},
-      {text: '订单编号' ,sortable:true ,dataIndex:'orderNumber' ,width:120},
-  {text: '创建时间'  ,sortable:true ,dataIndex:'createTime'  ,width:125
-    ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
-  {text: '优先级',sortable:true ,dataIndex:'level'    ,width:125},
-  {text: '价格'     ,sortable:true ,dataIndex:'price' ,flex:1}
-],
-bbar:Ext.create('Ext.PagingToolbar',{
-  bind:'{orderLists}',
-  displayInfo:true,
-  displayMsg:'第{0}-{1}条 共{2}条',
-  emptyMsg:"没有任何记录",
-  items:['-',{
-    //xtype:'button',
-    ////text:'add'
-    iconCls:'x-fa fa-plus',
-    handler:'orderGridOpenAddWindow'
-  },{
-    iconCls:'x-fa fa-edit',
-    handler:'orderGridOpenEditWindow'
-  },{
-    iconCls:'x-fa fa-trash',
-    handler:'orderGridOpenDeleteDate'
-  }]
-}) 
-});
-
-Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
-    extend: 'Ext.grid.Panel',         //2.继承的组件类型
-		//3.重写继承组件的属性：
-		  xtype: 'profileGrid',
-		  bodyPadding: 15,
-		  height: 340,
-		  layout: 'card',
-		  id:'profileGrid',
-		title:'<b>资产列表</b>',
-		bind:'{profileGrid}',
-		
-		columns: [			
-		  {text: 'ID',sortable:true ,dataIndex:'id',hidden:true},
-		  {text: '资产编号' ,sortable:true ,dataIndex:'orderNumber' ,width:100},
-		  {text: '资产名称' ,sortable:true ,dataIndex:'orderName' ,width:100},
-		  {text: '创建时间'  ,sortable:true ,dataIndex:'createTime'  ,width:125
-		    ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
-		  {text: '资产类型',sortable:true ,dataIndex:'level'    ,width:125},
-		  {text: '估计价值',sortable:true ,dataIndex:'price' ,flex:1}
-		],
-		bbar:Ext.create('Ext.PagingToolbar',{
-		  bind:'{profileLists}',
-		  displayInfo:true,
-		  displayMsg:'第{0}-{1}条 共{2}条',
-		  emptyMsg:"没有任何记录",
-		  items:['-',{
-		    //xtype:'button',
-		    ////text:'add'
-		    iconCls:'x-fa fa-plus',
-		    handler:'profileGridOpenAddWindow'
-		  },
-		  '-',
-		  {
-		    iconCls:'x-fa fa-edit',
-		    handler:'profileGridOpenEditWindow'
-		  },
-		  '-',
-		  {
-		    iconCls:'x-fa fa-trash',
-		    handler:'profileGridOpenDeleteDate'
-		  }]
-		})
-		});
-
-Ext.define('Admin.view.profile.ProfileViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.profileViewController',
-	
-    profileGridOpenAddWindow: function(btn) {
-			Ext.widget('profileGridWindow',{
-				title:'新建资产',
-				items: [Ext.apply({xtype: 'profileGridForm'})]
-			});
-    },
-
-	profileGridOpenEditWindow: function(btn) {
-		var grid = btn.up('gridpanel');//获取Grid视图
-		var selModel = grid.getSelectionModel();//获取Grid的SelectionModel
-        if (selModel.hasSelection()) {//判断是否选中记录
-           var record = selModel.getSelection()[0];//获取选中的第一条记录
-           //创建修改window和form
-		   var profileGridWindow = Ext.widget('profileGridWindow',{
-				title:'修改资产',
-				items: [{xtype: 'profileGridForm'}]
-			});
-		   //让form加载选中记录
-           profileGridWindow.down("form").getForm().loadRecord(record);
-        }else{
-        	Ext.Msg.alert('提示',"请选择一行数据进行编辑!");
-        }
-    },
-	
-    profileGridOpenDeleteDate: function(btn) {
-		var grid = btn.up('gridpanel');
-		var selModel = grid.getSelectionModel();
-        if (selModel.hasSelection()) {
-            Ext.Msg.confirm("警告", "确定要删除吗？", function (button) {
-                if (button == "yes") {
-                    var selected = selModel.getSelection();
-                    var selectIds = []; //要删除的id
-                    Ext.each(selected, function (record) {
-                        selectIds.push(record.data.id);
-                    })
-                  	Ext.Ajax.request({ 
-						url : 'profile/delete', 
-						method : 'post', 
-						params : { 
-							ids:selectIds
-						}, 
-						success: function(response, options) {
-			                var json = Ext.util.JSON.decode(response.responseText);
-				            if(json.success){
-				            	Ext.Msg.alert('操作成功', json.msg);
-				                grid.getStore().reload();
-					        }else{
-					        	Ext.Msg.alert('操作失败', json.msg);
-					        }
-			            }
-					});
-
-                }
-            });
-		}
-    },
-	
-	profileGridFormSubmit: function(btn) {
-		
-		var profileGridForm = btn.up('form').getForm();
-		var win = btn.up('window');
-			//this.lookupReference('profileGrid').store.reload();  //lookupReference配合reference属性
-			profileGridForm.submit( { 
-				//waitTitle : '请稍后...', 
-				//waitMsg : '正在保存订单信息,请稍后...', 
-				url : 'profile/saveOrUpdate', 
-				method : 'post', 
-				success : function(form, action) { 
-					Ext.Msg.alert("提示",action.result.msg); 
-					win.close();
-					Ext.getCmp("profileGrid").store.reload();
-				}, 
-				failure : function(form, action) { 
-					Ext.Msg.alert("提示",action.result.msg); 
-					
-				} 
-			}); 
-    },
-	
-	profileGridWindowClose: function(btn) {
-		var win = btn.up('window');
-		if(win){
-			win.close();
-		}
-    }
-});
-
-/**
-1.绑定到主视图
-2.通过bind属性绑定到具体的子视图
-8*/
-Ext.define('Admin.view.profile.ProfileViewModel', {
-extend: 'Ext.app.ViewModel',
-alias: 'viewmodel.profileViewModel',
-stores: {
-    profileLists: {
-        type: 'profileStore',//Store reference ==Store的属性 alias: 'store.profileStore',		
-        autoLoad: true //Auto load
-    }
-}
-});
-
-Ext.define('Admin.view.profile.ProfileGridWindow', {
-    extend: 'Ext.window.Window',
-    alias: 'widget.profileGridWindow',
-    autoShow: true,
-    modal: true,
-
-    layout: 'fit',
-
-    width: 200,
-    height: 200,
-
-    afterRender: function () {
-        var me = this;
-
-        me.callParent(arguments);
-
-        me.syncSize();
-
-        // Since we want to always be a %age of the viewport, we have to watch for
-        // resize events.
-        Ext.on(me.resizeListeners = {
-            resize: me.onViewportResize,
-            scope: me,
-            buffer: 50
-        });
-    },
-
-    doDestroy: function () {
-        Ext.un(this.resizeListeners);
-
-        this.callParent();
-    },
-
-    onViewportResize: function () {
-        this.syncSize();
-    },
-
-    syncSize: function () {
-        var width = Ext.Element.getViewportWidth(),
-            height = Ext.Element.getViewportHeight();
-        this.setSize(Math.floor(width * 0.5), Math.floor(height * 0.5));
-        this.setXY([ Math.floor(width * 0.05), Math.floor(height * 0.05) ]);
-    }
-});
-
-Ext.define('Admin.view.profile.ProfileGridForm', {
-    extend: 'Ext.form.Panel',
-    alias: 'widget.profileGridForm',
-	//id:'profileGridForm',//Ext.getCmp('profileGridForm');
-    requires: [
-        'Ext.button.Button',
-        'Ext.form.field.Text',
-        'Ext.form.field.File',
-        'Ext.form.field.HtmlEditor',
-		'Ext.form.field.TextArea',
-		'Ext.form.field.Time',
-		'Ext.form.field.ComboBox',
-		'Ext.form.field.Date',
-		'Ext.form.field.Radio',
-		'Ext.form.field.Hidden'
-    ],
-    //viewModel: {type: 'emailcompose'},
-    //cls: 'email-compose',
-	controller: 'profileViewController',
-    layout: {
-        type:'vbox',
-        align:'stretch'
-    },
-
-    bodyPadding: 10,
-    scrollable: true,
-
-    defaults: {
-        labelWidth: 60,
-        labelSeparator: ''
-    },
-    items: [{
-		xtype: 'hidden',
-		fieldLabel: 'Id',
-		//allowBlank: false,
-		name:'id'
-	},
-	{
-		xtype: 'textfield',
-		fieldLabel: '资产编号',
-		name:'assetsNumber'
-	},
-	{
-		xtype: 'textfield',
-		fieldLabel: '资产名称',
-		name:'assetsName'
-	},{
-		xtype: 'datefield',
-		format: 'Y/m/d H:i:s',
-		fieldLabel: '开始使用时间',
-		name:'assetsUsedTime'
-	},{
-		xtype: 'combobox',
-		fieldLabel: '资产类型',
-		name:'assetsType',
-		store:  Ext.create('Ext.data.Store', {
-			fields: ['value', 'name'],
-			data : [
-				{"value":"eProduct", 	    "name":"电子产品"},
-				{"value":"oAppliances",     "name":"办公用具"},
-				{"value":"bEquipment", 	    "name":"基本设备"},
-				{"value":"transportation", 	"name":"交通工具"}
-			]
-		}),
-		queryMode: 	  'local',
-		displayField: 'name',
-		valueField:   'value'				
-	},{
-		xtype: 'textfield',
-		fieldLabel: '资产估价',
-		name:'assetsPrice'
-    }],
-    bbar: {
-        overflowHandler: 'menu',
-        items: ['->',{
-			xtype: 'button',
-			//ui: 'soft-red',
-			text: '提交',
-			handler: 'profileGridFormSubmit'
-		},{
-			xtype: 'button',
-			//ui: 'gray',
-			text: '取消',
-			handler: 'profileGridWindowClose'
-		}]
-    }
-});
-
-Ext.define('Admin.store.profile.ProfileStore', {
-    extend: 'Ext.data.Store',
-    alias: 'store.profileStore',			  //1.Store取别名（reference）
-    model: 'Admin.model.profile.ProfileModel',//2.设置model的全路径
-	proxy: {
-		type: 'ajax',
-		url: 'assets/findPage.json',	//后台ProfileController中的接口url地址
-		reader: {
-			type:'json',
-			rootProperty: 'content',		//结果集名字的属性
-			totalProperty: 'totalElements'	//一共多少条记录的属性
-		},
-		simpleSortMode: true	//简单排序模式
-	},
-	pageSize: 25,
-	autoLoad: true,
-	remoteSort: true,//全局排序
-    sorters: {
-        direction: 'DESC',
-        property: 'id'
-    }
-});
-
-
-
-
 Ext.define('Admin.view.main.MainModel', {extend:Ext.app.ViewModel, alias:'viewmodel.main', data:{currentView:null}});
 Ext.define('Admin.view.order.Order', {extend:Ext.container.Container, xtype:'order', controller:'orderViewController', viewModel:{type:'orderViewModel'}, layout:'fit', margin:'20 20 20 20', items:[{xtype:'orderGrid'}]});
-Ext.define('Admin.view.order.OrderGridForm', {
-    extend: 'Ext.form.Panel',
-    alias: 'widget.orderGridForm',
-	//id:'orderGridForm',//Ext.getCmp('orderGridForm');
-    requires: [
-        'Ext.button.Button',
-        'Ext.form.field.Text',
-        'Ext.form.field.File',
-        'Ext.form.field.HtmlEditor',
-		'Ext.form.field.TextArea',
-		'Ext.form.field.Time',
-		'Ext.form.field.ComboBox',
-		'Ext.form.field.Date',
-		'Ext.form.field.Radio',
-		'Ext.form.field.Hidden'
-    ],
-    //viewModel: {type: 'emailcompose'},
-    //cls: 'email-compose',
-	controller: 'orderViewController',
-    layout: {
-        type:'vbox',
-        align:'stretch'
-    },
-
-    bodyPadding: 10,
-    scrollable: true,
-
-    defaults: {
-        labelWidth: 60,
-        labelSeparator: ''
-    },
-    items: [{
-		xtype: 'hidden',
-		fieldLabel: 'Id',
-		//allowBlank: false,
-		name:'id'
-	},{
-		xtype: 'textfield',
-		fieldLabel: 'Order Number',
-		name:'orderNumber'
-	},{
-		xtype: 'datefield',
-		format: 'Y/m/d H:i:s',
-		fieldLabel: 'Create Time',
-		name:'createTime'
-	},{
-		xtype: 'combobox',
-		fieldLabel: 'Level',
-		name:'level',
-		store:  Ext.create('Ext.data.Store', {
-			fields: ['value', 'name'],
-			data : [
-				{"value":"HIGH", 	"name":"高"},
-				{"value":"MEDIUM",  "name":"中"},
-				{"value":"LOW", 	"name":"低"}
-			]
-		}),
-		queryMode: 	  'local',
-		displayField: 'name',
-		valueField:   'value'
-		
-		
-	},{
-		xtype: 'textfield',
-		fieldLabel: 'Price',
-		name:'price'
-    }],
-    bbar: {
-        overflowHandler: 'menu',
-        items: ['->',{
-			xtype: 'button',
-			//ui: 'soft-red',
-			text: '提交',
-			handler: 'orderGridFormSubmit'
-		},{
-			xtype: 'button',
-			//ui: 'gray',
-			text: '取消',
-			handler: 'orderGridWindowClose'
-		}]
-    }
-});
-Ext.define('Admin.view.order.OrderGridWindow', {extend:Ext.window.Window, alias:'widget.OrderGridWindow', autoShow:true, modal:true, layout:'fit', width:200, height:200, afterRender:function() {
-  var me = this;
-  me.callParent(arguments);
-  me.syncSize();
-  Ext.on(me.resizeListeners = {resize:me.onViewportResize, scope:me, buffer:50});
-}, doDestroy:function() {
-  Ext.un(this.resizeListeners);
-  this.callParent();
-}, onViewportResize:function() {
-  this.syncSize();
-}, syncSize:function() {
-  var width = Ext.Element.getViewportWidth(), height = Ext.Element.getViewportHeight();
-  this.setSize(Math.floor(width * 0.3), Math.floor(height * 0.5));
-  this.setXY([Math.floor(width * 0.05), Math.floor(height * 0.05)]);
-}});
-Ext.define('Admin.view.order.OrderViewController', {extend:Ext.app.ViewController, alias:'controller.orderViewController', orderGridOpenAddWindow:function(bt) {
-  var cfg = Ext.apply({xtype:'OrderGridWindow', items:[Ext.apply({xtype:'orderGridForm'})]}, {title:'创建订单'});
-  Ext.create(cfg);
-}, orderGridOpenEditWindow:function(bt) {
-  alert('On Click');
-}, orderGridOpenDeleteDate:function(bt) {
-  alert('On Click');
-},
-orderGridFormSubmit: function(btn) {
-	var orderGridForm = btn.up('form').getForm();
-	var win = btn.up('window');
-	orderGridForm.submit( {
-		//waitTitle : '请稍后...',
-		//waitMsg : '正在保存订单信息,请稍后...',
-		url : 'order/saveOrUpdate',
-		method : 'post',
-		success : function(form, action) {
-			Ext.Msg.alert("提示",action.result.msg);
-			win.close();
-			Ext.getCmp('orderGrid').store.reload();
-		},
-		failure : function(form, action) {
-			Ext.Msg.alert("提示",action.result.msg);
-
-		}
-	});
-},
-
-orderGridWindowClose: function(btn) {
-	var win = btn.up('window');
-	if(win){
-		win.close();
-	}
-}
-});
-Ext.define('Admin.view.order.OrderViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.orderViewModel', stores:{orderLists:{type:'orderStore', autoLoad:true}}});
 Ext.define('Admin.view.pages.BlankPage', {extend:Ext.container.Container, xtype:'pageblank', anchor:'100% -1', layout:{type:'vbox', pack:'center', align:'center'}, items:[{xtype:'box', cls:'blank-page-container', html:"\x3cdiv class\x3d'fa-outer-class'\x3e\x3cspan class\x3d'x-fa fa-clock-o'\x3e\x3c/span\x3e\x3c/div\x3e\x3ch1\x3eComing Soon!\x3c/h1\x3e\x3cspan class\x3d'blank-page-text'\x3eStay tuned for updates\x3c/span\x3e"}]});
 Ext.define('Admin.view.pages.ErrorBase', {extend:Ext.window.Window, controller:'authentication', autoShow:true, cls:'error-page-container', closable:false, title:'Sencha', titleAlign:'center', maximized:true, modal:true, layout:{type:'vbox', align:'center', pack:'center'}});
 Ext.define('Admin.view.pages.Error404Window', {extend:Admin.view.pages.ErrorBase, xtype:'page404', items:[{xtype:'container', width:400, cls:'error-page-inner-container', layout:{type:'vbox', align:'center', pack:'center'}, items:[{xtype:'label', cls:'error-page-top-text', text:'404'}, {xtype:'label', cls:'error-page-desc', html:'\x3cdiv\x3eSeems you\'ve hit a wall!\x3c/div\x3e\x3cdiv\x3eTry going back to our \x3ca href\x3d"#dashboard"\x3e Home page \x3c/a\x3e\x3c/div\x3e'}, {xtype:'tbspacer', flex:1}]}]});
@@ -100962,32 +99774,103 @@ title:'FAQs', bodyPadding:15, items:[{xtype:'panel', cls:'FAQPanel', layout:'acc
 items:[{title:'How can I access high resolution images?', iconCls:'x-fa fa-caret-down'}, {title:'Can I download the application on my PC?', iconCls:'x-fa fa-caret-down'}, {title:'How often does the database get updated?', iconCls:'x-fa fa-caret-down'}, {title:'Can I use the downloaded images on a commercial website?', iconCls:'x-fa fa-caret-down'}]}, {xtype:'panel', cls:'FAQPanel', layout:'accordion', title:'Account', height:340, bodyPadding:10, ui:'light', defaults:{html:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}, 
 items:[{title:'What are the different membership plans?', iconCls:'x-fa fa-caret-down'}, {title:'Can I change my plan in between?', iconCls:'x-fa fa-caret-down'}, {title:'How can I deactivate my account?', iconCls:'x-fa fa-caret-down'}, {title:'Can I transfer my account to another user?', iconCls:'x-fa fa-caret-down'}]}, {xtype:'panel', cls:'FAQPanel', layout:'accordion', title:'Payment', height:300, bodyPadding:10, ui:'light', defaults:{html:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}, 
 items:[{title:'What are the payment methods you accept?', iconCls:'x-fa fa-caret-down'}, {title:'What is the refund policy?', iconCls:'x-fa fa-caret-down'}, {title:'How long does it take to process my payment?', iconCls:'x-fa fa-caret-down'}]}]}]});
+Ext.define('Admin.view.profile.ProfileGrid', {extend:Ext.grid.Panel, xtype:'profileGrid', bodyPadding:15, height:340, layout:'card', id:'profileGrid', title:'\x3cb\x3e资产列表\x3c/b\x3e', bind:'{profileGrid}', columns:[{text:'ID', sortable:true, dataIndex:'id', hidden:true}, {text:'资产编号', sortable:true, dataIndex:'orderNumber', width:100}, {text:'资产名称', sortable:true, dataIndex:'orderName', width:100}, {text:'创建时间', sortable:true, dataIndex:'createTime', width:125, renderer:Ext.util.Format.dateRenderer('Y/m/d H:i:s')}, 
+{text:'资产类型', sortable:true, dataIndex:'level', width:125}, {text:'估计价值', sortable:true, dataIndex:'price', flex:1}], bbar:Ext.create('Ext.PagingToolbar', {bind:'{profileLists}', displayInfo:true, displayMsg:'第{0}-{1}条 共{2}条', emptyMsg:'没有任何记录', items:['-', {iconCls:'x-fa fa-plus', handler:'profileGridOpenAddWindow'}, '-', {iconCls:'x-fa fa-edit', handler:'profileGridOpenEditWindow'}, '-', {iconCls:'x-fa fa-trash', handler:'profileGridOpenDeleteDate'}]})});
+Ext.define('Admin.view.profile.ProfileGridForm', {extend:Ext.form.Panel, alias:'widget.profileGridForm', controller:'profileViewController', layout:{type:'vbox', align:'stretch'}, bodyPadding:10, scrollable:true, defaults:{labelWidth:60, labelSeparator:''}, items:[{xtype:'hidden', fieldLabel:'AssetsId', name:'assetsId'}, {xtype:'textfield', fieldLabel:'资产编号', name:'assetsNumber'}, {xtype:'textfield', fieldLabel:'资产名称', name:'assetsName'}, {xtype:'datefield', format:'Y/m/d H:i:s', fieldLabel:'开始使用时间', name:'assetsUsedTime'}, 
+{xtype:'combobox', fieldLabel:'资产类型', name:'assetsType', store:Ext.create('Ext.data.Store', {fields:['value', 'name'], data:[{'value':'eProduct', 'name':'电子产品'}, {'value':'oAppliances', 'name':'办公用具'}, {'value':'bEquipment', 'name':'基本设备'}, {'value':'transportation', 'name':'交通工具'}]}), queryMode:'local', displayField:'name', valueField:'value'}, {xtype:'textfield', fieldLabel:'资产估价', name:'assetsPrice'}, {xtype:'textfield', fieldLabel:'拥有资产者', name:'user'}], bbar:{overflowHandler:'menu', items:['-\x3e', 
+{xtype:'button', text:'提交', handler:'profileGridFormSubmit'}, {xtype:'button', text:'取消', handler:'profileGridWindowClose'}]}});
+Ext.define('Admin.view.profile.ProfileGridWindow', {extend:Ext.window.Window, alias:'widget.profileGridWindow', autoShow:true, modal:true, layout:'fit', width:200, height:200, afterRender:function() {
+  var me = this;
+  me.callParent(arguments);
+  me.syncSize();
+  Ext.on(me.resizeListeners = {resize:me.onViewportResize, scope:me, buffer:50});
+}, doDestroy:function() {
+  Ext.un(this.resizeListeners);
+  this.callParent();
+}, onViewportResize:function() {
+  this.syncSize();
+}, syncSize:function() {
+  var width = Ext.Element.getViewportWidth(), height = Ext.Element.getViewportHeight();
+  this.setSize(Math.floor(width * 0.5), Math.floor(height * 0.5));
+  this.setXY([Math.floor(width * 0.05), Math.floor(height * 0.05)]);
+}});
+Ext.define('Admin.view.profile.ProfileViewController', {extend:Ext.app.ViewController, alias:'controller.profileViewController', profileGridOpenAddWindow:function(btn) {
+  Ext.widget('profileGridWindow', {title:'新建资产', items:[Ext.apply({xtype:'profileGridForm'})]});
+}, profileGridOpenEditWindow:function(btn) {
+  var grid = btn.up('gridpanel');
+  var selModel = grid.getSelectionModel();
+  if (selModel.hasSelection()) {
+    var record = selModel.getSelection()[0];
+    var profileGridWindow = Ext.widget('profileGridWindow', {title:'修改资产', items:[{xtype:'profileGridForm'}]});
+    profileGridWindow.down('form').getForm().loadRecord(record);
+  } else {
+    Ext.Msg.alert('提示', '请选择一行数据进行编辑!');
+  }
+}, profileGridOpenDeleteDate:function(btn) {
+  var grid = btn.up('gridpanel');
+  var selModel = grid.getSelectionModel();
+  if (selModel.hasSelection()) {
+    Ext.Msg.confirm('警告', '确定要删除吗？', function(button) {
+      if (button == 'yes') {
+        var selected = selModel.getSelection();
+        var selectIds = [];
+        Ext.each(selected, function(record) {
+          selectIds.push(record.data.id);
+        });
+        Ext.Ajax.request({url:'profile/delete', method:'post', params:{ids:selectIds}, success:function(response, options) {
+          var json = Ext.util.JSON.decode(response.responseText);
+          if (json.success) {
+            Ext.Msg.alert('操作成功', json.msg);
+            grid.getStore().reload();
+          } else {
+            Ext.Msg.alert('操作失败', json.msg);
+          }
+        }});
+      }
+    });
+  }
+}, profileGridFormSubmit:function(btn) {
+  var profileGridForm = btn.up('form').getForm();
+  var win = btn.up('window');
+  profileGridForm.submit({url:'profile/saveOrUpdate', method:'post', success:function(form, action) {
+    Ext.Msg.alert('提示', action.result.msg);
+    win.close();
+    Ext.getCmp('profileGrid').store.reload();
+  }, failure:function(form, action) {
+    Ext.Msg.alert('提示', action.result.msg);
+  }});
+}, profileGridWindowClose:function(btn) {
+  var win = btn.up('window');
+  if (win) {
+    win.close();
+  }
+}});
+Ext.define('Admin.view.profile.ProfileViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.profileViewModel', stores:{profileLists:{type:'profileStore', autoLoad:true}}});
 Ext.define('Admin.view.profile.ShareUpdate', {extend:Ext.panel.Panel, xtype:'profileshare', bodyPadding:10, layout:'fit', cls:'share-panel', items:[{xtype:'textareafield', emptyText:"What's on your mind?"}], bbar:{defaults:{margin:'0 10 5 0'}, items:[{ui:'header', iconCls:'x-fa fa-video-camera'}, {ui:'header', iconCls:'x-fa fa-camera'}, {ui:'header', iconCls:'x-fa fa-file'}, '-\x3e', {text:'Share', ui:'soft-blue'}]}});
-
-Ext.define('Admin.view.profile.UserProfile', 
-		{extend:Admin.view.profile.UserProfileBase, 
-		xtype:'profile', 
-		cls:'userProfile-container', 
-		layout:'responsivecolumn',
-		controller: 'profileViewController',
-//	    viewModel : {type: 'profileViewModel'},
-		items:[ {
-					xtype:'profilesocial', 
-					userCls:'big-50 small-100 shadow'},
-				{
-					xtype:'profiledescription', 
-					userCls:'big-50 small-100 shadow'},				
-				{
-					xtype:'wizardform', 
-					cls:'wizardtwo shadow', 
-				    colorScheme:'soft-purple', 
-				    userCls:'big-50 small-100'},
-			    {
-				    xtype: 'profileGrid',
+Ext.define('Admin.view.profile.UserProfile',
+        {extend:Admin.view.profile.UserProfileBase,
+        xtype:'profile',
+        cls:'userProfile-container',
+        layout:'responsivecolumn',
+        controller: 'profileViewController',
+        viewModel : {type: 'profileViewModel'},
+        items:[ {
+                    xtype:'profilesocial',
+                    userCls:'big-50 small-100 shadow'},
+                {
+                    xtype:'profiledescription',
+                    userCls:'big-50 small-100 shadow'},
+                {
+                    xtype:'wizardform',
+                    cls:'wizardtwo shadow',
+                    colorScheme:'soft-purple',
+                    userCls:'big-50 small-100'},
+                {
+                    xtype: 'profileGrid',
                     cls: 'wizardthree shadow',
                     colorScheme: 'soft-green',
                     userCls: 'big-50 small-100'}
-				]});
+                ]});
 Ext.define('Admin.view.search.Results', {extend:Ext.tab.Panel, xtype:'searchresults', controller:'searchresults', viewModel:{type:'searchresults'}, cls:'shadow', activeTab:0, margin:20, items:[{xtype:'gridpanel', cls:'allRecordsCls', scrollable:false, hideHeaders:true, border:false, title:'All', routeId:'all', bind:'{allResults}', viewConfig:{preserveScrollOnRefresh:true, stripeRows:false}, columns:[{xtype:'gridcolumn', renderer:function(value, metaData, record, rowIndex) {
   var page = "\x3cdiv class\x3d'resultsItemCls'\x3e\x3cdiv class\x3d'resultsTitleCls'\x3e" + record.data.title + "\x3c/div\x3e\x3cdiv class\x3d'resultsUrlCls'\x3e\x3ca href\x3d'#'\x3e" + record.data.url + "\x3c/a\x3e\x3c/div\x3e\x3cdiv class\x3d'resultsContentCls'\x3e" + record.data.content + '\x3c/div\x3e\x3c/div\x3e';
   if (rowIndex === 3) {

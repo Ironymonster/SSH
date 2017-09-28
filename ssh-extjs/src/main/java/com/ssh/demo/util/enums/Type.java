@@ -1,4 +1,4 @@
-package com.ssh.demo.util;
+package com.ssh.demo.util.enums;
 
 public enum Type {		
 		eProduct,      //电子产品		

@@ -14,9 +14,11 @@ import com.ssh.demo.staff.service.IAssetsService;
 import com.ssh.demo.util.web.ExtjsAjaxResult;
 import com.ssh.demo.util.web.ExtjsPageable;
 
+
 @Controller
 @RequestMapping("/assets")
 public class AssetsController {
+	
 	@Autowired
 	private IAssetsService assetsService;
 
@@ -36,7 +38,7 @@ public class AssetsController {
 	public @ResponseBody ExtjsAjaxResult saveOrUpdate(Assets assets)
 	{
 		try {
-			assetsService.save(assets);
+			 assetsService.save(assets);
 			 return new ExtjsAjaxResult(true,"操作成功！");
 		} catch (Exception e) {
 			 e.printStackTrace();
@@ -45,7 +47,7 @@ public class AssetsController {
 	}
 	
 	@PostMapping("/delete")
-	public @ResponseBody ExtjsAjaxResult delete(Long[] ids)
+	public @ResponseBody ExtjsAjaxResult delete(Integer[] ids)
 	{
 		try {
 			assetsService.delete(ids);

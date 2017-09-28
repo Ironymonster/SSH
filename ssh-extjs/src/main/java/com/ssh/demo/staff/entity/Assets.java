@@ -10,13 +10,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ssh.demo.util.Type;
+import com.ssh.demo.util.enums.Type;
 
 @Entity
 @Table(name="t_assets")
 public class Assets {
 
-	private Long assetsId;
+	private Integer assetsId;
 	private String assetsNumber; //资产编号
 	private String assetsName;   //资产名称
 	private Type assetsType;     //资产类型
@@ -27,7 +27,7 @@ public class Assets {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Long getAssetsId() {
+	public Integer getAssetsId() {
 		return assetsId;
 	}
 	public String getAssetsName() {
@@ -55,7 +55,7 @@ public class Assets {
 		return assetsUsedTime;
 	}
 	
-	public void setAssetsId(Long assetsId) {
+	public void setAssetsId(Integer assetsId) {
 		this.assetsId = assetsId;
 	}
 	public void setAssetsName(String assetsName) {

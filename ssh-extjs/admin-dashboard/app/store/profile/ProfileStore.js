@@ -4,7 +4,7 @@ Ext.define('Admin.store.profile.ProfileStore', {
     model: 'Admin.model.profile.ProfileModel',//2.设置model的全路径
 	proxy: {
 		type: 'ajax',
-		url: 'profile/findPage.json',	//后台ProfileController中的接口url地址
+		url: 'assets/findPage.json',	//后台ProfileController中的接口url地址
 		reader: {
 			type:'json',
 			rootProperty: 'content',		//结果集名字的属性
@@ -12,12 +12,12 @@ Ext.define('Admin.store.profile.ProfileStore', {
 		},
 		simpleSortMode: true	//简单排序模式
 	},
-	pageSize: 25,
+	pageSize: 4,
 	autoLoad: true,
 	remoteSort: true,//全局排序
     sorters: {
         direction: 'DESC',
-        property: 'id'
+        property: 'assetsId'
     }
 });
 

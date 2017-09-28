@@ -31,9 +31,9 @@ Ext.define('Admin.view.profile.ProfileGridForm', {
     },
     items: [{
 		xtype: 'hidden',
-		fieldLabel: 'Id',
+		fieldLabel: 'AssetsId',
 		//allowBlank: false,
-		name:'id'
+		name:'assetsId'
 	},
 	{
 		xtype: 'textfield',
@@ -69,6 +69,11 @@ Ext.define('Admin.view.profile.ProfileGridForm', {
 		xtype: 'textfield',
 		fieldLabel: '资产估价',
 		name:'assetsPrice'
+    },
+    {
+		xtype: 'textfield',
+		fieldLabel: '拥有资产者',
+		name:'user'
     }],
     bbar: {
         overflowHandler: 'menu',

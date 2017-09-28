@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.ssh.demo.util.IdType;
+import com.ssh.demo.util.enums.IdType;
 
 @Entity
 @Table(name="t_user")

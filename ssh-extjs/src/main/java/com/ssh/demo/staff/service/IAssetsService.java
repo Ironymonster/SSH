@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-
 import com.ssh.demo.staff.entity.Assets;
 
 public interface IAssetsService {
@@ -14,10 +13,10 @@ public interface IAssetsService {
 	//增加（修改）、删除、
 		public void save(Assets entity);
 		public void delete(Assets entity);
-		public void delete(Long id);
-		public void delete(Long[] ids);
+		public void delete(Integer assetsId);
+		public void delete(Integer[] assetsIds);
 		//通用查询
-		public Assets findOne(Long id);
+		public Assets findOne(Integer assetsId);
 		public List<Assets> findAll();
 		public List<Assets> findAll(Sort sort);
 		public Page<Assets> findAll(Pageable pageable);

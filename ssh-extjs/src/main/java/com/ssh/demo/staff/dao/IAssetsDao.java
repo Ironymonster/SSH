@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.ssh.demo.staff.entity.Assets;
 
 @Component
-public interface IAssetsDao extends PagingAndSortingRepository<Assets, Long>,JpaSpecificationExecutor<Assets> {
+public interface IAssetsDao extends PagingAndSortingRepository<Assets, Integer>,JpaSpecificationExecutor<Assets> {
 //
 //	public Page<Assets> findByAssetsNumberLikeAndPrice(String assetsNumber,Double assetsPrice,Pageable pageable);
 //

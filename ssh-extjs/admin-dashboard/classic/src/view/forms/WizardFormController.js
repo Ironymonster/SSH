@@ -15,6 +15,7 @@ Ext.define('Admin.view.forms.WizardFormController', {
         if (ui) {
             buttons[1].setUI(ui);
             buttons[2].setUI(ui);
+            buttons[3].setUI(ui);
         }
     },
 

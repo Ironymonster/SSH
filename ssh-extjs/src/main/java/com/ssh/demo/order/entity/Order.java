@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ssh.demo.util.Level;
+import com.ssh.demo.util.enums.Level;
 
 /**
  * Entity层：

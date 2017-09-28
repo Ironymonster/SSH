@@ -1,215 +1,213 @@
-Ext.define('Admin.view.forms.WizardForm', {
-    extend: 'Ext.panel.Panel',
-    xtype: 'wizardform',
-    requires: ['Admin.view.forms.WizardFormModel'],
-
-    bodyPadding: 15,
-
-    height: 340,
-
-    layout: 'card',
-
-    viewModel: {
-        type: 'wizardform'
-    },
-
-    controller: 'wizardform',
-
-    defaults : {
-        /*
-         * Seek out the first enabled, focusable, empty textfield when the form is focused
-         */
-        defaultFocus: 'textfield:not([value]):focusable:not([disabled])',
-
-        defaultButton : 'nextbutton'
-    },
-
-    items: [
+Ext.define('Admin.view.forms.WizardForm',
         {
-            xtype: 'form',
-            defaultType: 'textfield',
-            defaults: {
-                labelWidth: 90,
-                labelAlign: 'top',
-                labelSeparator: '',
-                submitEmptyText: false,
-                anchor: '100%'
-            },
+            extend:'Ext.panel.Panel',
+            xtype:'wizardform',
+            requires: [
+                'Ext.button.Button',
+                'Ext.form.field.Text',
+                'Ext.form.field.File',
+                'Ext.form.field.HtmlEditor',
+                'Ext.form.field.TextArea',
+                'Ext.form.field.Time',
+                'Ext.form.field.ComboBox',
+                'Ext.form.field.Date',
+                'Ext.form.field.Radio',
+                'Ext.form.field.Hidden'],
+
+            bodyPadding:15,
+            height:340,
+            layout:'card',
+            viewModel:{type:'wizardform'},
+            controller:'wizardform',
+            defaults:{
+                defaultFocus:'textfield:not([value]):focusable:not([disabled])',
+                defaultButton:'nextbutton'},
+                items:[
+                {
+                    xtype:'form',
+                    defaultType:'textfield',
+                    defaults:{
+                    labelWidth:90,
+                    labelAlign:'left',
+                    labelSeparator:'',
+                    submitEmptyText:false,
+                    anchor:'90%'},
+
+                items:[
+                {
+                    fieldLabel: '手机号码  ',
+                    emptyText : 'Username must be unique.',
+                    name:'staffNumber'
+                },
+
+                {
+                    fieldLabel: '邮箱',
+                    emptyText:'ex: me@somewhere.com',
+                    vtype:'email',
+                    name:'mail'
+                },
+                {
+                    fieldLabel: '更改密码   ',
+                    emptyText:'Enter a password',
+                    inputType:'password',
+                    cls:'wizard-form-break'},
+                {
+                    fieldLabel: '再输入一次',
+                    emptyText:'Passwords must match',
+                    inputType:'password'}]},
+                {
+                    xtype:'form',
+                    defaultType:'textfield',
+                    defaults:{
+                        labelWidth:90,
+                        labelAlign:'left',
+                        labelSeparator:'',
+                        submitEmptyText:false,
+                        anchor:'90%'},
+                items:[
+                {
+                    fieldLabel: '名字',
+                    emptyText:'Name',
+                    name :'staffName'},
+                {
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    fieldLabel: '生日',
+                    name:'createTime'
+                },
+                {
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    fieldLabel: '入职时间',
+                    name:'createTime'
+                },
+                {
+                    xtype:'fieldcontainer',
+                    cls:'wizard-form-break',
+                    fieldLabel:'性别',
+                    defaultType:'radiofield',
+                    defaults:{flex:1},
+                    layout:'hbox',
+
+                items:[
+                {
+                    boxLabel:'男',
+                    name:'SexType',
+                    inputValue:'Free'
+                },
+                {
+                    boxLabel:'女',
+                    name:'SexType',
+                    inputValue:'Perosnal'
+                },
+            ]}]},
+                {
+                    xtype:'form',
+                    defaultType:'textfield',
+                    defaults:{labelWidth:90,
+                    labelAlign:'left',
+                    labelSeparator:'',
+                    submitEmptyText:false,
+                    anchor:'90%'},
+
             items:[
+
                 {
-                    emptyText : 'Username must be unique.'
+                    fieldLabel:'家庭住址',
+                    emptyText:'Address'
                 },
                 {
-                    emptyText : 'ex: me@somewhere.com',
-                    vtype: 'email'
+                    fieldLabel:'籍贯',
+                    emptyText:'City'
                 },
                 {
-                    emptyText : 'Enter a password',
-                    inputType: 'password',
-                    cls: 'wizard-form-break'
+                    xtype: 'combobox',
+                    fieldLabel: '身份证类型',
+                    name:'idType',
+                    store:  Ext.create('Ext.data.Store', {
+                        fields: ['value', 'name'],
+                        data : [
+                            {"value":"HIGH",    "name":"大陆"},
+                            {"value":"MEDIUM",  "name":"港澳"},
+                            {"value":"LOW",     "name":"国外"}
+                                ]
+                    }),
+                    queryMode:    'local',
+                    displayField: 'name',
+                    valueField:   'value'
                 },
                 {
-                    emptyText : 'Passwords must match',
-                    inputType: 'password'
+                    fieldLabel: '身份证号码',
                 }
-            ]
-        },
-        {
-            xtype: 'form',
-            defaultType: 'textfield',
-            defaults: {
-                labelWidth: 90,
-                labelAlign: 'top',
-                labelSeparator: '',
-                submitEmptyText: false,
-                anchor: '100%'
-            },
-            items:[
-                {
-                    emptyText : 'First Name'
-                },
-                {
-                    emptyText : 'Last Name'
-                },
-                {
-                    emptyText : 'Company'
-                },
-                {
-                    xtype      : 'fieldcontainer',
-                    cls: 'wizard-form-break',
-                    fieldLabel : 'MemberType',
-                    defaultType: 'radiofield',
-                    defaults: {
-                        flex: 1
-                    },
-                    layout: 'hbox',
-                    items: [
+                ]},
+                 {
+                    xtype:'form',
+                    defaultType:'textareafield',
+                    defaults:{
+                    labelWidth:90,
+                    height:'80%',
+                    labelAlign:'top',
+                    labelSeparator:'',
+                    anchor:'90%'},
+
+                    items:[{
+
+                        fieldLabel:'ABout me',
+
+                    }]
+                 }],
+                    initComponent:function() {
+                    this.tbar = {
+                            reference:'progress',
+                            defaultButtonUI:'wizard-' + this.colorScheme,
+                            cls:'wizardprogressbar',
+                            defaults:{disabled:true, iconAlign:'top'},
+                            layout:{pack:'center'},
+                            items:[
+                                {
+                                    step:0, iconCls:'fa fa-info',
+                                    pressed:true, enableToggle:true,
+                                    text:'Account'
+                                },
+                                {
+                                    step:1, iconCls:'fa fa-user',
+                                    enableToggle:true, text:'Profile'
+                                },
+                                {
+                                    step:2, iconCls:'fa fa-home',
+                                    enableToggle:true, text:'Address'
+                                },
+                                {
+                                    step:3, iconCls:'fa fa-heart',
+                                    enableToggle:true, text:'Message'
+                                }
+                            ]};
+                    this.bbar =
                         {
-                            boxLabel  : 'Free',
-                            name      : 'MemberType',
-                            inputValue: 'Free'
-                        }, {
-                            boxLabel  : 'Personal',
-                            name      : 'MemberType',
-                            inputValue: 'Perosnal'
-                        }, {
-                            boxLabel  : 'Black',
-                            name      : 'MemberType',
-                            inputValue: 'Business'
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            xtype: 'form',
-            defaultType: 'textfield',
-            defaults: {
-                labelWidth: 90,
-                labelAlign: 'top',
-                labelSeparator: '',
-                submitEmptyText: false,
-                anchor: '100%'
-            },
-            items:[
-                {
-                    emptyText : 'Phone number'
-                },
-                {
-                    emptyText : 'Address'
-                },
-                {
-                    emptyText : 'City'
-                },
-                {
-                    emptyText : 'Postal Code / Zip Code'
-                }
-            ]
-        },
-        {
-            xtype: 'form',
-            items:[
-                {
-                    html : '<h2>Thank You</h2><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>'
-                	emptyText : 'Postal Code / Zip Code'
-                }
-            ]
-        }
-    ],
+                            reference:'navigation-toolbar',
+                            margin:8,
+                            items:['->',
+                                    {
+                                        text:'Previous',
+                                        ui:this.colorScheme,
+                                        formBind:true,
+                                        bind:{
+                                            disabled:'{atBeginning}'},
+                                        listeners:{click:'onPreviousClick'}
+                                    },
+                                    '|',
+                                    {
+                                        text:'Next',
+                                        ui:this.colorScheme,
+                                        formBind:true,
+                                        reference:'nextbutton',
+                                        bind:{
+                                            disabled:'{atEnd}'},
+                                    listeners:{click:'onNextClick'}
+                                    },
 
-    initComponent: function() {
+                                    ]};
+                                this.callParent();
+                            },
 
-        this.tbar = {
-            reference: 'progress',
-            defaultButtonUI: 'wizard-' + this.colorScheme,
-            cls: 'wizardprogressbar',
-            defaults: {
-                disabled: true,
-                iconAlign:'top'
-            },
-            layout: {
-                pack: 'center'
-            },
-            items: [
-                {
-                    step: 0,
-                    iconCls: 'fa fa-info',
-                    pressed: true,
-                    enableToggle: true,
-                    text: 'Account'
-                },
-                {
-                    step: 1,
-                    iconCls: 'fa fa-user',
-                    enableToggle: true,
-                    text: 'Profile'
-                },
-                {
-                    step: 2,
-                    iconCls: 'fa fa-home',
-                    enableToggle: true,
-                    text: 'Address'
-                },
-                {
-                    step: 3,
-                    iconCls: 'fa fa-heart',
-                    enableToggle: true,
-                    text: 'Finish'
-                }
-            ]
-        };
-
-        this.bbar = {
-            reference: 'navigation-toolbar',
-            margin: 8,
-            items: [
-                '->',
-                {
-                    text: 'Previous',
-                    ui: this.colorScheme,
-                    formBind: true,
-                    bind: {
-                        disabled: '{atBeginning}'
-                    },
-                    listeners: {
-                        click: 'onPreviousClick'
-                    }
-                },
-                {
-                    text: 'Next',
-                    ui: this.colorScheme,
-                    formBind: true,
-                    reference : 'nextbutton',
-                    bind: {
-                        disabled: '{atEnd}'
-                    },
-                    listeners: {
-                        click: 'onNextClick'
-                    }
-                }
-            ]
-        };
-
-        this.callParent();
-    }
-});
+                  });
