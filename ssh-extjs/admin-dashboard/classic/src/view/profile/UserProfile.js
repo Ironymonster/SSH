@@ -1,40 +1,24 @@
-Ext.define('Admin.view.profile.UserProfile', {
-    extend: 'Admin.view.profile.UserProfileBase',
-    xtype: 'profile',
-    cls: 'userProfile-container',
-
-    requires: [
-        'Ext.ux.layout.ResponsiveColumn'
-    ],
-
-    layout: 'card',
-
-
-    items: [
-        {
-            xtype: 'profileshare',
-            // Always 100% of container
-            userCls: 'big-100 small-100 shadow'
-        },
-        {
-            xtype: 'profilesocial',
-            // Use 50% of container when viewport is big enough, 100% otherwise
-            userCls: 'big-50 small-100 shadow'
-        },
-        {
-            xtype: 'profiledescription',
-
-            userCls: 'big-50 small-100 shadow'
-        },
-        {
-            xtype: 'profilenotifications',
-
-            userCls: 'big-50 small-100 shadow'
-        },
-        {
-            xtype: 'profiletimeline',
-
-            userCls: 'big-50 small-100 shadow'
-        }
-    ]
-});
+Ext.define('Admin.view.profile.UserProfile',
+        {extend:Admin.view.profile.UserProfileBase,
+        xtype:'profile',
+        cls:'userProfile-container',
+        layout:'responsivecolumn',
+        controller: 'profileViewController',
+        viewModel : {type: 'profileViewModel'},
+        items:[ {
+                    xtype:'profilesocial',
+                    userCls:'big-50 small-100 shadow'},
+                {
+                    xtype:'profiledescription',
+                    userCls:'big-50 small-100 shadow'},
+                {
+                    xtype:'wizardform',
+                    cls:'wizardtwo shadow',
+                    colorScheme:'soft-purple',
+                    userCls:'big-50 small-100'},
+                {
+                    xtype: 'profileGrid',
+                    cls: 'wizardthree shadow',
+                    colorScheme: 'soft-green',
+                    userCls: 'big-50 small-100'}
+                ]});

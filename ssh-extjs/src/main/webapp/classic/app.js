@@ -99296,7 +99296,31 @@ Ext.define('Admin.store.email.Friends', {extend:Ext.data.Store, alias:'store.ema
 Ext.define('Admin.store.email.Inbox', {extend:Ext.data.Store, alias:'store.inbox', model:'Admin.model.email.Email', pageSize:20, autoLoad:true, proxy:{type:'api', url:'~api/email/inbox'}});
 Ext.define('Admin.store.faq.FAQ', {extend:Ext.data.Store, alias:'store.faq', model:'Admin.model.faq.Category', proxy:{type:'api', url:'~api/faq/faq'}});
 Ext.define('Admin.store.order.OrderStore', {extend:Ext.data.Store, alias:'store.orderStore', model:'Admin.model.order.OrderModel', proxy:{type:'ajax', url:'order/findPage.json', reader:{type:'json', rootProperty:'content', totalProperty:'totalElements'}, simpleSortMode:true}, pageSize:25, autoLoad:true, remoteSort:true, sorters:{direction:'DESC', property:'id'}});
-Ext.define('Admin.store.profile.ProfileStore', {extend:Ext.data.Store, alias:'store.profileStore', model:'Admin.model.profile.ProfileModel', proxy:{type:'ajax', url:'assets/findPage.json', reader:{type:'json', rootProperty:'content', totalProperty:'totalElements'}, simpleSortMode:true}, pageSize:4, autoLoad:true, remoteSort:true, sorters:{direction:'DESC', property:'assetsId'}});
+
+Ext.define('Admin.store.profile.ProfileStore', {
+    extend: 'Ext.data.Store',
+    alias: 'store.profileStore',			  //1.Store取别名（reference）
+    model: 'Admin.model.profile.ProfileModel',//2.设置model的全路径
+    proxy: {
+		type: 'ajax',
+		url: 'assets/findPage.json',	//后台ProfileController中的接口url地址
+		reader: {
+			type:'json',
+			rootProperty: 'content',		//结果集名字的属性
+			totalProperty: 'totalElements'	//一共多少条记录的属性
+		},
+		simpleSortMode: true	//简单排序模式
+	},
+	pageSize: 4,
+	autoLoad: true,
+	remoteSort: true,//全局排序
+    sorters: {
+        direction: 'DESC',
+        property: 'assetsId'
+    }
+});
+
+
 
 Ext.define('Admin.store.search.Results', {extend:Ext.data.Store, alias:'store.searchresults', model:'Admin.model.search.Result', proxy:{type:'api', url:'~api/search/results'}, autoLoad:'true', sorters:{direction:'ASC', property:'title'}});
 Ext.define('Admin.store.search.Users', {extend:Ext.data.Store, alias:'store.searchusers', model:'Admin.model.search.User', proxy:{type:'api', url:'~api/search/users'}, autoLoad:'true', sorters:{direction:'ASC', property:'fullname'}});
@@ -99774,10 +99798,60 @@ title:'FAQs', bodyPadding:15, items:[{xtype:'panel', cls:'FAQPanel', layout:'acc
 items:[{title:'How can I access high resolution images?', iconCls:'x-fa fa-caret-down'}, {title:'Can I download the application on my PC?', iconCls:'x-fa fa-caret-down'}, {title:'How often does the database get updated?', iconCls:'x-fa fa-caret-down'}, {title:'Can I use the downloaded images on a commercial website?', iconCls:'x-fa fa-caret-down'}]}, {xtype:'panel', cls:'FAQPanel', layout:'accordion', title:'Account', height:340, bodyPadding:10, ui:'light', defaults:{html:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}, 
 items:[{title:'What are the different membership plans?', iconCls:'x-fa fa-caret-down'}, {title:'Can I change my plan in between?', iconCls:'x-fa fa-caret-down'}, {title:'How can I deactivate my account?', iconCls:'x-fa fa-caret-down'}, {title:'Can I transfer my account to another user?', iconCls:'x-fa fa-caret-down'}]}, {xtype:'panel', cls:'FAQPanel', layout:'accordion', title:'Payment', height:300, bodyPadding:10, ui:'light', defaults:{html:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}, 
 items:[{title:'What are the payment methods you accept?', iconCls:'x-fa fa-caret-down'}, {title:'What is the refund policy?', iconCls:'x-fa fa-caret-down'}, {title:'How long does it take to process my payment?', iconCls:'x-fa fa-caret-down'}]}]}]});
-Ext.define('Admin.view.profile.ProfileGrid', {extend:Ext.grid.Panel, xtype:'profileGrid', bodyPadding:15, height:340, layout:'card', id:'profileGrid', title:'\x3cb\x3e资产列表\x3c/b\x3e', bind:'{profileGrid}', columns:[{text:'ID', sortable:true, dataIndex:'id', hidden:true}, {text:'资产编号', sortable:true, dataIndex:'orderNumber', width:100}, {text:'资产名称', sortable:true, dataIndex:'orderName', width:100}, {text:'创建时间', sortable:true, dataIndex:'createTime', width:125, renderer:Ext.util.Format.dateRenderer('Y/m/d H:i:s')}, 
-{text:'资产类型', sortable:true, dataIndex:'level', width:125}, {text:'估计价值', sortable:true, dataIndex:'price', flex:1}], bbar:Ext.create('Ext.PagingToolbar', {bind:'{profileLists}', displayInfo:true, displayMsg:'第{0}-{1}条 共{2}条', emptyMsg:'没有任何记录', items:['-', {iconCls:'x-fa fa-plus', handler:'profileGridOpenAddWindow'}, '-', {iconCls:'x-fa fa-edit', handler:'profileGridOpenEditWindow'}, '-', {iconCls:'x-fa fa-trash', handler:'profileGridOpenDeleteDate'}]})});
-Ext.define('Admin.view.profile.ProfileGridForm', {extend:Ext.form.Panel, alias:'widget.profileGridForm', controller:'profileViewController', layout:{type:'vbox', align:'stretch'}, bodyPadding:10, scrollable:true, defaults:{labelWidth:60, labelSeparator:''}, items:[{xtype:'hidden', fieldLabel:'AssetsId', name:'assetsId'}, {xtype:'textfield', fieldLabel:'资产编号', name:'assetsNumber'}, {xtype:'textfield', fieldLabel:'资产名称', name:'assetsName'}, {xtype:'datefield', format:'Y/m/d H:i:s', fieldLabel:'开始使用时间', name:'assetsUsedTime'}, 
-{xtype:'combobox', fieldLabel:'资产类型', name:'assetsType', store:Ext.create('Ext.data.Store', {fields:['value', 'name'], data:[{'value':'eProduct', 'name':'电子产品'}, {'value':'oAppliances', 'name':'办公用具'}, {'value':'bEquipment', 'name':'基本设备'}, {'value':'transportation', 'name':'交通工具'}]}), queryMode:'local', displayField:'name', valueField:'value'}, {xtype:'textfield', fieldLabel:'资产估价', name:'assetsPrice'}, {xtype:'textfield', fieldLabel:'拥有资产者', name:'user'}], bbar:{overflowHandler:'menu', items:['-\x3e', 
+/**
+*订单模块子视图
+*/
+Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
+    extend: 'Ext.grid.Panel',         //2.继承的组件类型
+		//3.重写继承组件的属性：
+		  xtype: 'profileGrid',
+		  bodyPadding: 15,
+		  height: 340,
+		  layout: 'card',
+		  id:'profileGrid',
+		title:'<b>资产列表</b>',
+		bind:'{profileLists}',
+		selModel: Ext.create('Ext.selection.CheckboxModel'),
+		columns: [			
+		  {text: 'AssetsID',sortable:true ,dataIndex:'assetsId',hidden:true},
+		  {text: '资产编号' ,sortable:true ,dataIndex:'assetsNumber' ,width:100},
+		  {text: '资产名称' ,sortable:true ,dataIndex:'assetsName' ,width:100},
+		  {text: '创建时间'  ,sortable:true ,dataIndex:'assetsUsedTime'  ,width:125
+		    ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
+		  {text: '资产类型',sortable:true ,dataIndex:'type'    ,width:125},
+		  {text: '估计价值',sortable:true ,dataIndex:'assetsPrice' ,flex:1}
+		],
+		bbar:Ext.create('Ext.PagingToolbar',{
+		  bind:'{profileLists}',
+		  displayInfo:true,
+		  displayMsg:'第{0}-{1}条 共{2}条',
+		  emptyMsg:"没有任何记录",
+		  items:['-',{
+		    //xtype:'button',
+		    ////text:'add'
+		    iconCls:'x-fa fa-plus',
+		    handler:'profileGridOpenAddWindow'
+		  },
+		  '-',
+		  {
+		    iconCls:'x-fa fa-edit',
+		    handler:'profileGridOpenEditWindow'
+		  },
+		  '-',
+		  {
+		    iconCls:'x-fa fa-trash',
+		    handler:'profileGridOpenDeleteDate'
+		  }]
+		})
+		});
+Ext.define('Admin.view.profile.ProfileGridForm', {extend:Ext.form.Panel, alias:'widget.profileGridForm', controller:'profileViewController', layout:{type:'vbox', align:'stretch'}, bodyPadding:10, scrollable:true, defaults:{labelWidth:60, labelSeparator:''}, items:[{xtype:'hidden', fieldLabel:'AssetsId', name:'assetsId'},
+	{
+	xtype:'textfield', fieldLabel:'资产编号', name:'assetsNumber'}, 
+	{xtype:'textfield', fieldLabel:'资产名称', name:'assetsName'},
+	//{xtype:'datefield', format:'Y/m/d H:i:s', fieldLabel:'开始使用时间', name:'assetsUsedTime'}, 
+	{xtype:'combobox', fieldLabel:'资产类型', name:'assetsType', store:Ext.create('Ext.data.Store', {fields:['value', 'name'], data:[{'value':'eProduct', 'name':'电子产品'}, {'value':'oAppliances', 'name':'办公用具'}, {'value':'bEquipment', 'name':'基本设备'}, {'value':'transportation', 'name':'交通工具'}]}), queryMode:'local', displayField:'name', valueField:'value'}, {xtype:'textfield', fieldLabel:'资产估价', name:'assetsPrice'}, 
+	{xtype:'textfield', fieldLabel:'拥有资产者', name:'user'}
+], bbar:{overflowHandler:'menu', items:['-\x3e', 
 {xtype:'button', text:'提交', handler:'profileGridFormSubmit'}, {xtype:'button', text:'取消', handler:'profileGridWindowClose'}]}});
 Ext.define('Admin.view.profile.ProfileGridWindow', {extend:Ext.window.Window, alias:'widget.profileGridWindow', autoShow:true, modal:true, layout:'fit', width:200, height:200, afterRender:function() {
   var me = this;
@@ -99817,7 +99891,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {extend:Ext.app.ViewContr
         Ext.each(selected, function(record) {
           selectIds.push(record.data.id);
         });
-        Ext.Ajax.request({url:'profile/delete', method:'post', params:{ids:selectIds}, success:function(response, options) {
+        Ext.Ajax.request({url:'assets/delete', method:'post', params:{ids:selectIds}, success:function(response, options) {
           var json = Ext.util.JSON.decode(response.responseText);
           if (json.success) {
             Ext.Msg.alert('操作成功', json.msg);
@@ -99832,7 +99906,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {extend:Ext.app.ViewContr
 }, profileGridFormSubmit:function(btn) {
   var profileGridForm = btn.up('form').getForm();
   var win = btn.up('window');
-  profileGridForm.submit({url:'profile/saveOrUpdate', method:'post', success:function(form, action) {
+  profileGridForm.submit({url :'assets/saveOrUpdate', method:'post', success:function(form, action) {
     Ext.Msg.alert('提示', action.result.msg);
     win.close();
     Ext.getCmp('profileGrid').store.reload();

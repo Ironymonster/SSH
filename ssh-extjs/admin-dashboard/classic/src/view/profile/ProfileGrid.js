@@ -1,7 +1,4 @@
-﻿/**
-*订单模块子视图
-*/
-Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
+﻿Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
     extend: 'Ext.grid.Panel',         //2.继承的组件类型
 		//3.重写继承组件的属性：
 		  xtype: 'profileGrid',
@@ -10,16 +7,16 @@ Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
 		  layout: 'card',
 		  id:'profileGrid',
 		title:'<b>资产列表</b>',
-		bind:'{profileGrid}',
-		
+		bind:'{profileLists}',
+		selModel: Ext.create('Ext.selection.CheckboxModel'),
 		columns: [			
-		  {text: 'ID',sortable:true ,dataIndex:'id',hidden:true},
-		  {text: '资产编号' ,sortable:true ,dataIndex:'orderNumber' ,width:100},
-		  {text: '资产名称' ,sortable:true ,dataIndex:'orderName' ,width:100},
-		  {text: '创建时间'  ,sortable:true ,dataIndex:'createTime'  ,width:125
+		  {text: 'AssetsId',sortable:true ,dataIndex:'assetsId',hidden:true},
+		  {text: '资产编号' ,sortable:true ,dataIndex:'assetsNumber' ,width:100},
+		  {text: '资产名称' ,sortable:true ,dataIndex:'assetsName' ,width:100},
+		  {text: '创建时间'  ,sortable:true ,dataIndex:'assetsUsedTime'  ,width:125
 		    ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
-		  {text: '资产类型',sortable:true ,dataIndex:'level'    ,width:125},
-		  {text: '估计价值',sortable:true ,dataIndex:'price' ,flex:1}
+		  {text: '资产类型',sortable:true ,dataIndex:'type'    ,width:125},
+		  {text: '估计价值',sortable:true ,dataIndex:'assetsPrice' ,flex:1}
 		],
 		bbar:Ext.create('Ext.PagingToolbar',{
 		  bind:'{profileLists}',
