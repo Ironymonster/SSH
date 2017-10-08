@@ -17,7 +17,6 @@ import com.ssh.demo.util.enums.Level;
  * Entity层：
  * 		声明领域模型对象的字段。
  * 		私有的属性、公共的getter和setter
- * @author Sailer Wen
  *
  */
 @Entity
