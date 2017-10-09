@@ -80,6 +80,31 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 				}
 			});
     },
+    assetsGridPanelSearch:function(btn){
+		var searchField = this.lookupReference('assetsGridSearchText').getValue();
+		var searchText = this.lookupReference('assetsGridPanelSearch').getValue();
+		var store = Ext.getCmp('ProfileStore').getStore();//对应grid的id属性
+		//1.清空所有QueryDTO中的查询条件
+		Ext.apply(store.proxy.extraParams, {
+			userName:'',
+			password:'',
+			startTime:'',
+			endTime:''
+		});
+		//2.按照所选字段进行查询参数（条件）的扩展
+		if(searchField=='assetsNumber'){
+			Ext.apply(store.proxy.extraParams, {
+				assetsNumber:searchText,
+			});
+		}
+		if(searchField=='assetsName'){
+			Ext.apply(store.proxy.extraParams, {
+				assetsName:searchText
+			});
+		}
+		store.load({params: {start:0,limit:25,page:1}});
+	}
+
 
 	profileGridWindowClose: function(btn) {
 		var win = btn.up('window');

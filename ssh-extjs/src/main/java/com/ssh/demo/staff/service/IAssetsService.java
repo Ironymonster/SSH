@@ -13,6 +13,7 @@ public interface IAssetsService {
 
 	//增加（修改）、删除、
 		public void save(Assets entity);
+		public void save(AssetsDTO dto);
 		public void delete(Assets entity);
 		public void delete(Integer assetsId);
 		public void delete(Integer[] assetsIds);

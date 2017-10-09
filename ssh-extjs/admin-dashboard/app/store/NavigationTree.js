@@ -31,7 +31,7 @@ Ext.define('Admin.store.NavigationTree', {
                 leaf: true
             },
             {
-                text: 'Profile',
+                text: '个人中心',
                 iconCls: 'x-fa fa-user',
                 viewType: 'profile',
                 leaf: true

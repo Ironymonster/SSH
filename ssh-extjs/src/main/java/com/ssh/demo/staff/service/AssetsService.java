@@ -19,23 +19,28 @@ import com.ssh.demo.staff.entity.dto.AssetsDTO;
 @Transactional
 public class AssetsService implements IAssetsService {
 
-	@Autowired(required=false)
+	@Autowired
 	private IAssetsDao assetsDao;
 	
 	public void setAssetsDao(IAssetsDao assetsDao) {
 		this.assetsDao = assetsDao;
 	}
 		
-	@Override
-	public void save(Assets entity) {
+
+	public void save(AssetsDTO dto) {
+		Assets entity = new Assets();
+		AssetsDTO.dtoToEntity(dto, entity);
+		assetsDao.save(entity);
 	}
 
 	@Override
 	public void delete(Assets entity) {
+		assetsDao.delete(entity);
 	}
 
 	@Override
 	public void delete(Integer assetsId) {
+		assetsDao.delete(assetsId);
 	}
 
 	@Override
@@ -45,12 +50,12 @@ public class AssetsService implements IAssetsService {
 		}
 	}
 
-	@Transactional(readOnly=true)
+	
 	public Assets findOne(Integer assetsId) {
 		return assetsDao.findOne(assetsId);
 	}
 
-	@Transactional(readOnly=true)
+	
 	public List<AssetsDTO> findAll() {
 		List<Assets> assetsList = (List<Assets>) assetsDao.findAll();
 		List<AssetsDTO> dtoList = new ArrayList<AssetsDTO>();
@@ -94,12 +99,9 @@ public class AssetsService implements IAssetsService {
 		return page;
 	}
 
-//	public Page<Assets> findByAssetsNumberLikeAndAssetsPrice(String assetsNumber, Double assetsPrice, Pageable pageable) {
-//		return assetsDao.findByAssetsNumberLikeAndAssetsPrice(assetsNumber, assetsPrice, pageable);
-//	}
-//
-//
-//	public Page<Assets> findByQuery(String assetsNumber, Double assetsPrice, Pageable pageable) {
-//		return assetsDao.findByQuery(assetsNumber, assetsPrice, pageable);
-//	}
+
+	@Override
+	public void save(Assets entity) {
+		assetsDao.save(entity);
+	}
 }

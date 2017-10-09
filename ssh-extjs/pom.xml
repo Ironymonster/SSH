@@ -49,13 +49,7 @@
 	    <scope>provided</scope>
 	</dependency>
 	
-	<!-- spring测试 -->
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-test</artifactId>
-		<scope>test</scope>
-		<version>${spring.version}</version>
-	</dependency>
+	
 	
 	<dependency>
 	    <groupId>javax.servlet</groupId>
@@ -135,6 +129,13 @@
 	    <groupId>junit</groupId>
 	    <artifactId>junit</artifactId>
 	    <version>${junit.version}</version>
+	</dependency>
+	<!-- spring测试 -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<scope>test</scope>
+		<version>${spring.version}</version>
 	</dependency>
   </dependencies>
   <build>

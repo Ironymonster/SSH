@@ -20,7 +20,7 @@ import com.ssh.demo.util.web.ExtjsPageable;
 @RequestMapping("/assets")
 public class AssetsController {
 	
-	@Autowired(required=false)
+	@Autowired
 	private IAssetsService assetsService;
 
 	//返回所有的数据
