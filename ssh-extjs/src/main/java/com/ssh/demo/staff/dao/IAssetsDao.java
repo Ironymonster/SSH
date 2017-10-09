@@ -11,9 +11,9 @@ import com.ssh.demo.staff.entity.Assets;
 
 @Component
 public interface IAssetsDao extends PagingAndSortingRepository<Assets, Integer>,JpaSpecificationExecutor<Assets> {
-//
-//	public Page<Assets> findByAssetsNumberLikeAndPrice(String assetsNumber,Double assetsPrice,Pageable pageable);
-//
+
+//	public Page<Assets> findByAssetsNumberLikeAndAssetsPrice(String assetsNumber,Double assetsPrice,Pageable pageable);
+//	
 //	@Query("from Asset a where a.assetsNumber like ?1 and a.assetsPrice = ?2")
 //	public Page<Assets> findByQuery(String assetsNumber,Double assetsPrice,Pageable pageable);
 }

@@ -1,23 +1,25 @@
 package com.ssh.demo.staff.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssh.demo.staff.dao.IAssetsDao;
 import com.ssh.demo.staff.entity.Assets;
+import com.ssh.demo.staff.entity.dto.AssetsDTO;
 
 @Service
 @Transactional
 public class AssetsService implements IAssetsService {
 
-	@Autowired
+	@Autowired(required=false)
 	private IAssetsDao assetsDao;
 	
 	public void setAssetsDao(IAssetsDao assetsDao) {
@@ -49,31 +51,54 @@ public class AssetsService implements IAssetsService {
 	}
 
 	@Transactional(readOnly=true)
-	public List<Assets> findAll() {
-		return (List<Assets>) assetsDao.findAll();
+	public List<AssetsDTO> findAll() {
+		List<Assets> assetsList = (List<Assets>) assetsDao.findAll();
+		List<AssetsDTO> dtoList = new ArrayList<AssetsDTO>();
+		
+		for(Assets assets : assetsList) {
+			AssetsDTO dto = new AssetsDTO();
+			AssetsDTO.entityToDto(assets, dto);
+			dtoList.add(dto);
+		}
+		return dtoList;
 	}
 
 	@Override
-	public List<Assets> findAll(Sort sort) {
-		return (List<Assets>) assetsDao.findAll(sort);
+	public Page<AssetsDTO> findAll(Pageable pageable) {
+		Page<Assets> list = assetsDao.findAll(pageable);
+		List<AssetsDTO> dtoList = new ArrayList<AssetsDTO>();		
+		
+		for(Assets assets : list.getContent()) {
+			AssetsDTO dto = new AssetsDTO();
+			AssetsDTO.entityToDto(assets, dto);
+			dtoList.add(dto);
+		}
+		
+		PageImpl<AssetsDTO> page = new PageImpl<AssetsDTO>(dtoList, pageable, list.getTotalElements());
+		return page;
 	}
 
 	@Override
-	public Page<Assets> findAll(Pageable pageable) {
-		return assetsDao.findAll(pageable);
+	public Page<AssetsDTO> findAll(Specification<Assets> spec, Pageable pageable) {
+		Page<Assets> assetsPage = assetsDao.findAll(spec, pageable);
+		//entityToDto
+		List<AssetsDTO> dtoList = new ArrayList<AssetsDTO>();
+		if(assetsPage != null) {
+			for(Assets assets : assetsPage.getContent()) {
+				AssetsDTO dto = new AssetsDTO();
+				AssetsDTO.entityToDto(assets, dto);
+				dtoList.add(dto);
+			}
+		}
+		PageImpl<AssetsDTO> page = new PageImpl<AssetsDTO>(dtoList, pageable, dtoList.size());
+		return page;
 	}
 
-//	@Override
-//	public Page<Assets> findAll(Specification<Assets> spec, Pageable pageable) {
-//		return assetsDao.findAll(spec, pageable);
+//	public Page<Assets> findByAssetsNumberLikeAndAssetsPrice(String assetsNumber, Double assetsPrice, Pageable pageable) {
+//		return assetsDao.findByAssetsNumberLikeAndAssetsPrice(assetsNumber, assetsPrice, pageable);
 //	}
 //
-//	@Override
-//	public Page<Assets> findByAssetsNumberLikeAndPrice(String assetsNumber, Double assetsPrice, Pageable pageable) {
-//		return assetsDao.findByAssetsNumberLikeAndPrice(assetsNumber, assetsPrice, pageable);
-//	}
 //
-//	@Override
 //	public Page<Assets> findByQuery(String assetsNumber, Double assetsPrice, Pageable pageable) {
 //		return assetsDao.findByQuery(assetsNumber, assetsPrice, pageable);
 //	}

@@ -5,23 +5,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ssh.demo.staff.entity.Assets;
 import com.ssh.demo.staff.service.IAssetsService;
-import com.ssh.demo.util.enums.Type;
+import com.ssh.demo.util.enums.AssetsType;
 
-@SuppressWarnings("deprecation")
 @RunWith(MyJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
 		"classpath*:spring/applicationContext-spring.xml",
 		"classpath*:spring/applicationContext-springmvc.xml"})
-@TransactionConfiguration(defaultRollback=false)
-@Transactional
 
-public class AppTest extends AbstractTransactionalJUnit4SpringContextTests{
+public class AppTest {
 	
 	@Autowired
 	private IAssetsService assetsService;
@@ -30,23 +23,21 @@ public class AppTest extends AbstractTransactionalJUnit4SpringContextTests{
 	public  void initData() 
 	{				
 		for (int i = 0; i < 100; i++) {
-			Assets assets1 = new Assets();
-			assets1.setAssetsNumber("No."+i);
-			assets1.setAssetsName("my assets" + i);
-			assets1.setAssetsUsedTime(new Date());
+			Assets assets = new Assets();
+			assets.setAssetsNumber("No."+i);
+			assets.setAssetsName("my assets" + i);
+			assets.setAssetsUsedTime(new Date());
 			if(i%2==0) {
-				assets1.setAssetsType(Type.eProduct);			
+				assets.setAssetsType(AssetsType.eProduct);			
 			}else if (i%3==0) {
-				assets1.setAssetsType(Type.oAppliances);				
+				assets.setAssetsType(AssetsType.oAppliances);				
 			}else if (i%5==0){
-				assets1.setAssetsType(Type.bEquipment);
+				assets.setAssetsType(AssetsType.bEquipment);
 			}else {
-				assets1.setAssetsType(Type.transportation);
+				assets.setAssetsType(AssetsType.transportation);
 			}
-			assets1.setAssetsPrice((Double)Math.random()*10000);	
-			
-			assetsService.save(assets1);
+			assets.setAssetsPrice((Double)Math.random()*10000);				
+			assetsService.save(assets);
 		}		
 	}
-
 }

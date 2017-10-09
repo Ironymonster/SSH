@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssh.demo.staff.entity.Assets;
+import com.ssh.demo.staff.entity.dto.AssetsDTO;
 import com.ssh.demo.staff.service.IAssetsService;
 import com.ssh.demo.util.web.ExtjsAjaxResult;
 import com.ssh.demo.util.web.ExtjsPageable;
@@ -19,21 +20,25 @@ import com.ssh.demo.util.web.ExtjsPageable;
 @RequestMapping("/assets")
 public class AssetsController {
 	
-	@Autowired
+	@Autowired(required=false)
 	private IAssetsService assetsService;
 
+	//返回所有的数据
 	@RequestMapping("/findAll")
-	public @ResponseBody List<Assets> findAll()
+	public @ResponseBody List<AssetsDTO> findAll()
 	{
 		return assetsService.findAll();
 	}
 	
+    //  显示数据  
 	@RequestMapping("/findPage")
-	public @ResponseBody Page<Assets> findAll(ExtjsPageable pageable)
+	public @ResponseBody Page<AssetsDTO> findAll(ExtjsPageable pageable)
 	{
+		pageable.setSort("assetsId");
 		return assetsService.findAll(pageable.getPageable());
 	}
 	
+	//修改或更新数据
 	@PostMapping("/saveOrUpdate")
 	public @ResponseBody ExtjsAjaxResult saveOrUpdate(Assets assets)
 	{
@@ -46,6 +51,7 @@ public class AssetsController {
 		}
 	}
 	
+	//删除数据
 	@PostMapping("/delete")
 	public @ResponseBody ExtjsAjaxResult delete(Integer[] ids)
 	{
