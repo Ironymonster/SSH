@@ -1,4 +1,7 @@
 package debugpackage;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
@@ -10,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,5 +70,42 @@ public class AppTest {
 			assets.setAssetsPrice((Double)Math.random()*10000);				
 			assetsService.save(assets);
 		}		
+	}
+	
+	@Transactional
+	@Rollback(true)
+	@Test
+	public void AssetsTest() {
+		try {
+			
+			int page = 0;
+			int size = 25;
+			Pageable pageable = new PageRequest(page, size);			
+			AssetsDTO assetsDTO = new AssetsDTO();
+//			String assetsName = "my assets10";
+//			String assetsNumber = "No.20";
+//			Double assetsPrice = 5000.0;
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss
+			Date assetsUsedTime = df.parse("2017-10-09");			
+//			Date beginDate;
+//			beginDate = df.parse("2017-10-09 19:27:56");
+//			Date endDate = df.parse("2017-10-09 19:27:57");
+//			assetsDTO.setAssetsName(assetsName);
+//			assetsDTO.setBeginDate(beginDate);
+//			assetsDTO.setEndDate(endDate);
+			assetsDTO.setAssetsUsedTime(assetsUsedTime);
+//			assetsDTO.setAssetsNumber(assetsNumber);
+//			assetsDTO.setAssetsPrice(assetsPrice);
+			
+			Page<AssetsDTO> pages = assetsService.findAll(AssetsDTO.getWhereClause(assetsDTO), pageable);
+//			System.out.println("资产名称：" + assetsName);
+//			System.out.println("资产编号：" + assetsNumber);
+			System.out.println("使用时间：" + assetsUsedTime);
+			System.out.println("总记录数：" + pages.getTotalElements());
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

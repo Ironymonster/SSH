@@ -31,9 +31,9 @@
     			    	{"value":'assetsNumber', "name":'资产编号'},
     			        {"value":'assetsName', "name":'资产名称'},
     			        {"value":'assetsPrice',"name":'估计价值'},
-    			        {"value":'assetsType',"name":'资产类型'},
-    			        {"value":'assetsType',"name":'创建时间'},
-    			        {"value":'uer',"name":'持有人'}
+    			        // {"value":'assetsType',"name":'资产类型'},
+    			        {"value":'assetsUsedTime',"name":'创建时间'},
+    			        // {"value":'uer',"name":'持有人'}
     			    ]
     			}),
     		     mode : 'local',

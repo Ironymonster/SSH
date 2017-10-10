@@ -63,4 +63,11 @@ public class AssetsController {
 			 return new ExtjsAjaxResult(false,"操作失败！");
 		}
 	}
+	
+	//查询请求
+	@RequestMapping("/findByCondition")
+	public @ResponseBody Page<AssetsDTO> findByCondition(AssetsDTO assetsDTO, ExtjsPageable pageable)
+	{
+		return assetsService.findAll(AssetsDTO.getWhereClause(assetsDTO), pageable.getPageable());
+	}
 }

@@ -99929,7 +99929,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {extend:Ext.app.ViewContr
         var selected = selModel.getSelection();
         var selectIds = [];
         Ext.each(selected, function(record) {
-          selectIds.push(record.data.id);
+          selectIds.push(record.data.assetsId);
         });
         Ext.Ajax.request({url:'assets/delete', method:'post', params:{ids:selectIds}, success:function(response, options) {
           var json = Ext.util.JSON.decode(response.responseText);

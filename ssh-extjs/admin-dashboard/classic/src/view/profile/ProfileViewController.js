@@ -35,7 +35,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {
                     var selected = selModel.getSelection();
                     var selectIds = []; //要删除的id
                     Ext.each(selected, function (record) {
-                        selectIds.push(record.data.id);
+                        selectIds.push(record.data.assetsId);
                     })
                   	Ext.Ajax.request({
 						url : 'assets/delete',
@@ -86,10 +86,10 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 		var store = Ext.getCmp('ProfileStore').getStore();//对应grid的id属性
 		//1.清空所有QueryDTO中的查询条件
 		Ext.apply(store.proxy.extraParams, {
-			userName:'',
-			password:'',
-			startTime:'',
-			endTime:''
+			assetsName:'',
+			assetsPrice:'',
+			assetsNumber:'',
+			assetsUsedTime:''
 		});
 		//2.按照所选字段进行查询参数（条件）的扩展
 		if(searchField=='assetsNumber'){
