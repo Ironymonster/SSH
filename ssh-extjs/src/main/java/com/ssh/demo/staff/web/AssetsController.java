@@ -30,13 +30,14 @@ public class AssetsController {
 		return assetsService.findAll();
 	}
 	
-    //  显示数据  
-	@RequestMapping("/findPage")
-	public @ResponseBody Page<AssetsDTO> findAll(ExtjsPageable pageable)
-	{
-		pageable.setSort("assetsId");
-		return assetsService.findAll(pageable.getPageable());
-	}
+//    //  显示数据  
+//
+//	@RequestMapping("/findPage")
+//	public @ResponseBody Page<AssetsDTO> findAll(ExtjsPageable pageable)
+//	{
+//		pageable.setSort("assetsId");
+//		return assetsService.findAll(pageable.getPageable());
+//	}
 	
 	//修改或更新数据
 	@PostMapping("/saveOrUpdate")
@@ -65,7 +66,7 @@ public class AssetsController {
 	}
 	
 	//查询请求
-	@RequestMapping("/findByCondition")
+	@RequestMapping("/findPage")
 	public @ResponseBody Page<AssetsDTO> findByCondition(AssetsDTO assetsDTO, ExtjsPageable pageable)
 	{
 		return assetsService.findAll(AssetsDTO.getWhereClause(assetsDTO), pageable.getPageable());

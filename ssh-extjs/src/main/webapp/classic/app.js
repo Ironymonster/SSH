@@ -99831,10 +99831,10 @@ Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
     			    data : [//查询条件字段名和展示名
     			    	{"value":'assetsNumber', "name":'资产编号'},
     			        {"value":'assetsName', "name":'资产名称'},
-    			        {"value":'assetsPrice',"name":'估计价值'},
-    			        {"value":'assetsType',"name":'资产类型'},
-    			        {"value":'assetsType',"name":'创建时间'},
-    			        {"value":'uer',"name":'持有人'}
+//    			        {"value":'assetsPrice',"name":'估计价值'},
+//    			        {"value":'assetsType',"name":'资产类型'},
+//    			        {"value":'assetsType',"name":'创建时间'},
+//						{"value":'uer',"name":'持有人'}
     			    ]
     			}),
     		     mode : 'local',
@@ -99851,7 +99851,7 @@ Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
     		{
             	text: 'Search',
 				listeners: {
-					click: 'userGridPanelSearch'//快捷查询按钮
+					click: 'assetsGridPanelSearch'//快捷查询按钮
 				}
             },{
             	text: 'MoreSearch...',
@@ -99908,57 +99908,122 @@ Ext.define('Admin.view.profile.ProfileGridWindow', {extend:Ext.window.Window, al
   this.setXY([Math.floor(width * 0.05), Math.floor(height * 0.05)]);
 }});
 
-Ext.define('Admin.view.profile.ProfileViewController', {extend:Ext.app.ViewController, alias:'controller.profileViewController', profileGridOpenAddWindow:function(btn) {
-  Ext.widget('profileGridWindow', {title:'新建资产', items:[Ext.apply({xtype:'profileGridForm'})]});
-}, profileGridOpenEditWindow:function(btn) {
-  var grid = btn.up('gridpanel');
-  var selModel = grid.getSelectionModel();
-  if (selModel.hasSelection()) {
-    var record = selModel.getSelection()[0];
-    var profileGridWindow = Ext.widget('profileGridWindow', {title:'修改资产', items:[{xtype:'profileGridForm'}]});
-    profileGridWindow.down('form').getForm().loadRecord(record);
-  } else {
-    Ext.Msg.alert('提示', '请选择一行数据进行编辑!');
-  }
-}, profileGridOpenDeleteDate:function(btn) {
-  var grid = btn.up('gridpanel');
-  var selModel = grid.getSelectionModel();
-  if (selModel.hasSelection()) {
-    Ext.Msg.confirm('警告', '确定要删除吗？', function(button) {
-      if (button == 'yes') {
-        var selected = selModel.getSelection();
-        var selectIds = [];
-        Ext.each(selected, function(record) {
-          selectIds.push(record.data.assetsId);
-        });
-        Ext.Ajax.request({url:'assets/delete', method:'post', params:{ids:selectIds}, success:function(response, options) {
-          var json = Ext.util.JSON.decode(response.responseText);
-          if (json.success) {
-            Ext.Msg.alert('操作成功', json.msg);
-            grid.getStore().reload();
-          } else {
-            Ext.Msg.alert('操作失败', json.msg);
-          }
-        }});
-      }
-    });
-  }
-}, profileGridFormSubmit:function(btn) {
-  var profileGridForm = btn.up('form').getForm();
-  var win = btn.up('window');
-  profileGridForm.submit({url :'assets/saveOrUpdate', method:'post', success:function(form, action) {
-    Ext.Msg.alert('提示', action.result.msg);
-    win.close();
-    Ext.getCmp('profileGrid').store.reload();
-  }, failure:function(form, action) {
-    Ext.Msg.alert('提示', action.result.msg);
-  }});
-}, profileGridWindowClose:function(btn) {
-  var win = btn.up('window');
-  if (win) {
-    win.close();
-  }
-}});
+Ext.define('Admin.view.profile.ProfileViewController', {
+    extend: 'Ext.app.ViewController',
+    alias: 'controller.profileViewController',
+
+    profileGridOpenAddWindow: function(btn) {
+			Ext.widget('profileGridWindow',{
+				title:'新建资产',
+				items: [Ext.apply({xtype: 'profileGridForm'})]
+			});
+    },
+
+	profileGridOpenEditWindow: function(btn) {
+		var grid = btn.up('gridpanel');//获取Grid视图
+		var selModel = grid.getSelectionModel();//获取Grid的SelectionModel
+        if (selModel.hasSelection()) {//判断是否选中记录
+           var record = selModel.getSelection()[0];//获取选中的第一条记录
+           //创建修改window和form
+		   var profileGridWindow = Ext.widget('profileGridWindow',{
+				title:'修改资产',
+				items: [{xtype: 'profileGridForm'}]
+			});
+		   //让form加载选中记录
+           profileGridWindow.down("form").getForm().loadRecord(record);
+        }else{
+        	Ext.Msg.alert('提示',"请选择一行数据进行编辑!");
+        }
+    },
+
+    profileGridOpenDeleteDate: function(btn) {
+		var grid = btn.up('gridpanel');
+		var selModel = grid.getSelectionModel();
+        if (selModel.hasSelection()) {
+            Ext.Msg.confirm("警告", "确定要删除吗？", function (button) {
+                if (button == "yes") {
+                    var selected = selModel.getSelection();
+                    var selectIds = []; //要删除的id
+                    Ext.each(selected, function (record) {
+                        selectIds.push(record.data.assetsId);
+                    })
+                  	Ext.Ajax.request({
+						url : 'assets/delete',
+						method : 'post',
+						params : {
+							ids:selectIds
+						},
+						success: function(response, options) {
+			                var json = Ext.util.JSON.decode(response.responseText);
+				            if(json.success){
+				            	Ext.Msg.alert('操作成功', json.msg);
+				                grid.getStore().reload();
+					        }else{
+					        	Ext.Msg.alert('操作失败', json.msg);
+					        }
+			            }
+					});
+
+                }
+            });
+		}
+    },
+
+	profileGridFormSubmit: function(btn) {
+
+		var profileGridForm = btn.up('form').getForm();
+		var win = btn.up('window');
+			//this.lookupReference('profileGrid').store.reload();  //lookupReference配合reference属性
+			profileGridForm.submit( {
+				//waitTitle : '请稍后...',
+				//waitMsg : '正在保存订单信息,请稍后...',
+				url : 'assets/saveOrUpdate',
+				method : 'post',
+				success : function(form, action) {
+					Ext.Msg.alert("提示",action.result.msg);
+					win.close();
+					Ext.getCmp("profileGrid").store.reload();
+				},
+				failure : function(form, action) {
+					Ext.Msg.alert("提示",action.result.msg);
+
+				}
+			});
+    },
+    assetsGridPanelSearch:function(btn){
+		var searchField = this.lookupReference('assetsGridSearchField').getValue();
+		var searchText = this.lookupReference('assetsGridSearchText').getValue();
+		var store = Ext.getCmp('profileGrid').getStore();//对应grid的id属性
+		//1.清空所有QueryDTO中的查询条件
+		Ext.apply(store.proxy.extraParams, {
+			assetsName:'',
+			//assetsPrice:'',
+			assetsNumber:'',
+			//assetsUsedTime:''
+		});
+		//2.按照所选字段进行查询参数（条件）的扩展
+		if(searchField=='assetsNumber'){
+			Ext.apply(store.proxy.extraParams, {
+				assetsNumber:searchText,
+			});
+		}
+		if(searchField=='assetsName'){
+			Ext.apply(store.proxy.extraParams, {
+				assetsName:searchText
+			});
+		}
+		store.load({params: {start:0,limit:25,page:1}});
+	},
+
+	profileGridWindowClose: function(btn) {
+		var win = btn.up('window');
+		if(win){
+			win.close();
+		}
+    }
+});
+
+
 Ext.define('Admin.view.profile.ProfileViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.profileViewModel', stores:{profileLists:{type:'profileStore', autoLoad:true}}});
 Ext.define('Admin.view.profile.ShareUpdate', {extend:Ext.panel.Panel, xtype:'profileshare', bodyPadding:10, layout:'fit', cls:'share-panel', items:[{xtype:'textareafield', emptyText:"What's on your mind?"}], bbar:{defaults:{margin:'0 10 5 0'}, items:[{ui:'header', iconCls:'x-fa fa-video-camera'}, {ui:'header', iconCls:'x-fa fa-camera'}, {ui:'header', iconCls:'x-fa fa-file'}, '-\x3e', {text:'Share', ui:'soft-blue'}]}});
 Ext.define('Admin.view.profile.UserProfile',
