@@ -123,8 +123,8 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 			// assetsType:'',
 			// lowPrice:'',
 			// highPrice:'',
-			// beginDate:'',
-			// endDate:''
+			//beginDate:'',
+			//endDate:''
 		});
 		//2.按照所选字段进行查询参数（条件）的扩展
 		Ext.apply(store.proxy.extraParams, {
@@ -133,8 +133,8 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 			// assetsType:this.lookupReference('profileSearchForm-assetsType').getValue(),
 			// lowPrice:this.lookupReference('profileSearchForm-lowPrice').getValue(),
 			// highPrice:this.lookupReference('profileSearchForm-highPrice').getValue(),
-			// beginDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-beginDate').getValue(), 'Y/m/d H:i:s'),
-			// endDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-endDate').getValue(), 'Y/m/d H:i:s')
+			//beginDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-beginDate').getValue(), 'Y/m/d H:i:s'),
+			//endDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-endDate').getValue(), 'Y/m/d H:i:s')
 		});
 		store.load();
 		btn.up('window').hide();

@@ -99275,11 +99275,15 @@ Ext.define('Admin.model.order.OrderModel', {extend:Admin.model.Base, fields:[{na
 Ext.define('Admin.model.profile.ProfileModel', {
     extend: 'Admin.model.Base',
     fields: [
-		{name:'assetsId'			,type: 'int'},
-		{name:'assetsNumber' ,type: 'string'},
-		{name:'assetsUsedTime'	,type: 'date'},
+		{name:'assetsId'		,type: 'int'},
+    	{name:'assetsNumber'    ,type: 'string'},
+    	{name:'assetsUsedTime'	,type: 'date'},
+    	{name:'beginDate'		,type: 'date'},
+    	{name:'endDate'			,type: 'date'},
 		{name:'assetsName'		,type: 'string'},
 		{name:'assetsPrice'		,type: 'float'},
+		{name:'highPrice'		,type: 'float'},
+		{name:'lowPrice'		,type: 'float'},
 		{name:'assetsType'		,type: 'string'}
     ]
 });
@@ -100031,21 +100035,21 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 		Ext.apply(store.proxy.extraParams, {
 			assetsNumber:'',
 			assetsName:'',
-			// assetsType:'',
-			// lowPrice:'',
-			// highPrice:'',
-			 //beginDate:'',
-			 //endDate:''
+//			assetsType:'',
+			lowPrice:'',
+			highPrice:'',
+			beginDate:'',
+			endDate:''
 		});
 		//2.按照所选字段进行查询参数（条件）的扩展
 		Ext.apply(store.proxy.extraParams, {
 			assetsNumber:this.lookupReference('profileSearchForm-assetsNumber').getValue(),
 			assetsName:this.lookupReference('profileSearchForm-assetsName').getValue(),
-			// assetsType:this.lookupReference('profileSearchForm-assetsType').getValue(),
-			// lowPrice:this.lookupReference('profileSearchForm-lowPrice').getValue(),
-			// highPrice:this.lookupReference('profileSearchForm-highPrice').getValue(),
-			 //beginDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-beginDate').getValue(), 'Y/m/d H:i:s'),
-			 //endDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-endDate').getValue(), 'Y/m/d H:i:s')
+			//assetsType:this.lookupReference('profileSearchForm-assetsType').getValue(),
+			lowPrice:this.lookupReference('profileSearchForm-lowPrice').getValue(),
+			highPrice:this.lookupReference('profileSearchForm-highPrice').getValue(),
+			beginDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-beginDate').getValue(), 'Y/m/d H:i:s'),
+			endDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-endDate').getValue(), 'Y/m/d H:i:s')
 		});
 		store.load();
 		btn.up('window').hide();
