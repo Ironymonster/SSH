@@ -80,15 +80,15 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 				}
 			});
     },
-    assetsGridPanelSearch:function(btn){
-		var searchField = this.lookupReference('assetsGridSearchField').getValue();
-		var searchText = this.lookupReference('assetsGridSearchText').getValue();
+    assetsPanelSearch:function(btn){
+		var searchField = this.lookupReference('assetsSearchField').getValue();
+		var searchText = this.lookupReference('assetsSearchText').getValue();
 		var store = Ext.getCmp('profileGrid').getStore();//对应grid的id属性
 		//1.清空所有QueryDTO中的查询条件
 		Ext.apply(store.proxy.extraParams, {
 			assetsName:'',
-			//assetsPrice:'',
-			assetsNumber:'',
+			assetsType:'',
+			assetsNumber:''
 			//assetsUsedTime:''
 		});
 		//2.按照所选字段进行查询参数（条件）的扩展
@@ -102,9 +102,43 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 				assetsName:searchText
 			});
 		}
+		if(searchField=='assetsType'){
+			Ext.apply(store.proxy.extraParams, {
+				assetsType:searchText
+			});
+		}
 		store.load();
 	},
 
+	showAssetsSearchWindow:function(btn){
+		Ext.widget('profileSearchWindow').show();//autoShow
+		},
+
+	assetsSearchFormSubmit:function(btn){
+		var store = Ext.getCmp('profileGrid').getStore();
+		//1.清空所有查询条件
+		Ext.apply(store.proxy.extraParams, {
+			assetsNumber:'',
+			assetsName:'',
+			// assetsType:'',
+			// lowPrice:'',
+			// highPrice:'',
+			// beginDate:'',
+			// endDate:''
+		});
+		//2.按照所选字段进行查询参数（条件）的扩展
+		Ext.apply(store.proxy.extraParams, {
+			assetsNumber:this.lookupReference('profileSearchForm-assetsNumber').getValue(),
+			assetsName:this.lookupReference('profileSearchForm-assetsName').getValue(),
+			// assetsType:this.lookupReference('profileSearchForm-assetsType').getValue(),
+			// lowPrice:this.lookupReference('profileSearchForm-lowPrice').getValue(),
+			// highPrice:this.lookupReference('profileSearchForm-highPrice').getValue(),
+			// beginDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-beginDate').getValue(), 'Y/m/d H:i:s'),
+			// endDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-endDate').getValue(), 'Y/m/d H:i:s')
+		});
+		store.load();
+		btn.up('window').hide();
+	},
 
 	profileGridWindowClose: function(btn) {
 		var win = btn.up('window');

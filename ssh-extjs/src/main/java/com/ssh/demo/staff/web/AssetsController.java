@@ -30,15 +30,15 @@ public class AssetsController {
 		return assetsService.findAll();
 	}
 	
-    //  显示数据  
-
+//    //  显示数据  
+//
 //	@RequestMapping("/findPage")
 //	public @ResponseBody Page<AssetsDTO> findAll(ExtjsPageable pageable)
 //	{
 //		pageable.setSort("assetsId");
 //		return assetsService.findAll(pageable.getPageable());
 //	}
-	
+//	
 	//查询请求
 	@RequestMapping("/findPage")
 	public @ResponseBody Page<AssetsDTO> findAll(AssetsDTO assetsDTO, ExtjsPageable pageable)

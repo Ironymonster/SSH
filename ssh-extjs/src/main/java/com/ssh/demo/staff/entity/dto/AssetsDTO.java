@@ -32,6 +32,9 @@ public class AssetsDTO {
 	private Date beginDate;
 	private Date endDate;
 	
+	private Double highPrice;
+	private Double lowPrice;
+	
 	//前台ajax、form到后台 关联关系维护
 		public static void  dtoToEntity(AssetsDTO dto,Assets entity) {
 			BeanUtils.copyProperties(dto, entity);
@@ -97,8 +100,15 @@ public class AssetsDTO {
 
 	public Date getEndDate() {
 		return endDate;
+	}			
+
+	public Double getHighPrice() {
+		return highPrice;
 	}
-	
+
+	public Double getLowPrice() {
+		return lowPrice;
+	}
 	
 
 	public void setAssetsId(Integer assetsId) {
@@ -143,6 +153,14 @@ public class AssetsDTO {
 		this.endDate = endDate;
 	}
 	
+	
+	public void setHighPrice(Double highPrice) {
+		this.highPrice = highPrice;
+	}
+
+	public void setLowPrice(Double lowPrice) {
+		this.lowPrice = lowPrice;
+	}
 
 	/*
 	 * 动态查询
@@ -160,7 +178,8 @@ public class AssetsDTO {
 	private Date beginDate;
 	private Date endDate;
 	 */
-	
+
+
 	@SuppressWarnings("unused")
 	public static Specification<Assets> getWhereClause(AssetsDTO assetsDTO) {
 		return new Specification<Assets>() {
@@ -181,11 +200,15 @@ public class AssetsDTO {
 				}
 				//资产估价
 				if (assetsDTO.getAssetsPrice() != null) {
-					predicate.add(cb.equal(root.get("assetsprice").as(Float.class), assetsDTO.getAssetsPrice()));
+					predicate.add(cb.equal(root.get("assetsPrice").as(Double.class),assetsDTO.getAssetsPrice()));
 				}
 				//资产名称
 				if (assetsDTO.getAssetsName() != null) {
 					predicate.add(cb.like(root.get("assetsName").as(String.class),"%" +assetsDTO.getAssetsName()+"%"));
+				}
+				//资产类型
+				if (assetsDTO.getAssetsType() != null) {
+					predicate.add(cb.like(root.get("assetsType").as(String.class),"%" +assetsDTO.getAssetsType()+"%"));
 				}
 				//使用间隔时间
 				if(assetsDTO.getBeginDate()!=null && assetsDTO.getEndDate()!=null) {
@@ -195,6 +218,15 @@ public class AssetsDTO {
 				} else if(assetsDTO.getBeginDate()==null && assetsDTO.getEndDate()!=null) {
 					predicate.add(cb.lessThanOrEqualTo(root.get("assetsUsedTime").as(Date.class), assetsDTO.getEndDate()));
 				}
+				//价格间隔
+				if(assetsDTO.getLowPrice()!=null && assetsDTO.getHighPrice()!=null) {
+					predicate.add(cb.between(root.get("assetsPrice").as(Double.class), assetsDTO.getLowPrice(), assetsDTO.getHighPrice()));
+				} else if(assetsDTO.getLowPrice()!=null && assetsDTO.getHighPrice()==null) {
+					predicate.add(cb.greaterThanOrEqualTo(root.get("assetsPrice").as(Double.class), assetsDTO.getLowPrice()));
+				} else if(assetsDTO.getLowPrice()==null && assetsDTO.getHighPrice()!=null) {
+					predicate.add(cb.lessThanOrEqualTo(root.get("assetsPrice").as(Double.class), assetsDTO.getHighPrice()));
+				}
+				
 
 				// 3.根据Predicate集合生成并返回and 连接的 where条件
 				return cb.and(predicate.toArray(new Predicate[predicate.size()]));

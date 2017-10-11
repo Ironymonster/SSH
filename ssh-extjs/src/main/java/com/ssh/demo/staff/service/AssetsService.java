@@ -95,7 +95,7 @@ public class AssetsService implements IAssetsService {
 				dtoList.add(dto);
 			}
 		}
-		PageImpl<AssetsDTO> page = new PageImpl<AssetsDTO>(dtoList, pageable, dtoList.size());
+		PageImpl<AssetsDTO> page = new PageImpl<AssetsDTO>(dtoList, pageable, assetsPage.getTotalElements());
 		return page;
 	}
 
