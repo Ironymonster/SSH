@@ -50,7 +50,8 @@ public class Assets {
 	public String getAssetsNumber() {
 		return assetsNumber;
 	}
-	@JsonFormat(pattern = "yyyy/MM/dd",timezone = "GMT+8")
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	public Date getAssetsUsedTime() {
 		return assetsUsedTime;
 	}
@@ -79,10 +80,4 @@ public class Assets {
 	public void setAssetsUsedTime(Date assetsUsedTime) {
 		this.assetsUsedTime = assetsUsedTime;
 	}
-	@Override
-	public String toString() {
-		return "Asset [assetsId=" + assetsId + ", assetsNumber=" + assetsNumber + ", assetsName=" + assetsName
-				+ ", assetsType=" + assetsType + ", assetsPrice=" + assetsPrice + ", assetsState=" + assetsState
-				+ ", assetsUsedTime=" + assetsUsedTime + ", user=" + user + "]";
-	}	
 }

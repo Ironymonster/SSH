@@ -30,8 +30,8 @@ public class AssetsController {
 		return assetsService.findAll();
 	}
 	
-//    //  显示数据  
-//
+    //  显示数据  
+
 //	@RequestMapping("/findPage")
 //	public @ResponseBody Page<AssetsDTO> findAll(ExtjsPageable pageable)
 //	{
@@ -39,12 +39,20 @@ public class AssetsController {
 //		return assetsService.findAll(pageable.getPageable());
 //	}
 	
+	//查询请求
+	@RequestMapping("/findPage")
+	public @ResponseBody Page<AssetsDTO> findAll(AssetsDTO assetsDTO, ExtjsPageable pageable)
+	{
+		pageable.setSort("assetsId");
+		return assetsService.findAll(AssetsDTO.getWhereClause(assetsDTO), pageable.getPageable());
+	}
+	
 	//修改或更新数据
 	@PostMapping("/saveOrUpdate")
-	public @ResponseBody ExtjsAjaxResult saveOrUpdate(Assets assets)
+	public @ResponseBody ExtjsAjaxResult saveOrUpdate(AssetsDTO assetsDto)
 	{
 		try {
-			 assetsService.save(assets);
+			 assetsService.save(assetsDto);
 			 return new ExtjsAjaxResult(true,"操作成功！");
 		} catch (Exception e) {
 			 e.printStackTrace();
@@ -54,10 +62,10 @@ public class AssetsController {
 	
 	//删除数据
 	@PostMapping("/delete")
-	public @ResponseBody ExtjsAjaxResult delete(Integer[] ids)
+	public @ResponseBody ExtjsAjaxResult delete(Integer[] assetsIds)
 	{
 		try {
-			assetsService.delete(ids);
+			assetsService.delete(assetsIds);
 			 return new ExtjsAjaxResult(true,"操作成功！");
 		} catch (Exception e) {
 			 e.printStackTrace();
@@ -65,10 +73,5 @@ public class AssetsController {
 		}
 	}
 	
-	//查询请求
-	@RequestMapping("/findPage")
-	public @ResponseBody Page<AssetsDTO> findByCondition(AssetsDTO assetsDTO, ExtjsPageable pageable)
-	{
-		return assetsService.findAll(AssetsDTO.getWhereClause(assetsDTO), pageable.getPageable());
-	}
+
 }

@@ -1,12 +1,11 @@
 ﻿Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
     extend: 'Ext.grid.Panel',         //2.继承的组件类型
 		//3.重写继承组件的属性：
-
-		  xtype: 'profileGrid',
-		  bodyPadding: 15,
-		  height: 340,
-		  layout: 'card',
-		  id:'profileGrid',
+		id:'profileGrid',
+		xtype: 'profileGrid',
+		bodyPadding: 15,
+		height: 340,
+		layout: 'card',
 		title:'<b>资产列表</b>',
 		bind:'{profileLists}',
 		selModel: Ext.create('Ext.selection.CheckboxModel'),
@@ -14,10 +13,10 @@
 		  {text: 'AssetsID',sortable:true ,dataIndex:'assetsId',hidden:true},
 		  {text: '资产编号' ,sortable:true ,dataIndex:'assetsNumber' ,width:100},
 		  {text: '资产名称' ,sortable:true ,dataIndex:'assetsName' ,width:100},
-		  {text: '创建时间'  ,sortable:true ,dataIndex:'assetsUsedTime'  ,width:125
-		    ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
-		  {text: '资产类型',sortable:true ,dataIndex:'assetsType'    ,width:125},
-		  {text: '估计价值',sortable:true ,dataIndex:'assetsPrice' ,flex:1}
+		  // {text: '创建时间'  ,sortable:true ,dataIndex:'assetsUsedTime'  ,width:150
+		  //   ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
+		  // {text: '资产类型',sortable:true ,dataIndex:'assetsType'    ,width:125},
+		  // {text: '估计价值',sortable:true ,dataIndex:'assetsPrice' ,flex:1}
 		],
 		dockedItems: [{
             xtype: 'toolbar',
@@ -41,7 +40,7 @@
     			editable : false,
     			allowBlank : false,
     			queryMode: 'local',
-    			 valueField: 'value',
+    			valueField: 'value',
              displayField: 'name',
              value : 'assetsNumber'//默认显示data属性中的 用户名
     		},{

@@ -41,7 +41,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 						url : 'assets/delete',
 						method : 'post',
 						params : {
-							ids:selectIds
+							assetsIds:selectIds
 						},
 						success: function(response, options) {
 			                var json = Ext.util.JSON.decode(response.responseText);
@@ -102,7 +102,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 				assetsName:searchText
 			});
 		}
-		store.load({params: {start:0,limit:7,page:1}});
+		store.load();
 	},
 
 

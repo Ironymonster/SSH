@@ -99,9 +99,4 @@ public class AssetsService implements IAssetsService {
 		return page;
 	}
 
-
-	@Override
-	public void save(Assets entity) {
-		assetsDao.save(entity);
-	}
 }

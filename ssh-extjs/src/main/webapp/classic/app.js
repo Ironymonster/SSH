@@ -99277,10 +99277,10 @@ Ext.define('Admin.model.profile.ProfileModel', {
     fields: [
 		{name:'assetsId'			,type: 'int'},
     {name:'assetsNumber' ,type: 'string'},
-    {name:'assetsUsedTime'	,type: 'date'},
+   // {name:'assetsUsedTime'	,type: 'date'},
 		{name:'assetsName'		,type: 'string'},
-		{name:'assetsPrice'		,type: 'float'},
-		{name:'assetsType'		,type: 'string'}
+	//	{name:'assetsPrice'		,type: 'float'},
+	//	{name:'assetsType'		,type: 'string'}
     ]
 });
 
@@ -99814,11 +99814,12 @@ Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
 		  {text: 'AssetsID',sortable:true ,dataIndex:'assetsId',hidden:true},
 		  {text: '资产编号' ,sortable:true ,dataIndex:'assetsNumber' ,width:100},
 		  {text: '资产名称' ,sortable:true ,dataIndex:'assetsName' ,width:100},
-		  {text: '创建时间'  ,sortable:true ,dataIndex:'assetsUsedTime'  ,width:125
-		    ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
-		  {text: '资产类型',sortable:true ,dataIndex:'assetsType'    ,width:125},
-		  {text: '估计价值',sortable:true ,dataIndex:'assetsPrice' ,flex:1}
+//		  {text: '创建时间'  ,sortable:true ,dataIndex:'assetsUsedTime'  ,width:150
+//		    ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
+//		  {text: '资产类型',sortable:true ,dataIndex:'assetsType'    ,width:125},
+//		  {text: '估计价值',sortable:true ,dataIndex:'assetsPrice' ,flex:1}
 		],
+		
 		dockedItems: [{
             xtype: 'toolbar',
             dock: 'top',
@@ -99951,7 +99952,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 						url : 'assets/delete',
 						method : 'post',
 						params : {
-							ids:selectIds
+							assetsIds:selectIds
 						},
 						success: function(response, options) {
 			                var json = Ext.util.JSON.decode(response.responseText);
@@ -99991,8 +99992,8 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 			});
     },
     assetsGridPanelSearch:function(btn){
-		var searchField = this.lookupReference('assetsGridSearchField').getValue();
-		var searchText = this.lookupReference('assetsGridSearchText').getValue();
+		var searchField = this.lookupReference('assetsGridSearchField'.getValue());
+		var searchText = this.lookupReference('assetsGridSearchText'.getValue());
 		var store = Ext.getCmp('profileGrid').getStore();//对应grid的id属性
 		//1.清空所有QueryDTO中的查询条件
 		Ext.apply(store.proxy.extraParams, {
@@ -100012,7 +100013,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 				assetsName:searchText
 			});
 		}
-		store.load({params: {start:0,limit:25,page:1}});
+		store.load();
 	},
 
 	profileGridWindowClose: function(btn) {
