@@ -99652,54 +99652,339 @@ Ext.define('Admin.view.email.Window', {extend:Ext.window.Window, alias:'widget.e
   this.setSize(Math.floor(width * 0.9), Math.floor(height * 0.9));
   this.setXY([Math.floor(width * 0.05), Math.floor(height * 0.05)]);
 }});
-Ext.define('Admin.view.forms.WizardForm', {extend:Ext.panel.Panel, xtype:'wizardform', bodyPadding:15, height:340, layout:'card', viewModel:{type:'wizardform'}, controller:'wizardform', defaults:{defaultFocus:'textfield:not([value]):focusable:not([disabled])', defaultButton:'nextbutton'}, items:[{xtype:'form', defaultType:'textfield', defaults:{labelWidth:90, labelAlign:'left', labelSeparator:'', submitEmptyText:false, anchor:'90%'}, items:[{fieldLabel:'手机号码  ', emptyText:'Username must be unique.', 
-name:'staffNumber'}, {fieldLabel:'邮箱', emptyText:'ex: me@somewhere.com', vtype:'email', name:'mail'}, {fieldLabel:'更改密码   ', emptyText:'Enter a password', inputType:'password', cls:'wizard-form-break'}, {fieldLabel:'再输入一次', emptyText:'Passwords must match', inputType:'password'}]}, {xtype:'form', defaultType:'textfield', defaults:{labelWidth:90, labelAlign:'left', labelSeparator:'', submitEmptyText:false, anchor:'90%'}, items:[{fieldLabel:'名字', emptyText:'Name', name:'staffName'}, {xtype:'datefield', 
-format:'Y/m/d H:i:s', fieldLabel:'生日', name:'createTime'}, {xtype:'datefield', format:'Y/m/d H:i:s', fieldLabel:'入职时间', name:'createTime'}, {xtype:'fieldcontainer', cls:'wizard-form-break', fieldLabel:'性别', defaultType:'radiofield', defaults:{flex:1}, layout:'hbox', items:[{boxLabel:'男', name:'SexType', inputValue:'Free'}, {boxLabel:'女', name:'SexType', inputValue:'Perosnal'}]}]}, {xtype:'form', defaultType:'textfield', defaults:{labelWidth:90, labelAlign:'left', labelSeparator:'', submitEmptyText:false, 
-anchor:'90%'}, items:[{fieldLabel:'家庭住址', emptyText:'Address'}, {fieldLabel:'籍贯', emptyText:'City'}, {xtype:'combobox', fieldLabel:'身份证类型', name:'idType', store:Ext.create('Ext.data.Store', {fields:['value', 'name'], data:[{'value':'HIGH', 'name':'大陆'}, {'value':'MEDIUM', 'name':'港澳'}, {'value':'LOW', 'name':'国外'}]}), queryMode:'local', displayField:'name', valueField:'value'}, {fieldLabel:'身份证号码'}]}, {xtype:'form', defaultType:'textareafield', defaults:{labelWidth:90, height:'80%', labelAlign:'top', 
-labelSeparator:'', anchor:'90%'}, items:[{fieldLabel:'ABout me'}]}], initComponent:function() {
-  this.tbar = {reference:'progress', defaultButtonUI:'wizard-' + this.colorScheme, cls:'wizardprogressbar', defaults:{disabled:true, iconAlign:'top'}, layout:{pack:'center'}, items:[{step:0, iconCls:'fa fa-info', pressed:true, enableToggle:true, text:'Account'}, {step:1, iconCls:'fa fa-user', enableToggle:true, text:'Profile'}, {step:2, iconCls:'fa fa-home', enableToggle:true, text:'Address'}, {step:3, iconCls:'fa fa-heart', enableToggle:true, text:'Message'}]};
-  this.bbar = {reference:'navigation-toolbar', margin:8, items:['-\x3e', {text:'Previous', ui:this.colorScheme, formBind:true, bind:{disabled:'{atBeginning}'}, listeners:{click:'onPreviousClick'}}, '|', {text:'Next', ui:this.colorScheme, formBind:true, reference:'nextbutton', bind:{disabled:'{atEnd}'}, listeners:{click:'onNextClick'}}]};
-  this.callParent();
-}});
-Ext.define('Admin.view.forms.WizardFormController', {extend:Ext.app.ViewController, alias:'controller.wizardform', init:function(view) {
-  var tb = this.lookupReference('navigation-toolbar'), buttons = tb.items.items, ui = view.colorScheme;
-  if (ui) {
-    buttons[1].setUI(ui);
-    buttons[2].setUI(ui);
-    buttons[3].setUI(ui);
-  }
-}, onNextClick:function(button) {
-  var panel = button.up('panel');
-  panel.getViewModel().set('atBeginning', false);
-  this.navigate(button, panel, 'next');
-}, onPreviousClick:function(button) {
-  var panel = button.up('panel');
-  panel.getViewModel().set('atEnd', false);
-  this.navigate(button, panel, 'prev');
-}, navigate:function(button, panel, direction) {
-  var layout = panel.getLayout(), progress = this.lookupReference('progress'), model = panel.getViewModel(), progressItems = progress.items.items, item, i, activeItem, activeIndex;
-  layout[direction]();
-  activeItem = layout.getActiveItem();
-  activeIndex = panel.items.indexOf(activeItem);
-  for (i = 0; i < progressItems.length; i++) {
-    item = progressItems[i];
-    if (activeIndex === item.step) {
-      item.setPressed(true);
-    } else {
-      item.setPressed(false);
+Ext.define('Admin.view.forms.WizardForm',
+        {
+            extend:'Ext.panel.Panel',
+            xtype:'wizardform',
+            requires: [
+                'Ext.button.Button',
+                'Ext.form.field.Text',
+                'Ext.form.field.File',
+                'Ext.form.field.HtmlEditor',
+                'Ext.form.field.TextArea',
+                'Ext.form.field.Time',
+                'Ext.form.field.ComboBox',
+                'Ext.form.field.Date',
+                'Ext.form.field.Radio',
+                'Ext.form.field.Hidden'],
+
+            bodyPadding:15,
+            height:340,
+            layout:'card',
+            viewModel:{type:'wizardform'},
+            controller:'wizardform',
+            defaults:{
+                defaultFocus:'textfield:not([value]):focusable:not([disabled])',
+                defaultButton:'nextbutton'},
+                items:[
+                {
+                    xtype:'form',
+                    defaultType:'textfield',
+                    defaults:{
+                    labelWidth:90,
+                    labelAlign:'left',
+                    labelSeparator:'',
+                    submitEmptyText:false,
+                    anchor:'90%'},
+
+                items:[
+                {
+                    fieldLabel: '手机号码  ',
+                    emptyText : 'Username must be unique.',
+                    name:'staffNumber'
+                },
+
+                {
+                    fieldLabel: '邮箱',
+                    emptyText:'ex: me@somewhere.com',
+                    vtype:'email',
+                    name:'mail'
+                },
+                {
+                    fieldLabel: '更改密码   ',
+                    emptyText:'Enter a password',
+                    inputType:'password',
+                    cls:'wizard-form-break'},
+                {
+                    fieldLabel: '再输入一次',
+                    emptyText:'Passwords must match',
+                    inputType:'password'}]},
+                {
+                    xtype:'form',
+                    defaultType:'textfield',
+                    defaults:{
+                        labelWidth:90,
+                        labelAlign:'left',
+                        labelSeparator:'',
+                        submitEmptyText:false,
+                        anchor:'90%'},
+                items:[
+                {
+                    fieldLabel: '名字',
+                    emptyText:'Name',
+                    name :'staffName'},
+                {
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    fieldLabel: '生日',
+                    name:'createTime'
+                },
+                {
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    fieldLabel: '入职时间',
+                    name:'createTime'
+                },
+                {
+                    xtype:'fieldcontainer',
+                    cls:'wizard-form-break',
+                    fieldLabel:'性别',
+                    defaultType:'radiofield',
+                    defaults:{flex:1},
+                    layout:'hbox',
+
+                items:[
+                {
+                    boxLabel:'男',
+                    name:'SexType',
+                    inputValue:'Free'
+                },
+                {
+                    boxLabel:'女',
+                    name:'SexType',
+                    inputValue:'Perosnal'
+                },
+            ]}]},
+                {
+                    xtype:'form',
+                    defaultType:'textfield',
+                    defaults:{labelWidth:90,
+                    labelAlign:'left',
+                    labelSeparator:'',
+                    submitEmptyText:false,
+                    anchor:'90%'},
+
+            items:[
+
+                {
+                    fieldLabel:'家庭住址',
+                    emptyText:'Address'
+                },
+                {
+                    fieldLabel:'籍贯',
+                    emptyText:'City'
+                },
+                {
+                    xtype: 'combobox',
+                    fieldLabel: '身份证类型',
+                    name:'idType',
+                    store:  Ext.create('Ext.data.Store', {
+                        fields: ['value', 'name'],
+                        data : [
+                            {"value":"HIGH",    "name":"大陆"},
+                            {"value":"MEDIUM",  "name":"港澳"},
+                            {"value":"LOW",     "name":"国外"}
+                                ]
+                    }),
+                    queryMode:    'local',
+                    displayField: 'name',
+                    valueField:   'value'
+                },
+                {
+                    fieldLabel: '身份证号码',
+                }
+                ]},
+                 {
+                    xtype:'form',
+                    defaultType:'textareafield',
+                    defaults:{
+                    labelWidth:90,
+                    height:'80%',
+                    labelAlign:'top',
+                    labelSeparator:'',
+                    anchor:'90%'},
+
+                    items:[{
+
+                        fieldLabel:'ABout me',
+
+                    }]
+                 }],
+                    initComponent:function() {
+                    this.tbar = {
+                            reference:'progress',
+                            defaultButtonUI:'wizard-' + this.colorScheme,
+                            cls:'wizardprogressbar',
+                            defaults:{disabled:true, iconAlign:'top'},
+                            layout:{pack:'center'},
+                            items:[
+                                {
+                                    step:0, iconCls:'fa fa-info',
+                                    pressed:true, enableToggle:true,
+                                    text:'Account'
+                                },
+                                {
+                                    step:1, iconCls:'fa fa-user',
+                                    enableToggle:true, text:'Profile'
+                                },
+                                {
+                                    step:2, iconCls:'fa fa-home',
+                                    enableToggle:true, text:'Address'
+                                },
+                                {
+                                    step:3, iconCls:'fa fa-heart',
+                                    enableToggle:true, text:'Message'
+                                }
+                            ]};
+                    this.bbar =
+                        {
+                            reference:'navigation-toolbar',
+                            margin:8,
+                            items:['->',
+                                    {
+                                        text:'Previous',
+                                        ui:this.colorScheme,
+                                        formBind:true,
+                                        bind:{
+                                            disabled:'{atBeginning}'},
+                                        listeners:{click:'onPreviousClick'}
+                                    },
+                                    '|',
+                                    {
+                                        text:'Next',
+                                        ui:this.colorScheme,
+                                        formBind:true,
+                                        reference:'nextbutton',
+                                        bind:{
+                                            disabled:'{atEnd}'},
+                                    listeners:{click:'onNextClick'}
+                                    },
+                                    '|',
+                                    {
+                                    xtype: 'button',
+                                    ui:this.colorScheme,
+                                    text: 'save',
+                                    handler: 'saveClick'
+                                    }
+                                    ]};
+                                this.callParent();
+                            },
+
+                  });
+
+Ext.define('Admin.view.forms.WizardFormController', {
+    extend: 'Ext.app.ViewController',
+    alias: 'controller.wizardform',
+
+
+    init: function(view) {
+        var tb = this.lookupReference('navigation-toolbar'),
+            buttons = tb.items.items,
+            ui = view.colorScheme;
+
+        //Apply styling buttons
+        if (ui) {
+            buttons[1].setUI(ui);
+            buttons[2].setUI(ui);
+            buttons[3].setUI(ui);
+        }
+    },
+
+    onNextClick: function(button) {
+        //This is where you can handle any logic prior to moving to the next card
+        var panel = button.up('panel');
+
+        panel.getViewModel().set('atBeginning', false);
+
+        this.navigate(button, panel, 'next');
+    },
+
+    onPreviousClick: function(button) {
+        var panel = button.up('panel');
+
+        panel.getViewModel().set('atEnd', false);
+
+        this.navigate(button, panel, 'prev');
+    },
+
+    saveClick: function(button) {
+        var wizardform = button.up('form').getForm();
+            //this.lookupReference('profileGrid').store.reload();  //lookupReference配合reference属性
+            wizardform.submit(
+            {
+                url : 'assets/saveOrUpdate',
+                method : 'post',
+                success : function(form, action) {
+                    Ext.Msg.alert("提示",action.result.msg);
+                    //Ext.getCmp("wizardform").store.reload();
+                },
+                failure : function(form, action) {
+                    Ext.Msg.alert("提示",action.result.msg);
+                }
+            });
+    },
+
+    navigate: function(button, panel, direction) {
+        var layout = panel.getLayout(),
+            progress = this.lookupReference('progress'),
+            model = panel.getViewModel(),
+            progressItems = progress.items.items,
+            item, i, activeItem, activeIndex;
+
+        layout[direction]();
+
+        activeItem = layout.getActiveItem();
+        activeIndex = panel.items.indexOf(activeItem);
+
+        for (i = 0; i < progressItems.length; i++) {
+            item = progressItems[i];
+
+            if (activeIndex === item.step) {
+                item.setPressed(true);
+            }
+            else {
+                item.setPressed(false);
+            }
+            if (Ext.isIE8) {
+                item.btnIconEl.syncRepaint();
+            }
+        }
+
+        activeItem.focus();
+
+        // beginning disables previous
+        if (activeIndex === 0) {
+            model.set('atBeginning', true);
+        }
+
+        // wizard is 4 steps. Disable next at end.
+        if (activeIndex === 3) {
+            model.set('atEnd', true);
+        }
     }
-    if (Ext.isIE8) {
-      item.btnIconEl.syncRepaint();
-    }
-  }
-  activeItem.focus();
-  if (activeIndex === 0) {
-    model.set('atBeginning', true);
-  }
-  if (activeIndex === 3) {
-    model.set('atEnd', true);
-  }
-}});
+});
+Ext.define('Admin.model.forms.WizardModel', {
+    extend: 'Admin.model.Base',
+    fields: [
+		{name:'userId'		,type: 'int'},
+    	{name:'userName'    ,type: 'string'},
+    	{name:'password'	,type: 'string'},
+    	{name:'sex'			,type: 'string'},
+    	{name:'mail'		,type: 'string'},
+    	{name:'mobilePhone'	,type: 'string'},
+    	{name:'idType'		,type: 'string'},
+		{name:'idNumber'	,type: 'string'},
+    	{name:'birthday'	,type: 'date'},
+    	{name:'nativePlace'	,type: 'string'},
+    	{name:'onDutDate'	,type: 'date'},
+    	{name:'wechatNumber',type: 'string'},
+    	{name:'home'		,type: 'string'},
+		{name:'realName'	,type: 'string'},
+		{name:'qq_number'	,type: 'string'},
+		{name:'dept'		,type: 'string'}
+    ]
+});
+
 Ext.define('Admin.view.forms.WizardFormModel', {extend:Ext.app.ViewModel, alias:'viewmodel.wizardform', data:{atBeginning:true, atEnd:false}});
 Ext.define('Admin.view.forms.WizardOne', {extend:Ext.panel.Panel, alias:'widget.formswizardone', cls:'wizardone shadow', plugins:{responsive:true}, responsiveConfig:{'width \x3e\x3d 1000':{layout:{type:'box', align:'stretch', vertical:false}}, 'width \x3c 1000':{layout:{type:'box', align:'stretch', vertical:true}}}, items:[{xtype:'specialoffer', plugins:{responsive:true}, height:338, responsiveConfig:{'width \x3c 1000':{flex:null}, 'width \x3e\x3d 1000':{flex:1}}}, {xtype:'wizardform', cls:'wizardone', 
 colorScheme:'blue', flex:1}]});
@@ -100004,6 +100289,10 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 			assetsName:'',
 			assetsType:'',
 			assetsNumber:''
+//			lowPrice:'',
+//			highPrice:'',
+//			beginDate:'',
+//			endDate:''	
 			//assetsUsedTime:''
 		});
 		//2.按照所选字段进行查询参数（条件）的扩展

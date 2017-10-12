@@ -24,7 +24,7 @@ Ext.define('Admin.view.forms.WizardFormController', {
         var panel = button.up('panel');
 
         panel.getViewModel().set('atBeginning', false);
-        
+
         this.navigate(button, panel, 'next');
     },
 
@@ -32,8 +32,25 @@ Ext.define('Admin.view.forms.WizardFormController', {
         var panel = button.up('panel');
 
         panel.getViewModel().set('atEnd', false);
-        
+
         this.navigate(button, panel, 'prev');
+    },
+
+    saveClick: function(button) {
+        var wizardform = button.up('form').getForm();
+            //this.lookupReference('profileGrid').store.reload();  //lookupReference配合reference属性
+            wizardform.submit(
+            {
+                url : 'assets/saveOrUpdate',
+                method : 'post',
+                success : function(form, action) {
+                    Ext.Msg.alert("提示",action.result.msg);
+                    Ext.getCmp("profileGrid").store.reload();
+                },
+                failure : function(form, action) {
+                    Ext.Msg.alert("提示",action.result.msg);
+                }
+            });
     },
 
     navigate: function(button, panel, direction) {
@@ -57,15 +74,6 @@ Ext.define('Admin.view.forms.WizardFormController', {
             else {
                 item.setPressed(false);
             }
-            
-            // IE8 has an odd bug with handling font icons in pseudo elements;
-            // it will render the icon once and not update it when something
-            // like text color is changed via style addition or removal.
-            // We have to force icon repaint by adding a style with forced empty
-            // pseudo element content, (x-sync-repaint) and removing it back to work
-            // around this issue.
-            // See this: https://github.com/FortAwesome/Font-Awesome/issues/954
-            // and this: https://github.com/twbs/bootstrap/issues/13863
             if (Ext.isIE8) {
                 item.btnIconEl.syncRepaint();
             }
@@ -77,7 +85,7 @@ Ext.define('Admin.view.forms.WizardFormController', {
         if (activeIndex === 0) {
             model.set('atBeginning', true);
         }
-        
+
         // wizard is 4 steps. Disable next at end.
         if (activeIndex === 3) {
             model.set('atEnd', true);

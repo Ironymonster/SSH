@@ -211,23 +211,34 @@ public class AssetsDTO {
 					predicate.add(cb.like(root.get("assetsType").as(String.class),"%" +assetsDTO.getAssetsType()+"%"));
 				}
 				//使用间隔时间
-				if(assetsDTO.getBeginDate()!=null && assetsDTO.getEndDate()!=null) {
-					predicate.add(cb.between(root.get("assetsUsedTime").as(Date.class), assetsDTO.getBeginDate(), assetsDTO.getEndDate()));
-				} else if(assetsDTO.getBeginDate()!=null && assetsDTO.getEndDate()==null) {
-					predicate.add(cb.greaterThanOrEqualTo(root.get("assetsUsedTime").as(Date.class), assetsDTO.getBeginDate()));
-				} else if(assetsDTO.getBeginDate()==null && assetsDTO.getEndDate()!=null) {
-					predicate.add(cb.lessThanOrEqualTo(root.get("assetsUsedTime").as(Date.class), assetsDTO.getEndDate()));
-				}
+//				if(assetsDTO.getBeginDate()!=null && assetsDTO.getEndDate()!=null) {
+//					predicate.add(cb.between(root.get("assetsUsedTime").as(Date.class), assetsDTO.getBeginDate(), assetsDTO.getEndDate()));
+//				} else if(assetsDTO.getBeginDate()!=null && assetsDTO.getEndDate()==null) {
+//					predicate.add(cb.greaterThanOrEqualTo(root.get("assetsUsedTime").as(Date.class), assetsDTO.getBeginDate()));
+//				} else if(assetsDTO.getBeginDate()==null && assetsDTO.getEndDate()!=null) {
+//					predicate.add(cb.lessThanOrEqualTo(root.get("assetsUsedTime").as(Date.class), assetsDTO.getEndDate()));
+//				}
+				if(assetsDTO.getBeginDate()!=null && !"".equals(assetsDTO.getBeginDate().toString())) {
+					 predicate.add(cb.greaterThanOrEqualTo(root.get("assetsUsedTime").as(Date.class), assetsDTO.getBeginDate()));
+				 }
+				 if(assetsDTO.getEndDate()!=null && !"".equals(assetsDTO.getEndDate().toString())){
+					 predicate.add(cb.lessThanOrEqualTo(root.get("assetsUsedTime").as(Date.class), assetsDTO.getEndDate()));
+				 }
 				//价格间隔
-				if(assetsDTO.getLowPrice()!=null && assetsDTO.getHighPrice()!=null) {
-					predicate.add(cb.between(root.get("assetsPrice").as(Double.class), assetsDTO.getLowPrice(), assetsDTO.getHighPrice()));
-				} else if(assetsDTO.getLowPrice()!=null && assetsDTO.getHighPrice()==null) {
-					predicate.add(cb.greaterThanOrEqualTo(root.get("assetsPrice").as(Double.class), assetsDTO.getLowPrice()));
-				} else if(assetsDTO.getLowPrice()==null && assetsDTO.getHighPrice()!=null) {
-					predicate.add(cb.lessThanOrEqualTo(root.get("assetsPrice").as(Double.class), assetsDTO.getHighPrice()));
-				}
-				
-
+//				if(assetsDTO.getLowPrice()!=null && assetsDTO.getHighPrice()!=null) {
+//					predicate.add(cb.between(root.get("assetsPrice").as(Double.class), assetsDTO.getLowPrice(), assetsDTO.getHighPrice()));
+//				} else if(assetsDTO.getLowPrice()!=null && assetsDTO.getHighPrice()==null) {
+//					predicate.add(cb.greaterThanOrEqualTo(root.get("assetsPrice").as(Double.class), assetsDTO.getLowPrice()));
+//				} else if(assetsDTO.getLowPrice()==null && assetsDTO.getHighPrice()!=null) {
+//					predicate.add(cb.lessThanOrEqualTo(root.get("assetsPrice").as(Double.class), assetsDTO.getHighPrice()));
+//				}
+				if(assetsDTO.getLowPrice()!=null && !"".equals(assetsDTO.getLowPrice().toString())) {
+					 predicate.add(cb.greaterThanOrEqualTo(root.get("assetsPrice").as(Double.class), assetsDTO.getLowPrice()));
+				 }
+				 if(assetsDTO.getHighPrice()!=null && !"".equals(assetsDTO.getHighPrice().toString())){
+					 predicate.add(cb.lessThanOrEqualTo(root.get("assetsPrice").as(Double.class), assetsDTO.getHighPrice()));
+				 }
+						
 				// 3.根据Predicate集合生成并返回and 连接的 where条件
 				return cb.and(predicate.toArray(new Predicate[predicate.size()]));
 			}

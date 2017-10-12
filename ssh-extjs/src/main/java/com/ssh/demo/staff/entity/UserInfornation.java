@@ -8,25 +8,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.ssh.demo.util.enums.IdType;
 
 @Entity
 @Table(name="t_user")
 public class UserInfornation {
 
-	private String userId;
-	private String userName;
-	private String password;
-	private String sex;
-	private String mail;
-	private String mobilePhone;
-	private IdType idType;
-	private String idNumber;
-	private Date birthday;
-	private String nativePlace;
-	private Date onDutDate;
-	private String wechatNumber;
-	private String home;
+	private String userId;			//Id
+	private String userName;		//昵称
+	private String password;		//密码
+	private String sex;				//性别
+	private String mail;			//邮箱
+	private String mobilePhone;		//电话号码
+	private String idType;			//身份证类型
+	private String idNumber;		//身份证号码
+	private Date birthday;			//生日
+	private String nativePlace;		//籍贯
+	private Date onDutDate;			//入职时间
+	private String wechatNumber;	//微信号码
+	private String home;			//家庭住址
+	private String realName;		//真实姓名
+	private String qq_number;		//QQ号码
+	private String dept;			//部门
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -48,7 +50,7 @@ public class UserInfornation {
 	public String getMobilePhone() {
 		return mobilePhone;
 	}
-	public IdType getIdType() {
+	public String getIdType() {
 		return idType;
 	}
 	public String getIdNumber() {
@@ -68,6 +70,16 @@ public class UserInfornation {
 	}
 	public String getHome() {
 		return home;
+	}	
+	
+	public String getRealName() {
+		return realName;
+	}
+	public String getQq_number() {
+		return qq_number;
+	}
+	public String getDept() {
+		return dept;
 	}
 	
 	public void setUserId(String userId) {
@@ -88,7 +100,7 @@ public class UserInfornation {
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
-	public void setIdType(IdType idType) {
+	public void setIdType(String idType) {
 		this.idType = idType;
 	}
 	public void setIdNumber(String idNumber) {
@@ -108,6 +120,15 @@ public class UserInfornation {
 	}
 	public void setHome(String home) {
 		this.home = home;
+	}
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+	public void setQq_number(String qq_number) {
+		this.qq_number = qq_number;
+	}
+	public void setDept(String dept) {
+		this.dept = dept;
 	}
 	
 }

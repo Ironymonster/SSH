@@ -54,10 +54,10 @@ Ext.define('Admin.view.profile.ProfileSearchWindow', {
 			store: Ext.create('Ext.data.Store', {
 			    fields: ['value', 'name'],
 			    data : [
-			    {"value":"eProduct", 	    "name":"电子产品"},
-				{"value":"oAppliances",     "name":"办公用具"},
-				{"value":"bEquipment", 	    "name":"基本设备"},
-				{"value":"transportation", 	"name":"交通工具"}
+			    {"value":"0", 	    "name":"电子产品"},
+				{"value":"1",     "name":"办公用具"},
+				{"value":"2", 	    "name":"基本设备"},
+				{"value":"3", 	"name":"交通工具"}
 			    ]
 			}),
 			//emptyText : '请选择...',

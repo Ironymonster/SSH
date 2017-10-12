@@ -80,4 +80,11 @@ public class Assets {
 	public void setAssetsUsedTime(Date assetsUsedTime) {
 		this.assetsUsedTime = assetsUsedTime;
 	}
+	@Override
+	public String toString() {
+		return "Assets [assetsId=" + assetsId + ", assetsNumber=" + assetsNumber + ", assetsName=" + assetsName
+				+ ", assetsType=" + assetsType + ", assetsPrice=" + assetsPrice + ", assetsState=" + assetsState
+				+ ", assetsUsedTime=" + assetsUsedTime + ", user=" + user + "]";
+	}
+	
 }

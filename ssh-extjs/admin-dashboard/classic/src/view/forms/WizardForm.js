@@ -205,7 +205,13 @@ Ext.define('Admin.view.forms.WizardForm',
                                             disabled:'{atEnd}'},
                                     listeners:{click:'onNextClick'}
                                     },
-
+                                    '|',
+                                    {
+                                    xtype: 'button',
+                                    ui:this.colorScheme,
+                                    text: '提交',
+                                    handler: 'saveClick'
+                                    }
                                     ]};
                                 this.callParent();
                             },

@@ -1,4 +1,4 @@
-﻿Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
+Ext.define('Admin.view.profile.ProfileGrid', {    //1.修改文件路径
     extend: 'Ext.grid.Panel',         //2.继承的组件类型
 		//3.重写继承组件的属性：
 		id:'profileGrid',
@@ -29,9 +29,9 @@
     			    fields: ['value', 'name'],
     			    data : [//查询条件字段名和展示名
     			    	{"value":'assetsNumber', "name":'资产编号'},
-    			        {"value":'assetsName', "name":'资产名称'},
+    			        {"value":'assetsName', "name":'资产名称'}
     			        //{"value":'assetsPrice',"name":'估计价值'}
-    			        {"value":'assetsType',"name":'资产类型'}
+    			        //{"value":'assetsType',"name":'资产类型'}
     			        //{"value":'assetsUsedTime',"name":'创建时间'},
     			        // {"value":'uer',"name":'持有人'}
     			    ]

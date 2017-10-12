@@ -60,7 +60,6 @@ Ext.define('Admin.view.profile.ProfileViewController', {
     },
 
 	profileGridFormSubmit: function(btn) {
-
 		var profileGridForm = btn.up('form').getForm();
 		var win = btn.up('window');
 			//this.lookupReference('profileGrid').store.reload();  //lookupReference配合reference属性
