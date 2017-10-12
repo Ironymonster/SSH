@@ -34,7 +34,22 @@ Ext.define('Admin.store.NavigationTree', {
                 text: '个人中心',
                 iconCls: 'x-fa fa-user',
                 viewType: 'profile',
-                leaf: true
+                expanded: false,
+                selectable: false,
+                children: [
+                    {
+                        text: '资产列表',
+                        iconCls: 'x-fa fa-money',
+                        viewType: 'assets',
+                        leaf: true
+                    },
+                    {
+                        text: '个人信息',
+                        iconCls: 'x-fa fa-user-circle',
+                        viewType: 'userInfornation',
+                        leaf: true
+                    }
+                    ]
             },
             {
                 text: 'Search results',

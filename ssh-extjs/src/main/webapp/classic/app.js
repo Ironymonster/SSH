@@ -99310,10 +99310,147 @@ Ext.define('Admin.model.search.Attachment', {extend:Admin.model.Base, fields:[{t
 Ext.define('Admin.model.search.Result', {extend:Admin.model.Base, fields:[{type:'int', name:'id'}, {type:'string', name:'title'}, {type:'string', name:'thumbnail'}, {type:'string', name:'url'}, {type:'string', name:'content'}], hasMany:{name:'attachments', model:'search.Attachment'}});
 Ext.define('Admin.model.search.User', {extend:Admin.model.Base, fields:[{type:'int', name:'identifier'}, {type:'string', name:'fullname'}, {type:'string', name:'email'}, {name:'subscription'}, {type:'date', name:'joinDate'}, {type:'boolean', name:'isActive'}, {name:'profile_pic'}]});
 Ext.define('Admin.proxy.API', {extend:Ext.data.proxy.Ajax, alias:'proxy.api', reader:{type:'json', rootProperty:'data'}});
-Ext.define('Admin.store.NavigationTree', {extend:Ext.data.TreeStore, storeId:'NavigationTree', fields:[{name:'text'}], root:{expanded:true, children:[{text:'Dashboard', iconCls:'x-fa fa-desktop', rowCls:'nav-tree-badge nav-tree-badge-new', viewType:'admindashboard', routeId:'dashboard', leaf:true}, {text:'订单管理模块', iconCls:'x-fa fa-balance-scale', viewType:'order', leaf:true}, {text:'Email', iconCls:'x-fa fa-send', rowCls:'nav-tree-badge nav-tree-badge-hot', viewType:'email', leaf:true}, {text:'个人中心', 
-iconCls:'x-fa fa-user', viewType:'profile', leaf:true}, {text:'Search results', iconCls:'x-fa fa-search', viewType:'searchresults', leaf:true}, {text:'FAQ', iconCls:'x-fa fa-question', viewType:'faq', leaf:true}, {text:'Pages', iconCls:'x-fa fa-leanpub', expanded:false, selectable:false, children:[{text:'Blank Page', iconCls:'x-fa fa-file-o', viewType:'pageblank', leaf:true}, {text:'404 Error', iconCls:'x-fa fa-exclamation-triangle', viewType:'page404', leaf:true}, {text:'500 Error', iconCls:'x-fa fa-times-circle', 
-viewType:'page500', leaf:true}, {text:'Lock Screen', iconCls:'x-fa fa-lock', viewType:'lockscreen', leaf:true}, {text:'Login', iconCls:'x-fa fa-check', viewType:'login', leaf:true}, {text:'Register', iconCls:'x-fa fa-pencil-square-o', viewType:'register', leaf:true}, {text:'Password Reset', iconCls:'x-fa fa-lightbulb-o', viewType:'passwordreset', leaf:true}]}, {text:'Widgets', iconCls:'x-fa fa-flask', viewType:'widgets', leaf:true}, {text:'Forms', iconCls:'x-fa fa-edit', viewType:'forms', leaf:true}, 
-{text:'Charts', iconCls:'x-fa fa-pie-chart', viewType:'charts', leaf:true}]}});
+Ext.define('Admin.store.NavigationTree', {
+    extend: 'Ext.data.TreeStore',
+
+    storeId: 'NavigationTree',
+
+    fields: [{
+        name: 'text'
+    }],
+
+    root: {
+        expanded: true,
+        children: [
+            {
+                text: 'Dashboard',
+                iconCls: 'x-fa fa-desktop',
+                rowCls: 'nav-tree-badge nav-tree-badge-new',
+                viewType: 'admindashboard',
+                routeId: 'dashboard', // routeId defaults to viewType
+                leaf: true
+            },{
+                text: '订单管理模块',
+                iconCls: 'x-fa fa-balance-scale',
+                viewType: 'order',
+                leaf: true
+            },
+            {
+                text: 'Email',
+                iconCls: 'x-fa fa-send',
+                rowCls: 'nav-tree-badge nav-tree-badge-hot',
+                viewType: 'email',
+                leaf: true
+            },
+            {
+                text: '个人中心',
+                iconCls: 'x-fa fa-user',
+                viewType: 'profile',
+                expanded: false,
+                selectable: false,
+                children: [
+                    {
+                        text: '资产列表',
+                        iconCls: 'x-fa fa-money',
+                        viewType: 'assets',
+                        leaf: true
+                    },
+                    {
+                        text: '个人信息',
+                        iconCls: 'x-fa fa-user-circle',
+                        viewType: 'userInfornation',
+                        leaf: true
+                    }]
+            },
+            {
+                text: 'Search results',
+                iconCls: 'x-fa fa-search',
+                viewType: 'searchresults',
+                leaf: true
+            },
+            {
+                text: 'FAQ',
+                iconCls: 'x-fa fa-question',
+                viewType: 'faq',
+                leaf: true
+            },
+            {
+                text: 'Pages',
+                iconCls: 'x-fa fa-leanpub',
+                expanded: false,
+                selectable: false,
+                //routeId: 'pages-parent',
+                //id: 'pages-parent',
+
+                children: [
+                    {
+                        text: 'Blank Page',
+                        iconCls: 'x-fa fa-file-o',
+                        viewType: 'pageblank',
+                        leaf: true
+                    },
+
+                    {
+                        text: '404 Error',
+                        iconCls: 'x-fa fa-exclamation-triangle',
+                        viewType: 'page404',
+                        leaf: true
+                    },
+                    {
+                        text: '500 Error',
+                        iconCls: 'x-fa fa-times-circle',
+                        viewType: 'page500',
+                        leaf: true
+                    },
+                    {
+                        text: 'Lock Screen',
+                        iconCls: 'x-fa fa-lock',
+                        viewType: 'lockscreen',
+                        leaf: true
+                    },
+
+                    {
+                        text: 'Login',
+                        iconCls: 'x-fa fa-check',
+                        viewType: 'login',
+                        leaf: true
+                    },
+                    {
+                        text: 'Register',
+                        iconCls: 'x-fa fa-pencil-square-o',
+                        viewType: 'register',
+                        leaf: true
+                    },
+                    {
+                        text: 'Password Reset',
+                        iconCls: 'x-fa fa-lightbulb-o',
+                        viewType: 'passwordreset',
+                        leaf: true
+                    }
+                ]
+            },
+            {
+                text: 'Widgets',
+                iconCls: 'x-fa fa-flask',
+                viewType: 'widgets',
+                leaf: true
+            },
+            {
+                text: 'Forms',
+                iconCls: 'x-fa fa-edit',
+                viewType: 'forms',
+                leaf: true
+            },
+            {
+                text: 'Charts',
+                iconCls: 'x-fa fa-pie-chart',
+                viewType: 'charts',
+                leaf: true
+            }
+        ]
+    }
+});
+
 Ext.define('Admin.store.email.Friends', {extend:Ext.data.Store, alias:'store.emailfriends', model:'Admin.model.email.Friend', autoLoad:true, proxy:{type:'api', url:'~api/email/friends'}, sorters:{direction:'DESC', property:'online'}});
 Ext.define('Admin.store.email.Inbox', {extend:Ext.data.Store, alias:'store.inbox', model:'Admin.model.email.Email', pageSize:20, autoLoad:true, proxy:{type:'api', url:'~api/email/inbox'}});
 Ext.define('Admin.store.faq.FAQ', {extend:Ext.data.Store, alias:'store.faq', model:'Admin.model.faq.Category', proxy:{type:'api', url:'~api/faq/faq'}});
@@ -99957,19 +100094,43 @@ Ext.define('Admin.view.forms.WizardFormController', {
         this.navigate(button, panel, 'prev');
     },
 
-    saveClick: function(button) {
-        var wizardform = button.up('form').getForm();
+    saveClick: function(btn) {
+    	alert(btn.up('panel').items.getAt(0).items.getAt(0).getValue());
+    	
+    	Ext.Ajax.request({
+   	     url: 'ajax_demo/sample.json',
+   	     
+   	     params:{   	    	 
+   	     },
+   	     success: function(response, opts) {
+   	         var obj = Ext.decode(response.responseText);
+   	         console.dir(obj);
+   	     },
+
+   	     failure: function(response, opts) {
+   	         console.log('server-side failure with status code ' + 
+			response.status);
+			   	     }
+			   	 });
+        var wizardform = btn.up('panel').defaults.items[0].items[0].getValue();
+            //var win = btn.up('window');
             //this.lookupReference('profileGrid').store.reload();  //lookupReference配合reference属性
-            wizardform.submit(
-            {
+        		wizardform.submit( {
+                //waitTitle : '请稍后...',
+                //waitMsg : '正在保存订单信息,请稍后...',
+        			params:{
+        				
+        			},
                 url : 'assets/saveOrUpdate',
                 method : 'post',
                 success : function(form, action) {
                     Ext.Msg.alert("提示",action.result.msg);
-                    //Ext.getCmp("wizardform").store.reload();
+                    win.close();
+                    Ext.getCmp("profileGrid").store.reload();
                 },
                 failure : function(form, action) {
                     Ext.Msg.alert("提示",action.result.msg);
+
                 }
             });
     },
@@ -100013,6 +100174,7 @@ Ext.define('Admin.view.forms.WizardFormController', {
         }
     }
 });
+
 Ext.define('Admin.model.wizard.WizardModel', {
     extend: 'Admin.model.Base',
     fields: [

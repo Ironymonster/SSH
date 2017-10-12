@@ -36,19 +36,23 @@ Ext.define('Admin.view.forms.WizardFormController', {
         this.navigate(button, panel, 'prev');
     },
 
-    saveClick: function(button) {
-        var wizardform = button.up('form').getForm();
+    saveClick: function(btn) {
+        var profileGridForm = btn.up('form').getForm();
+            //var win = btn.up('window');
             //this.lookupReference('profileGrid').store.reload();  //lookupReference配合reference属性
-            wizardform.submit(
-            {
+            profileGridForm.submit( {
+                //waitTitle : '请稍后...',
+                //waitMsg : '正在保存订单信息,请稍后...',
                 url : 'assets/saveOrUpdate',
                 method : 'post',
                 success : function(form, action) {
                     Ext.Msg.alert("提示",action.result.msg);
+                    win.close();
                     Ext.getCmp("profileGrid").store.reload();
                 },
                 failure : function(form, action) {
                     Ext.Msg.alert("提示",action.result.msg);
+
                 }
             });
     },
