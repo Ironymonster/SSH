@@ -99275,6 +99275,7 @@ Ext.define('Admin.model.order.OrderModel', {extend:Admin.model.Base, fields:[{na
 Ext.define('Admin.model.profile.ProfileModel', {
     extend: 'Admin.model.Base',
     fields: [
+    	//资产表
 		{name:'assetsId'		,type: 'int'},
     	{name:'assetsNumber'    ,type: 'string'},
     	{name:'assetsUsedTime'	,type: 'date'},
@@ -99285,6 +99286,23 @@ Ext.define('Admin.model.profile.ProfileModel', {
 		{name:'highPrice'		,type: 'float'},
 		{name:'lowPrice'		,type: 'float'},
 		{name:'assetsType'		,type: 'string'}
+//		//个人中心表
+//		{name:'userId'		,type: 'int'},
+//    	{name:'userName'    ,type: 'string'},
+//    	{name:'password'	,type: 'string'},
+//    	{name:'sex'			,type: 'string'},
+//    	{name:'mail'		,type: 'string'},
+//    	{name:'mobilePhone'	,type: 'string'},
+//    	{name:'idType'		,type: 'string'},
+//		{name:'idNumber'	,type: 'string'},
+//    	{name:'birthday'	,type: 'date'},
+//    	{name:'nativePlace'	,type: 'string'},
+//    	{name:'onDutDate'	,type: 'date'},
+//    	{name:'wechatNumber',type: 'string'},
+//    	{name:'home'		,type: 'string'},
+//		{name:'realName'	,type: 'string'},
+//		{name:'qq_number'	,type: 'string'},
+//		{name:'dept'		,type: 'string'}
     ]
 });
 
@@ -99671,8 +99689,8 @@ Ext.define('Admin.view.forms.WizardForm',
             bodyPadding:15,
             height:340,
             layout:'card',
-            viewModel:{type:'wizardform'},
-            controller:'wizardform',
+            viewModel:{type:'wizardFormModel'},
+            controller:'wizardFormController',
             defaults:{
                 defaultFocus:'textfield:not([value]):focusable:not([disabled])',
                 defaultButton:'nextbutton'},
@@ -99689,94 +99707,61 @@ Ext.define('Admin.view.forms.WizardForm',
 
                 items:[
                 {
-                    fieldLabel: '手机号码  ',
-                    emptyText : 'Username must be unique.',
-                    name:'staffNumber'
-                },
-
-                {
-                    fieldLabel: '邮箱',
-                    emptyText:'ex: me@somewhere.com',
-                    vtype:'email',
-                    name:'mail'
-                },
-                {
-                    fieldLabel: '更改密码   ',
-                    emptyText:'Enter a password',
-                    inputType:'password',
-                    cls:'wizard-form-break'},
-                {
-                    fieldLabel: '再输入一次',
-                    emptyText:'Passwords must match',
-                    inputType:'password'}]},
-                {
-                    xtype:'form',
-                    defaultType:'textfield',
-                    defaults:{
-                        labelWidth:90,
-                        labelAlign:'left',
-                        labelSeparator:'',
-                        submitEmptyText:false,
-                        anchor:'90%'},
-                items:[
-                {
                     fieldLabel: '名字',
                     emptyText:'Name',
-                    name :'staffName'},
-                {
-                    xtype: 'datefield',
-                    format: 'Y/m/d H:i:s',
-                    fieldLabel: '生日',
-                    name:'createTime'
+                    name :'realName'
                 },
                 {
-                    xtype: 'datefield',
-                    format: 'Y/m/d H:i:s',
-                    fieldLabel: '入职时间',
-                    name:'createTime'
-                },
-                {
+                    fieldLabel:'性别',
                     xtype:'fieldcontainer',
                     cls:'wizard-form-break',
-                    fieldLabel:'性别',
                     defaultType:'radiofield',
                     defaults:{flex:1},
                     layout:'hbox',
-
+                    name:'sex',
+                    editable : false,// 是否允许输入
+                    allowBlank : false,// 不允许为空
+                    inputValue:'Free',
                 items:[
                 {
                     boxLabel:'男',
-                    name:'SexType',
                     inputValue:'Free'
                 },
                 {
                     boxLabel:'女',
-                    name:'SexType',
                     inputValue:'Perosnal'
+                }
+                    ]
                 },
-            ]}]},
+                {
+                    fieldLabel:'密码',
+                    emptyText:'Enter a password',
+                    inputType:'password',
+                    name:'password',
+                    cls:'wizard-form-break'
+                },
+                {
+                    fieldLabel: '再输入一次',
+                    emptyText:'Passwords must match',
+                    name:'rePassword',
+                    inputType:'password'
+                }
+                    ]
+                },
                 {
                     xtype:'form',
                     defaultType:'textfield',
-                    defaults:{labelWidth:90,
-                    labelAlign:'left',
-                    labelSeparator:'',
-                    submitEmptyText:false,
-                    anchor:'90%'},
-
-            items:[
-
-                {
-                    fieldLabel:'家庭住址',
-                    emptyText:'Address'
+                        defaults:{
+                        labelWidth:90,
+                        labelAlign:'left',
+                        labelSeparator:'',
+                        submitEmptyText:false,
+                        anchor:'90%'
                 },
+                items:[
                 {
-                    fieldLabel:'籍贯',
-                    emptyText:'City'
-                },
-                {
-                    xtype: 'combobox',
                     fieldLabel: '身份证类型',
+                    xtype: 'combobox',
                     name:'idType',
                     store:  Ext.create('Ext.data.Store', {
                         fields: ['value', 'name'],
@@ -99788,27 +99773,93 @@ Ext.define('Admin.view.forms.WizardForm',
                     }),
                     queryMode:    'local',
                     displayField: 'name',
-                    valueField:   'value'
+                    valueField:   'value',
+                    value:'HIGH'
                 },
                 {
                     fieldLabel: '身份证号码',
+                    name:'idNumber'
+                },
+
+                {
+                    fieldLabel: '生日',
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    name:'birthday'
+                },
+                {
+                    fieldLabel: '入职时间',
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    name:'onDutDate'
+                }
+                ]
+            },
+            {
+                    xtype:'form',
+                    defaultType:'textfield',
+                    defaults:{labelWidth:90,
+                    labelAlign:'left',
+                    labelSeparator:'',
+                    submitEmptyText:false,
+                    anchor:'90%'},
+
+            items:[
+                {
+                    fieldLabel:'家庭住址',
+                    name:'home',
+                    emptyText:'Address'
+                },
+                {
+                    fieldLabel:'籍贯',
+                    name:'nativePlace',
+                    emptyText:'City'
+                },
+                {
+                    fieldLabel:'邮政编码',
+                    name:'postalCode'
+                },
+                {
+                    fieldLabel:'邮政编码',
+                    name:'postalCode'
                 }
                 ]},
                  {
                     xtype:'form',
-                    defaultType:'textareafield',
+//                  defaultType:'textareafield',
+                    defaultType:'textfield',
                     defaults:{
                     labelWidth:90,
-                    height:'80%',
-                    labelAlign:'top',
+                    labelAlign:'left',
+//                  labelAlign:'top',
                     labelSeparator:'',
+                    submitEmptyText:false,
                     anchor:'90%'},
-
-                    items:[{
-
-                        fieldLabel:'ABout me',
-
-                    }]
+                    items:[
+                         {
+                            fieldLabel: '手机号码',
+                            emptyText : 'phone number',
+                            name:'mobilePhone'
+                        },
+                        {
+                            fieldLabel: '邮箱',
+                            emptyText:'ex: me@somewhere.com',
+                            vtype:'email',
+                            name:'mail'
+                        },
+                        {
+                            fieldLabel: '微信号码',
+                            emptyText:'WeChat Number',
+                            vtype:'email',
+                            name:'wechatNumber'
+                        },
+                        {
+                            fieldLabel: 'QQ号码',
+                            emptyText:'QQ Number',
+                            vtype:'email',
+                            name:'qq_number'
+                        }
+                    ]
                  }],
                     initComponent:function() {
                     this.tbar = {
@@ -99863,18 +99914,17 @@ Ext.define('Admin.view.forms.WizardForm',
                                     {
                                     xtype: 'button',
                                     ui:this.colorScheme,
-                                    text: 'save',
+                                    text: '提交',
                                     handler: 'saveClick'
                                     }
                                     ]};
                                 this.callParent();
-                            },
-
+                            }
                   });
 
 Ext.define('Admin.view.forms.WizardFormController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.wizardform',
+    alias: 'controller.wizardFormController',
 
 
     init: function(view) {
@@ -99963,7 +100013,7 @@ Ext.define('Admin.view.forms.WizardFormController', {
         }
     }
 });
-Ext.define('Admin.model.forms.WizardModel', {
+Ext.define('Admin.model.wizard.WizardModel', {
     extend: 'Admin.model.Base',
     fields: [
 		{name:'userId'		,type: 'int'},
@@ -99985,7 +100035,38 @@ Ext.define('Admin.model.forms.WizardModel', {
     ]
 });
 
-Ext.define('Admin.view.forms.WizardFormModel', {extend:Ext.app.ViewModel, alias:'viewmodel.wizardform', data:{atBeginning:true, atEnd:false}});
+Ext.define('Admin.store.wizard.WizardStore', {
+    extend: 'Ext.data.Store',
+    alias: 'store.wizardStore',			  //1.Store取别名（reference）
+    model: 'Admin.model.wizard.WizardModel',//2.设置model的全路径
+    proxy: {
+		type: 'ajax',
+		url: 'assets/findPage.json',	//后台ProfileController中的接口url地址
+		reader: {
+			type:'json',
+			rootProperty: 'content',		//结果集名字的属性
+			totalProperty: 'totalElements'	//一共多少条记录的属性
+		},
+	}
+});
+
+
+Ext.define('Admin.view.forms.WizardFormModel', {
+	    extend: 'Ext.app.ViewModel',
+	    alias: 'viewmodel.wizardFormModel',
+	    data: {
+	        atBeginning: true,
+	        atEnd: false
+	    },
+	    
+	    stores: {
+	    profileLists: {
+	        type: 'wizardStore',//Store reference ==Store的属性 alias: 'store.profileStore',		
+	        autoLoad: true //Auto load
+	    }
+	}
+	    
+});
 Ext.define('Admin.view.forms.WizardOne', {extend:Ext.panel.Panel, alias:'widget.formswizardone', cls:'wizardone shadow', plugins:{responsive:true}, responsiveConfig:{'width \x3e\x3d 1000':{layout:{type:'box', align:'stretch', vertical:false}}, 'width \x3c 1000':{layout:{type:'box', align:'stretch', vertical:true}}}, items:[{xtype:'specialoffer', plugins:{responsive:true}, height:338, responsiveConfig:{'width \x3c 1000':{flex:null}, 'width \x3e\x3d 1000':{flex:1}}}, {xtype:'wizardform', cls:'wizardone', 
 colorScheme:'blue', flex:1}]});
 Ext.define('Admin.view.forms.Wizards', {extend:Ext.container.Container, xtype:'forms', cls:'wizards', defaultFocus:'wizardform', layout:'responsivecolumn', items:[{xtype:'formswizardone', userCls:'big-100'}, {xtype:'wizardform', cls:'wizardtwo shadow', colorScheme:'soft-purple', userCls:'big-50 small-100'}, {xtype:'wizardform', cls:'wizardthree shadow', colorScheme:'soft-green', userCls:'big-50 small-100'}]});
@@ -100486,9 +100567,7 @@ Ext.define('Admin.view.profile.UserProfile',
                     colorScheme:'soft-purple',
                     userCls:'big-50 small-100'},
                 {
-                    xtype: 'profileGrid',
-                    cls: 'wizardthree shadow',
-                    colorScheme: 'soft-green',
+                    xtype: 'profileGrid',   
                     userCls: 'big-50 small-100'}
                 ]});
 Ext.define('Admin.view.search.Results', {extend:Ext.tab.Panel, xtype:'searchresults', controller:'searchresults', viewModel:{type:'searchresults'}, cls:'shadow', activeTab:0, margin:20, items:[{xtype:'gridpanel', cls:'allRecordsCls', scrollable:false, hideHeaders:true, border:false, title:'All', routeId:'all', bind:'{allResults}', viewConfig:{preserveScrollOnRefresh:true, stripeRows:false}, columns:[{xtype:'gridcolumn', renderer:function(value, metaData, record, rowIndex) {

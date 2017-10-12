@@ -17,8 +17,8 @@ Ext.define('Admin.view.forms.WizardForm',
             bodyPadding:15,
             height:340,
             layout:'card',
-            viewModel:{type:'wizardform'},
-            controller:'wizardform',
+            viewModel:{type:'wizardFormModel'},
+            controller:'wizardFormController',
             defaults:{
                 defaultFocus:'textfield:not([value]):focusable:not([disabled])',
                 defaultButton:'nextbutton'},
@@ -35,94 +35,63 @@ Ext.define('Admin.view.forms.WizardForm',
 
                 items:[
                 {
-                    fieldLabel: '手机号码  ',
-                    emptyText : 'Username must be unique.',
-                    name:'staffNumber'
-                },
-
-                {
-                    fieldLabel: '邮箱',
-                    emptyText:'ex: me@somewhere.com',
-                    vtype:'email',
-                    name:'mail'
-                },
-                {
-                    fieldLabel: '更改密码   ',
-                    emptyText:'Enter a password',
-                    inputType:'password',
-                    cls:'wizard-form-break'},
-                {
-                    fieldLabel: '再输入一次',
-                    emptyText:'Passwords must match',
-                    inputType:'password'}]},
-                {
-                    xtype:'form',
-                    defaultType:'textfield',
-                    defaults:{
-                        labelWidth:90,
-                        labelAlign:'left',
-                        labelSeparator:'',
-                        submitEmptyText:false,
-                        anchor:'90%'},
-                items:[
-                {
                     fieldLabel: '名字',
                     emptyText:'Name',
-                    name :'staffName'},
-                {
-                    xtype: 'datefield',
-                    format: 'Y/m/d H:i:s',
-                    fieldLabel: '生日',
-                    name:'createTime'
+                    name :'realName'
                 },
                 {
-                    xtype: 'datefield',
-                    format: 'Y/m/d H:i:s',
-                    fieldLabel: '入职时间',
-                    name:'createTime'
-                },
-                {
+                    fieldLabel:'性别',
                     xtype:'fieldcontainer',
                     cls:'wizard-form-break',
-                    fieldLabel:'性别',
                     defaultType:'radiofield',
                     defaults:{flex:1},
                     layout:'hbox',
-
+                    name:'sex',
+                    editable : false,// 是否允许输入
+                    allowBlank : false,// 不允许为空
+                    value : 'man',
                 items:[
                 {
                     boxLabel:'男',
-                    name:'SexType',
+                    value : 'man',
                     inputValue:'Free'
                 },
                 {
                     boxLabel:'女',
-                    name:'SexType',
+                    value : 'woman',
                     inputValue:'Perosnal'
+                }
+                    ]
                 },
-            ]}]},
+                {
+                    fieldLabel:'密码',
+                    emptyText:'Enter a password',
+                    inputType:'password',
+                    name:'password',
+                    cls:'wizard-form-break'
+                },
+                {
+                    fieldLabel: '再输入一次',
+                    emptyText:'Passwords must match',
+                    name:'rePassword',
+                    inputType:'password'
+                }
+                    ]
+                },
                 {
                     xtype:'form',
                     defaultType:'textfield',
-                    defaults:{labelWidth:90,
-                    labelAlign:'left',
-                    labelSeparator:'',
-                    submitEmptyText:false,
-                    anchor:'90%'},
-
-            items:[
-
-                {
-                    fieldLabel:'家庭住址',
-                    emptyText:'Address'
+                        defaults:{
+                        labelWidth:90,
+                        labelAlign:'left',
+                        labelSeparator:'',
+                        submitEmptyText:false,
+                        anchor:'90%'
                 },
+                items:[
                 {
-                    fieldLabel:'籍贯',
-                    emptyText:'City'
-                },
-                {
-                    xtype: 'combobox',
                     fieldLabel: '身份证类型',
+                    xtype: 'combobox',
                     name:'idType',
                     store:  Ext.create('Ext.data.Store', {
                         fields: ['value', 'name'],
@@ -138,23 +107,88 @@ Ext.define('Admin.view.forms.WizardForm',
                 },
                 {
                     fieldLabel: '身份证号码',
+                    name:'idNumber'
+                },
+
+                {
+                    fieldLabel: '生日',
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    name:'birthday'
+                },
+                {
+                    fieldLabel: '入职时间',
+                    xtype: 'datefield',
+                    format: 'Y/m/d H:i:s',
+                    name:'onDutDate'
+                }
+                ]
+            },
+            {
+                    xtype:'form',
+                    defaultType:'textfield',
+                    defaults:{labelWidth:90,
+                    labelAlign:'left',
+                    labelSeparator:'',
+                    submitEmptyText:false,
+                    anchor:'90%'},
+
+            items:[
+                {
+                    fieldLabel:'家庭住址',
+                    name:'home',
+                    emptyText:'Address'
+                },
+                {
+                    fieldLabel:'籍贯',
+                    name:'nativePlace',
+                    emptyText:'City'
+                },
+                {
+                    fieldLabel:'邮政编码',
+                    name:'postalCode'
+                },
+                {
+                    fieldLabel:'邮政编码',
+                    name:'postalCode'
                 }
                 ]},
                  {
                     xtype:'form',
-                    defaultType:'textareafield',
+//                  defaultType:'textareafield',
+                    defaultType:'textfield',
                     defaults:{
                     labelWidth:90,
-                    height:'80%',
-                    labelAlign:'top',
+                    labelAlign:'left',
+//                  labelAlign:'top',
                     labelSeparator:'',
+                    submitEmptyText:false,
                     anchor:'90%'},
-
-                    items:[{
-
-                        fieldLabel:'ABout me',
-
-                    }]
+                    items:[
+                         {
+                            fieldLabel: '手机号码',
+                            emptyText : 'phone number',
+                            name:'mobilePhone'
+                        },
+                        {
+                            fieldLabel: '邮箱',
+                            emptyText:'ex: me@somewhere.com',
+                            vtype:'email',
+                            name:'mail'
+                        },
+                        {
+                            fieldLabel: '微信号码',
+                            emptyText:'WeChat Number',
+                            vtype:'email',
+                            name:'wechatNumber'
+                        },
+                        {
+                            fieldLabel: 'QQ号码',
+                            emptyText:'QQ Number',
+                            vtype:'email',
+                            name:'qq_number'
+                        }
+                    ]
                  }],
                     initComponent:function() {
                     this.tbar = {
@@ -214,6 +248,5 @@ Ext.define('Admin.view.forms.WizardForm',
                                     }
                                     ]};
                                 this.callParent();
-                            },
-
+                            }
                   });

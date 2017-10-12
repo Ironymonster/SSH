@@ -3,7 +3,7 @@
  */
 Ext.define('Admin.view.forms.WizardFormController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.wizardform',
+    alias: 'controller.wizardFormController',
 
 
     init: function(view) {
