@@ -1,4 +1,4 @@
-Ext.define('Admin.model.forms.WizardModel', {
+Ext.define('Admin.model.wizard.WizardModel', {
     extend: 'Admin.model.Base',
     fields: [
 		{name:'userId'		,type: 'int'},

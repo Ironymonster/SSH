@@ -30,10 +30,15 @@ Ext.define('Admin.store.NavigationTree', {
                 viewType: 'email',
                 leaf: true
             },
+            // {
+            //     text: '个人中心',
+            //     iconCls: 'x-fa fa-user',
+            //     viewType: 'profile',
+            //     leaf: true
+            // },
             {
                 text: '个人中心',
                 iconCls: 'x-fa fa-user',
-                viewType: 'profile',
                 expanded: false,
                 selectable: false,
                 children: [
@@ -46,10 +51,9 @@ Ext.define('Admin.store.NavigationTree', {
                     {
                         text: '个人信息',
                         iconCls: 'x-fa fa-user-circle',
-                        viewType: 'userInfornation',
+                        viewType: 'profile',
                         leaf: true
-                    }
-                    ]
+                    }]
             },
             {
                 text: 'Search results',

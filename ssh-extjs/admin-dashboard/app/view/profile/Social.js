@@ -11,11 +11,10 @@ Ext.define('Admin.view.profile.Social', {
         type: 'vbox',
         align: 'middle'
     },
+    cls: 'timeline-items-wrap user-profile-desc',
 
     height: 320,
-    
     bodyPadding: 20,
-    
     items: [
         {
             xtype: 'image',
@@ -37,44 +36,56 @@ Ext.define('Admin.view.profile.Social', {
             html: 'CO-FOUNDER, CEO'
         },
         {
-            xtype: 'container',
-            layout: 'hbox',
-            defaults: {
-                xtype: 'button',
-                margin: 5
-            },
-            margin: 5,
-            items: [
-                {
-                    ui: 'facebook',
-                    iconCls: 'x-fa fa-facebook'
-                },
-                {
-                    ui: 'soft-cyan',
-                    iconCls: 'x-fa fa-twitter'
-                },
-                {
-                    ui: 'soft-red',
-                    iconCls: 'x-fa fa-google-plus'
-                },
-                {
-                    ui: 'soft-purple',
-                    iconCls: 'x-fa fa-envelope'
-                }
-            ]
+            xtype: 'component',
+            userCls: 'box x-fa fa-home',
+            html: 'San Jose, CA',
+            padding: '0 0 12 0'
         },
         {
-            xtype: 'button',
-            width: 220,
-            text: 'Follow',
-            platformConfig: {
-                classic: {
-                    scale: 'large'
-                },
-                modern: {
-                    ui: 'action'
-                }
-            }
+            xtype: 'component',
+            userCls: 'box x-fa fa-clock-o',
+            html: 'Member since 1 years ago',
+            padding: '0 0 12 0'
         }
+        // {
+        //     xtype: 'container',
+        //     layout: 'hbox',
+        //     defaults: {
+        //         xtype: 'button',
+        //         margin: 5
+        //     },
+        //     margin: 5,
+        //     items: [
+        //         {
+        //             ui: 'facebook',
+        //             iconCls: 'x-fa fa-facebook'
+        //         },
+        //         {
+        //             ui: 'soft-cyan',
+        //             iconCls: 'x-fa fa-twitter'
+        //         },
+        //         {
+        //             ui: 'soft-red',
+        //             iconCls: 'x-fa fa-google-plus'
+        //         },
+        //         {
+        //             ui: 'soft-purple',
+        //             iconCls: 'x-fa fa-envelope'
+        //         }
+        //     ]
+        // },
+        // {
+        //     xtype: 'button',
+        //     width: 220,
+        //     text: 'Follow',
+        //     platformConfig: {
+        //         classic: {
+        //             scale: 'large'
+        //         },
+        //         modern: {
+        //             ui: 'action'
+        //         }
+        //     }
+        // }
     ]
 });

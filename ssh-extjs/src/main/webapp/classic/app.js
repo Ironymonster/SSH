@@ -99345,7 +99345,7 @@ Ext.define('Admin.store.NavigationTree', {
             {
                 text: '个人中心',
                 iconCls: 'x-fa fa-user',
-                viewType: 'profile',
+                //viewType: 'profile',
                 expanded: false,
                 selectable: false,
                 children: [
@@ -99358,7 +99358,7 @@ Ext.define('Admin.store.NavigationTree', {
                     {
                         text: '个人信息',
                         iconCls: 'x-fa fa-user-circle',
-                        viewType: 'userInfornation',
+                        viewType: 'profile',
                         leaf: true
                     }]
             },
@@ -99545,8 +99545,98 @@ padding:'0 0 12 0'}, {xtype:'container', flex:1, cls:'about-me-wrap', html:'\x3c
 Ext.define('Admin.view.profile.Notifications', {extend:Ext.DataView, xtype:'profilenotifications', cls:'user-notifications', scrollable:false, bind:{store:'{userSharedItems}'}, itemSelector:'div.timeline-item', itemTpl:["\x3cdiv class\x3d'comments {[values._id !\x3d\x3d values.parent_id ? 'sub-comments' : '']}'\x3e", "\x3cimg src\x3d'resources/images/user-profile/15.png' alt\x3d'Smiley face' class\x3d'profile-icon'\x3e", "\x3cdiv class\x3d'content-wrap'\x3e", '\x3cdiv\x3e', "\x3ch4 class\x3d'profilenotifications-username'\x3e{name}\x3cspan class\x3d'x-fa fa-mobile'\x3e\x3c/span\x3e\x3c/h4\x3e", 
 "\x3cspan class\x3d'from-now'\x3e\x3cspan class\x3d'x-fa fa-clock-o'\x3e\x3c/span\x3e3 Hours Ago\x3c/span\x3e", '\x3c/div\x3e', "\x3cdiv class\x3d'content'\x3e{content}\x3c/div\x3e", "\x3cdiv class\x3d'like-comment-btn-wrap'\x3e", "\x3cbutton type\x3d'button' class\x3d'x-fa fa-thumbs-up' onclick\x3d''\x3e\x3c/button\x3e", "\x3cbutton type\x3d'button' class\x3d'x-fa fa-thumbs-down' onclick\x3d''\x3e\x3c/button\x3e", "\x3cbutton type\x3d'button' onclick\x3d'' class\x3d'x-fa fa-comments'\x3e\x3c/button\x3e", 
 '\x3c/div\x3e', '\x3c/div\x3e', '\x3c/div\x3e']});
-Ext.define('Admin.view.profile.Social', {extend:Ext.panel.Panel, xtype:'profilesocial', layout:{type:'vbox', align:'middle'}, height:320, bodyPadding:20, items:[{xtype:'image', cls:'userProfilePic', height:120, width:120, alt:'profile-picture', src:'resources/images/user-profile/20.png'}, {xtype:'component', cls:'userProfileName', height:'', html:'Jessica Warren'}, {xtype:'component', cls:'userProfileDesc', html:'CO-FOUNDER, CEO'}, {xtype:'container', layout:'hbox', defaults:{xtype:'button', margin:5}, 
-margin:5, items:[{ui:'facebook', iconCls:'x-fa fa-facebook'}, {ui:'soft-cyan', iconCls:'x-fa fa-twitter'}, {ui:'soft-red', iconCls:'x-fa fa-google-plus'}, {ui:'soft-purple', iconCls:'x-fa fa-envelope'}]}, {xtype:'button', width:220, text:'Follow', platformConfig:{classic:{scale:'large'}, modern:{ui:'action'}}}]});
+
+Ext.define('Admin.view.profile.Social', {
+    extend: 'Ext.panel.Panel',
+    xtype: 'profilesocial',
+    requires: [
+        'Ext.Button',
+        'Ext.Container'
+    ],
+
+    layout: {
+        type: 'vbox',
+        align: 'middle'
+    },
+    cls: 'timeline-items-wrap user-profile-desc',
+    height: 320,
+    bodyPadding: 20,
+    items: [
+        {
+            xtype: 'image',
+            cls: 'userProfilePic',
+            height: 120,
+            width: 120,
+            alt: 'profile-picture',
+            src: 'resources/images/user-profile/20.png'
+        },
+        {
+            xtype: 'component',
+            cls: 'userProfileName',
+            height: '',
+            html: 'Jessica Warren'
+        },
+        {
+            xtype: 'component',
+            cls: 'userProfileDesc',
+            html: 'CO-FOUNDER, CEO'
+        },
+        {
+            xtype: 'component',
+            cls: 'timeline-items-wrap user-profile-desc',
+            userCls: 'box x-fa fa-home',
+            html: 'San Jose, CA',
+            padding: '0 0 12 0'
+        },
+        {
+            xtype: 'component',
+            cls: 'timeline-items-wrap user-profile-desc',
+            userCls: 'box x-fa fa-clock-o',
+            html: 'Member since 1 years ago',
+            padding: '0 0 12 0'
+        }
+//        {
+//            xtype: 'container',
+//            layout: 'hbox',
+//            defaults: {
+//                xtype: 'button',
+//                margin: 5
+//            },
+//            margin: 5,
+//            items: [
+//                {
+//                    ui: 'facebook',
+//                    iconCls: 'x-fa fa-facebook'
+//                },
+//                {
+//                    ui: 'soft-cyan',
+//                    iconCls: 'x-fa fa-twitter'
+//                },
+//                {
+//                    ui: 'soft-red',
+//                    iconCls: 'x-fa fa-google-plus'
+//                },
+//                {
+//                    ui: 'soft-purple',
+//                    iconCls: 'x-fa fa-envelope'
+//                }
+//            ]
+//        },
+//        {
+//            xtype: 'button',
+//            width: 220,
+//            text: 'Follow',
+//            platformConfig: {
+//                classic: {
+//                    scale: 'large'
+//                },
+//                modern: {
+//                    ui: 'action'
+//                }
+//            }
+//        }
+    ]
+});
 Ext.define('Admin.view.profile.Timeline', {extend:Ext.DataView, xtype:'profiletimeline', cls:'timeline-items-wrap', scrollable:false, bind:'{userTimeline}', itemSelector:'.timeline-item', itemTpl:['\x3cdiv class\x3d"timeline-item{userId:this.cls(values,parent[xindex-2],xindex-1,xcount)}"\x3e' + '{date:this.epoch(values,parent[xindex-2],xindex-1,xcount)}' + '\x3cdiv class\x3d"profile-pic-wrap"\x3e' + '\x3cimg src\x3d"resources/images/user-profile/{userId}.png" alt\x3d"Smiley face"\x3e' + '\x3cdiv\x3e{date:this.elapsed} ago\x3c/div\x3e' + 
 '\x3c/div\x3e' + '\x3ctpl if\x3d"notificationType \x3d\x3d \'image_sharing\'"\x3e' + '\x3cdiv class\x3d"line-wrap"\x3e' + '\x3cdiv class\x3d"contents-wrap"\x3e' + '\x3cdiv class\x3d"shared-by"\x3e\x3ca href\x3d"#"\x3e{name}\x3c/a\x3e shared an image\x3c/div\x3e' + '\x3cimg src\x3d"resources/images/img2.jpg" class\x3d"shared-img" alt\x3d"Smiley face"\x3e' + '\x3c/div\x3e' + '\x3c/div\x3e' + '\x3ctpl elseif\x3d"notificationType \x3d\x3d \'job_meeting\'"\x3e' + '\x3cdiv class\x3d"line-wrap"\x3e' + '\x3cdiv class\x3d"contents-wrap"\x3e' + 
 '\x3cdiv class\x3d"job-meeting"\x3e\x3ca href\x3d"#"\x3eJob Meeting\x3c/a\x3e\x3c/div\x3e' + '\x3cdiv\x3e{content}\x3c/div\x3e' + '\x3c/div\x3e' + '\x3c/div\x3e' + '\x3ctpl elseif\x3d"notificationType \x3d\x3d \'comment_reply\'"\x3e' + '\x3cdiv class\x3d"line-wrap"\x3e' + '\x3cdiv class\x3d"contents-wrap"\x3e' + '\x3cdiv class\x3d"shared-by"\x3e\x3ca href\x3d"#"\x3e{name}\x3c/a\x3e commented on The Article\x3c/div\x3e' + '\x3cdiv class\x3d"article-comment"\x3e\x3cspan class\x3d"x-fa fa-quote-left"\x3e\x3c/span\x3e{content}\x3c/div\x3e' + 
@@ -99617,10 +99707,147 @@ Ext.define('Admin.view.profile.Timeline', {extend:Ext.DataView, xtype:'profileti
 Ext.define('Admin.view.profile.UserProfileBase', {extend:Ext.Container, viewModel:{type:'userprofile'}});
 Ext.define('Admin.view.profile.UserProfileModel', {extend:Ext.app.ViewModel, alias:'viewmodel.userprofile', stores:{userSharedItems:{autoLoad:true, fields:[{name:'_id'}, {name:'parent_id'}, {name:'name'}, {name:'source'}, {name:'date'}, {name:'isActive'}, {name:'time'}, {name:'content'}], proxy:{type:'api', url:'~api/usershareditems'}}, userTimeline:{autoLoad:true, fields:[{name:'_id'}, {name:'name'}, {name:'content'}, {name:'date', type:'date'}, {name:'userId'}, {name:'notificationType'}], proxy:{type:'api', 
 url:'~api/usertimeline'}}}});
-Ext.define('Admin.view.main.Main', {extend:Ext.container.Viewport, controller:'main', viewModel:'main', cls:'sencha-dash-viewport', itemId:'mainView', layout:{type:'vbox', align:'stretch'}, listeners:{render:'onMainViewRender'}, items:[{xtype:'toolbar', cls:'sencha-dash-dash-headerbar shadow', height:64, itemId:'headerBar', items:[{xtype:'component', reference:'senchaLogo', cls:'sencha-logo', html:'\x3cdiv class\x3d"main-logo"\x3e\x3cimg src\x3d"resources/images/company-logo.png"\x3eSencha\x3c/div\x3e', 
-width:250}, {margin:'0 0 0 8', ui:'header', iconCls:'x-fa fa-navicon', id:'main-navigation-btn', handler:'onToggleNavigationSize'}, '-\x3e', {xtype:'segmentedbutton', margin:'0 16 0 0', platformConfig:{ie9m:{hidden:true}}, items:[{iconCls:'x-fa fa-desktop', pressed:true}, {iconCls:'x-fa fa-tablet', handler:'onSwitchToModern', tooltip:'Switch to modern toolkit'}]}, {iconCls:'x-fa fa-search', ui:'header', href:'#searchresults', hrefTarget:'_self', tooltip:'See latest search'}, {iconCls:'x-fa fa-envelope', 
-ui:'header', href:'#email', hrefTarget:'_self', tooltip:'Check your email'}, {iconCls:'x-fa fa-question', ui:'header', href:'#faq', hrefTarget:'_self', tooltip:"Help / FAQ's"}, {iconCls:'x-fa fa-th-large', ui:'header', href:'#profile', hrefTarget:'_self', tooltip:'See your profile'}, {xtype:'tbtext', text:'Goff Smith', cls:'top-user-name'}, {xtype:'image', cls:'header-right-profile-image', height:35, width:35, alt:'current user image', src:'resources/images/user-profile/2.png'}]}, {xtype:'maincontainerwrap', 
-id:'main-view-detail-wrap', reference:'mainContainerWrap', flex:1, items:[{xtype:'treelist', reference:'navigationTreeList', itemId:'navigationTreeList', ui:'nav', store:'NavigationTree', width:250, expanderFirst:false, expanderOnly:false, listeners:{selectionchange:'onNavigationTreeSelectionChange'}}, {xtype:'container', flex:1, reference:'mainCardPanel', cls:'sencha-dash-right-main-container', itemId:'contentPanel', layout:{type:'card', anchor:'100%'}}]}]});
+Ext.define('Admin.view.main.Main', {
+    extend: 'Ext.container.Viewport',
+
+    requires: [
+        'Ext.button.Segmented',
+        'Ext.list.Tree'
+    ],
+
+    controller: 'main',
+    viewModel: 'main',
+
+    cls: 'sencha-dash-viewport',
+    itemId: 'mainView',
+
+    layout: {
+        type: 'vbox',
+        align: 'stretch'
+    },
+
+    listeners: {
+        render: 'onMainViewRender'
+    },
+
+    items: [
+        {
+            xtype: 'toolbar',
+            cls: 'sencha-dash-dash-headerbar shadow',
+            height: 64,
+            itemId: 'headerBar',
+            items: [
+                {
+                    xtype: 'component',
+                    reference: 'senchaLogo',
+                    cls: 'sencha-logo',
+                    html: '<div class="main-logo"><img src="resources/images/company-logo.png">Sencha</div>',
+                    width: 250
+                },
+                {
+                    margin: '0 0 0 8',
+                    ui: 'header',
+                    iconCls:'x-fa fa-navicon',
+                    id: 'main-navigation-btn',
+                    handler: 'onToggleNavigationSize'
+                },
+                '->',
+                {
+                    xtype: 'segmentedbutton',
+                    margin: '0 16 0 0',
+
+                    platformConfig: {
+                        ie9m: {
+                            hidden: true
+                        }
+                    },
+
+                    items: [{
+                        iconCls: 'x-fa fa-desktop',
+                        pressed: true
+                    }, {
+                        iconCls: 'x-fa fa-tablet',
+                        handler: 'onSwitchToModern',
+                        tooltip: 'Switch to modern toolkit'
+                    }]
+                },
+                {
+                    iconCls:'x-fa fa-search',
+                    ui: 'header',
+                    href: '#searchresults',
+                    hrefTarget: '_self',
+                    tooltip: 'See latest search'
+                },
+                {
+                    iconCls:'x-fa fa-envelope',
+                    ui: 'header',
+                    href: '#email',
+                    hrefTarget: '_self',
+                    tooltip: 'Check your email'
+                },
+                {
+                    iconCls:'x-fa fa-question',
+                    ui: 'header',
+                    href: '#faq',
+                    hrefTarget: '_self',
+                    tooltip: 'Help / FAQ\'s'
+                },
+                {
+                    iconCls:'x-fa fa-th-large',
+                    ui: 'header',
+                    href: '#profile',
+                    hrefTarget: '_self',
+                    tooltip: 'See your profile'
+                },
+                {
+                    xtype: 'tbtext',
+                    text: 'Goff Smith',
+                    cls: 'top-user-name'
+                },
+                {
+                    xtype: 'image',
+                    cls: 'header-right-profile-image',
+                    height: 35,
+                    width: 35,
+                    alt:'current user image',
+                    src: 'resources/images/user-profile/2.png'
+                }
+            ]
+        },
+        {
+            xtype: 'maincontainerwrap',
+            id: 'main-view-detail-wrap',
+            reference: 'mainContainerWrap',
+            flex: 1,
+            items: [
+                {
+                    xtype: 'treelist',
+                    reference: 'navigationTreeList',
+                    itemId: 'navigationTreeList',
+                    ui: 'nav',
+                    store: 'NavigationTree',
+                    width: 250,
+                    expanderFirst: false,
+                    expanderOnly: false,
+                    listeners: {
+                        selectionchange: 'onNavigationTreeSelectionChange'
+                    }
+                },
+                {
+                    xtype: 'container',
+                    flex: 1,
+                    reference: 'mainCardPanel',
+                    cls: 'sencha-dash-right-main-container',
+                    itemId: 'contentPanel',
+                    layout: {
+                        type: 'card',
+                        anchor: '100%'
+                    }
+                }
+            ]
+        }
+    ]
+});
 Ext.define('Admin.Application', {extend:Ext.app.Application, name:'Admin', stores:['NavigationTree'], defaultToken:'dashboard', mainView:'Admin.view.main.Main', onAppUpdate:function() {
   Ext.Msg.confirm('Application Update', 'This application has an update, reload?', function(choice) {
     if (choice === 'yes') {
@@ -100710,6 +100937,7 @@ Ext.define('Admin.view.profile.ProfileSearchWindow', {
 
 Ext.define('Admin.view.profile.ProfileViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.profileViewModel', stores:{profileLists:{type:'profileStore', autoLoad:true}}});
 Ext.define('Admin.view.profile.ShareUpdate', {extend:Ext.panel.Panel, xtype:'profileshare', bodyPadding:10, layout:'fit', cls:'share-panel', items:[{xtype:'textareafield', emptyText:"What's on your mind?"}], bbar:{defaults:{margin:'0 10 5 0'}, items:[{ui:'header', iconCls:'x-fa fa-video-camera'}, {ui:'header', iconCls:'x-fa fa-camera'}, {ui:'header', iconCls:'x-fa fa-file'}, '-\x3e', {text:'Share', ui:'soft-blue'}]}});
+
 Ext.define('Admin.view.profile.UserProfile',
         {extend:Admin.view.profile.UserProfileBase,
         xtype:'profile',
@@ -100719,18 +100947,20 @@ Ext.define('Admin.view.profile.UserProfile',
         viewModel : {type: 'profileViewModel'},
         items:[ {
                     xtype:'profilesocial',
-                    userCls:'big-50 small-100 shadow'},
+                    userCls:'big-25 small-100 shadow'
+                },
                 {
-                    xtype:'profiledescription',
-                    userCls:'big-50 small-100 shadow'},
-                {
-                    xtype:'wizardform',
-                    cls:'wizardtwo shadow',
-                    colorScheme:'soft-purple',
-                    userCls:'big-50 small-100'},
-                {
-                    xtype: 'profileGrid',   
-                    userCls: 'big-50 small-100'}
+                    xtype:'profileForm',
+                    userCls:'big-60 small-100 shadow'
+                }
+//                {
+//                    xtype:'wizardform',
+//                    cls:'wizardtwo shadow',
+//                    colorScheme:'soft-purple',
+//                    userCls:'big-50 small-100'},
+//                {
+//                    xtype: 'profileGrid',   
+//                    userCls: 'big-50 small-100'}
                 ]});
 Ext.define('Admin.view.search.Results', {extend:Ext.tab.Panel, xtype:'searchresults', controller:'searchresults', viewModel:{type:'searchresults'}, cls:'shadow', activeTab:0, margin:20, items:[{xtype:'gridpanel', cls:'allRecordsCls', scrollable:false, hideHeaders:true, border:false, title:'All', routeId:'all', bind:'{allResults}', viewConfig:{preserveScrollOnRefresh:true, stripeRows:false}, columns:[{xtype:'gridcolumn', renderer:function(value, metaData, record, rowIndex) {
   var page = "\x3cdiv class\x3d'resultsItemCls'\x3e\x3cdiv class\x3d'resultsTitleCls'\x3e" + record.data.title + "\x3c/div\x3e\x3cdiv class\x3d'resultsUrlCls'\x3e\x3ca href\x3d'#'\x3e" + record.data.url + "\x3c/a\x3e\x3c/div\x3e\x3cdiv class\x3d'resultsContentCls'\x3e" + record.data.content + '\x3c/div\x3e\x3c/div\x3e';
@@ -100770,3 +101000,599 @@ containerColor:'green', userCls:'big-33 small-50', data:{amount:611, type:'Messa
 userCls:'big-33 small-50', data:{amount:244, type:'Files', icon:'file-text'}}, {xtype:'widget-f', containerColor:'cornflower-blue', userCls:'big-50 small-100', data:{amount:840, type:'Sales', icon:'shopping-cart'}}, {xtype:'widget-f', containerColor:'green', userCls:'big-50 small-100', data:{amount:611, type:'Messages', icon:'envelope'}}, {xtype:'widget-f', containerColor:'magenta', userCls:'big-50 small-100', data:{amount:792, type:'Lines of Code', icon:'code'}}, {xtype:'widget-f', containerColor:'pink', 
 userCls:'big-50 small-100', data:{amount:244, type:'Files', icon:'file-text'}}]});
 Ext.application({extend:Admin.Application, name:'Admin', mainView:'Admin.view.main.Main'});
+
+Ext.define('Admin.view.assets.AssetsGrid', {    //1.修改文件路径
+    extend: 'Ext.grid.Panel',         //2.继承的组件类型
+		//3.重写继承组件的属性：
+		id:'assetsGrid',
+		xtype: 'assetsGrid',
+		title:'<b>资产列表</b>',
+		bind:'{assetsLists}',
+		selModel: Ext.create('Ext.selection.CheckboxModel'),
+		columns: [
+		  {text: 'AssetsID',sortable:true ,dataIndex:'assetsId',hidden:true},
+		  {text: '资产编号' ,sortable:true ,dataIndex:'assetsNumber' ,width:100},
+		  {text: '资产名称' ,sortable:true ,dataIndex:'assetsName' ,width:150},
+		  {text: '创建时间'  ,sortable:true ,dataIndex:'assetsUsedTime'  ,width:170
+		    ,renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')},
+		   {text: '资产类型',sortable:true ,dataIndex:'assetsType'    ,width:150},
+		   {text: '估计价值',sortable:true ,dataIndex:'assetsPrice' ,flex:1}
+		],
+		dockedItems: [{
+            xtype: 'toolbar',
+            dock: 'top',
+            items:[
+            {
+    			xtype	 : 'combobox',
+    			reference: 'assetsSearchField', //查询条件下拉列表
+    			store: Ext.create('Ext.data.Store', {
+    			    fields: ['value', 'name'],
+    			    data : [//查询条件字段名和展示名
+    			    	{"value":'assetsNumber', "name":'资产编号'},
+    			        {"value":'assetsName', "name":'资产名称'}
+    			        //{"value":'assetsPrice',"name":'估计价值'}
+    			        //{"value":'assetsType',"name":'资产类型'}
+    			        //{"value":'assetsUsedTime',"name":'创建时间'},
+    			        // {"value":'uer',"name":'持有人'}
+    			    ]
+    			}),
+    		     mode : 'local',
+    			editable : false,
+    			allowBlank : false,
+    			queryMode: 'local',
+    			valueField: 'value',
+             displayField: 'name',
+             value : 'assetsNumber'//默认显示data属性中的 用户名
+    		},{
+    			xtype	 : 'textfield',
+    			reference: 'assetsSearchText'//查询值文本框
+    		},
+    		{
+            	text: '查询',
+				listeners: {
+					click: 'assetsPanelSearch'//快捷查询按钮
+				}
+            },{
+            	text: '高级查询',
+				listeners: {
+					click: 'showAssetsSearchWindow'//高级查询按钮
+				}
+ 			}]
+		}],
+		bbar:Ext.create('Ext.PagingToolbar',{
+		  bind:'{assetsLists}',
+		  displayInfo:true,
+		  displayMsg:'第{0}-{1}条 共{2}条',
+		  emptyMsg:"没有任何记录",
+		  items:['-',{
+		    iconCls:'x-fa fa-plus',
+		    handler:'assetsGridOpenAddWindow'
+		  },
+		  '-',
+		  {
+		    iconCls:'x-fa fa-edit',
+		    handler:'assetsGridOpenEditWindow'
+		  },
+		  '-',
+		  {
+		    iconCls:'x-fa fa-trash',
+		    handler:'assetsGridOpenDeleteDate'
+		  }]
+		})
+});
+
+Ext.define('Admin.view.assets.AssetsGridForm', {
+    extend: 'Ext.form.Panel',
+    alias: 'widget.assetsGridForm',
+	//id:'assetsGridForm',//Ext.getCmp('assetsGridForm');
+    requires: [
+        'Ext.button.Button',
+        'Ext.form.field.Text',
+        'Ext.form.field.File',
+        'Ext.form.field.HtmlEditor',
+		'Ext.form.field.TextArea',
+		'Ext.form.field.Time',
+		'Ext.form.field.ComboBox',
+		'Ext.form.field.Date',
+		'Ext.form.field.Radio',
+		'Ext.form.field.Hidden'
+    ],
+    //viewModel: {type: 'emailcompose'},
+    //cls: 'email-compose',
+	controller: 'assetsViewController',
+    layout: {
+        type:'vbox',
+        align:'stretch'
+    },
+
+    bodyPadding: 10,
+    scrollable: true,
+
+    defaults: {
+        labelWidth: 60,
+        labelSeparator: ''
+    },
+    items: [
+    {
+		xtype: 'hidden',
+		fieldLabel: 'AssetsId',
+		//allowBlank: false,
+		name:'assetsId'
+	},
+	{
+		xtype: 'textfield',
+		fieldLabel: '资产编号',
+		name:'assetsNumber'
+	},
+	{
+		xtype: 'textfield',
+		fieldLabel: '资产名称',
+		name:'assetsName'
+	},{
+		xtype: 'datefield',
+		format: 'Y/m/d H:i:s',
+		fieldLabel: '开始使用时间',
+		name:'assetsUsedTime'
+	},{
+		xtype: 'combobox',
+		fieldLabel: '资产类型',
+		name:'assetsType',
+		store:  Ext.create('Ext.data.Store', {
+			fields: ['value', 'name'],
+			data : [
+				{"value":"电子产品", 	    "name":"电子产品"},
+				{"value":"办公用具",     "name":"办公用具"},
+				{"value":"基本设备", 	    "name":"基本设备"},
+				{"value":"交通工具", 	"name":"交通工具"}
+			]
+		}),
+		queryMode: 	  'local',
+		displayField: 'name',
+		valueField:   'value',
+		value:'电子产品'
+	},{
+		xtype: 'textfield',
+		fieldLabel: '资产估价',
+		name:'assetsPrice'
+   },
+  //  {
+		// xtype: 'textfield',
+		// fieldLabel: '拥有资产者',
+		// name:'user'
+  //  }
+	],
+    bbar: {
+        overflowHandler: 'menu',
+        items: ['->',{
+			xtype: 'button',
+			text: '提交',
+			handler: 'assetsGridFormSubmit'
+		},{
+			xtype: 'button',
+			text: '取消',
+			handler: 'assetsGridWindowClose'
+		}]
+    }
+});
+Ext.define('Admin.model.assets.AssetsModel', {
+    extend: 'Admin.model.Base',
+    fields: [
+		{name:'assetsId'		,type: 'int'},
+    	{name:'assetsNumber'    ,type: 'string'},
+    	{name:'assetsUsedTime'	,type: 'date'},
+    	{name:'beginDate'		,type: 'date'},
+    	{name:'endDate'			,type: 'date'},
+		{name:'assetsName'		,type: 'string'},
+		{name:'assetsPrice'		,type: 'float'},
+		{name:'highPrice'		,type: 'float'},
+		{name:'lowPrice'		,type: 'float'},
+		{name:'assetsType'		,type: 'string'}
+    ]
+});
+Ext.define('Admin.store.assets.AssetsStore', {
+    extend: 'Ext.data.Store',
+    alias: 'store.assetsStore',			  //1.Store取别名（reference）
+    model: 'Admin.model.assets.AssetsModel',//2.设置model的全路径
+    proxy: {
+		type: 'ajax',
+		url: 'assets/findPage.json',	//后台AssetsController中的接口url地址
+		reader: {
+			type:'json',
+			rootProperty: 'content',		//结果集名字的属性
+			totalProperty: 'totalElements'	//一共多少条记录的属性
+		},
+		simpleSortMode: true	//简单排序模式
+	},
+	pageSize: 20,
+	autoLoad: true,
+	remoteSort: true,//全局排序
+    sorters: {
+        direction: 'DESC',
+        property: 'assetsId'
+    }
+});
+Ext.define('Admin.view.assets.AssetsGridWindow', {
+    extend: 'Ext.window.Window',
+    alias: 'widget.assetsGridWindow',
+    autoShow: true,
+    modal: true,
+    layout: 'fit',
+    width: 200,
+    height: 200,
+    afterRender: function () {
+        var me = this;
+
+        me.callParent(arguments);
+
+        me.syncSize();
+
+        // Since we want to always be a %age of the viewport, we have to watch for
+        // resize events.
+        Ext.on(me.resizeListeners = {
+            resize: me.onViewportResize,
+            scope: me,
+            buffer: 50
+        });
+    },
+
+    doDestroy: function () {
+        Ext.un(this.resizeListeners);
+
+        this.callParent();
+    },
+
+    onViewportResize: function () {
+        this.syncSize();
+    },
+
+    syncSize: function () {
+        var width = Ext.Element.getViewportWidth(),
+            height = Ext.Element.getViewportHeight();
+        this.setSize(Math.floor(width * 0.5), Math.floor(height * 0.5));
+        this.setXY([ Math.floor(width * 0.05), Math.floor(height * 0.05) ]);
+    }
+});
+Ext.define('Admin.view.assets.AssetsSearchWindow', {
+	extend: 'Ext.window.Window',
+	alias: 'widget.assetsSearchWindow',
+	autoShow: true,
+	modal: true,
+	layout: 'fit',
+	width: 200,
+	height: 200,
+	controller: 'assetsViewController',
+	title:'查询资产信息',
+    	items:[{
+		xtype:'form',
+		//id:'userAddForm',
+		layout: {type:'vbox',align:'stretch'},
+		bodyPadding: 20,
+		scrollable: true,
+		defaults: {
+			labelWidth: 100,
+			labelSeparator: ''
+		},
+             defaultType: 'textfield',
+		items:[{
+			name: 'assetsNumber',
+			fieldLabel: '资产编号',
+			reference: 'assetsSearchForm-assetsNumber'
+		},{
+			name: 'assetsName',
+			fieldLabel: '资产名称',
+			reference: 'assetsSearchForm-assetsName'
+		},{
+			xtype: 'datefield',
+			fieldLabel: '开始时间',
+			name: 'beginDate',
+			format: 'Y/m/d H:i:s',
+			reference: 'assetsSearchForm-beginDate'
+		},{
+			xtype: 'datefield',
+			fieldLabel: '结束时间',
+			name: 'endDate',
+			format: 'Y/m/d H:i:s',
+			reference: 'assetsSearchForm-endDate'
+		},{
+			fieldLabel: '起始价格',
+			name: 'lowPrice',
+			reference: 'assetsSearchForm-lowPrice'
+		},{
+			fieldLabel: '结束价格',
+			name: 'highPrice',
+			reference: 'assetsSearchForm-highPrice'
+		},{
+			xtype: 'combobox',
+			name: 'assetsType',
+			fieldLabel: '资产类型',
+			store: Ext.create('Ext.data.Store', {
+			    fields: ['value', 'name'],
+			    data : [
+			    {"value":"0", 	    "name":"电子产品"},
+				{"value":"1",     "name":"办公用具"},
+				{"value":"2", 	    "name":"基本设备"},
+				{"value":"3", 	"name":"交通工具"}
+			    ]
+			}),
+			//emptyText : '请选择...',
+		    mode : 'local',// 数据模式，local代表本地数据
+			editable : false,// 是否允许输入
+			allowBlank : false,// 不允许为空
+		    //readOnly : true,// 是否只读
+			queryMode: 'local',
+			valueField: 'value',
+            displayField: 'name',
+            value : 'eProduct'// 默认值,要设置为提交给后台的值，不要设置为显示文本,可选
+		},{
+			xtype: 'textarea',
+			name: 'remarks',
+			anchor: '100% -47',
+			fieldLabel: 'Remarks'
+		}],
+		buttons: [{
+            text: 'Search',
+            handler: 'assetsSearchFormSubmit'
+        },{
+            text: 'Cancel',
+            handler: function() {
+                this.up('form').getForm().reset();
+                this.up('window').hide();
+            }
+        }]
+	}],
+	afterRender: function () {
+	    var me = this;
+	    me.callParent(arguments);
+	    me.syncSize();
+	    Ext.on(me.resizeListeners = {
+	        resize: me.onViewportResize,
+	        scope: me,
+	        buffer: 50
+	    });
+	},
+	doDestroy: function () {
+	    Ext.un(this.resizeListeners);
+	    this.callParent();
+	},
+	onViewportResize: function () {
+	    this.syncSize();
+	},
+	syncSize: function () {
+        var width = Ext.Element.getViewportWidth(),
+            height = Ext.Element.getViewportHeight();
+        this.setSize(Math.floor(width * 0.5), Math.floor(height * 0.5));
+        this.setXY([ Math.floor(width * 0.05), Math.floor(height * 0.05) ]);
+    }
+});
+Ext.define('Admin.view.assets.AssetsViewController', {
+    extend: 'Ext.app.ViewController',
+    alias: 'controller.assetsViewController',
+
+    assetsGridOpenAddWindow: function(btn) {
+			Ext.widget('assetsGridWindow',{
+				title:'新建资产',
+				items: [Ext.apply({xtype: 'assetsGridForm'})]
+			});
+    },
+
+	assetsGridOpenEditWindow: function(btn) {
+		var grid = btn.up('gridpanel');//获取Grid视图
+		var selModel = grid.getSelectionModel();//获取Grid的SelectionModel
+        if (selModel.hasSelection()) {//判断是否选中记录
+           var record = selModel.getSelection()[0];//获取选中的第一条记录
+           //创建修改window和form
+		   var assetsGridWindow = Ext.widget('assetsGridWindow',{
+				title:'修改资产',
+				items: [{xtype: 'assetsGridForm'}]
+			});
+		   //让form加载选中记录
+           assetsGridWindow.down("form").getForm().loadRecord(record);
+        }else{
+        	Ext.Msg.alert('提示',"请选择一行数据进行编辑!");
+        }
+    },
+
+    assetsGridOpenDeleteDate: function(btn) {
+		var grid = btn.up('gridpanel');
+		var selModel = grid.getSelectionModel();
+        if (selModel.hasSelection()) {
+            Ext.Msg.confirm("警告", "确定要删除吗？", function (button) {
+                if (button == "yes") {
+                    var selected = selModel.getSelection();
+                    var selectIds = []; //要删除的id
+                    Ext.each(selected, function (record) {
+                        selectIds.push(record.data.assetsId);
+                    })
+                  	Ext.Ajax.request({
+						url : 'assets/delete',
+						method : 'post',
+						params : {
+							assetsIds:selectIds
+						},
+						success: function(response, options) {
+			                var json = Ext.util.JSON.decode(response.responseText);
+				            if(json.success){
+				            	Ext.Msg.alert('操作成功', json.msg);
+				                grid.getStore().reload();
+					        }else{
+					        	Ext.Msg.alert('操作失败', json.msg);
+					        }
+			            }
+					});
+
+                }
+            });
+		}
+    },
+
+	assetsGridFormSubmit: function(btn) {
+		var assetsGridForm = btn.up('form').getForm();
+		var win = btn.up('window');
+			//this.lookupReference('assetsGrid').store.reload();  //lookupReference配合reference属性
+			assetsGridForm.submit( {
+				//waitTitle : '请稍后...',
+				//waitMsg : '正在保存订单信息,请稍后...',
+				url : 'assets/saveOrUpdate',
+				method : 'post',
+				success : function(form, action) {
+					Ext.Msg.alert("提示",action.result.msg);
+					win.close();
+					Ext.getCmp("assetsGrid").store.reload();
+				},
+				failure : function(form, action) {
+					Ext.Msg.alert("提示",action.result.msg);
+
+				}
+			});
+    },
+    assetsPanelSearch:function(btn){
+		var searchField = this.lookupReference('assetsSearchField').getValue();
+		var searchText = this.lookupReference('assetsSearchText').getValue();
+		var store = Ext.getCmp('assetsGrid').getStore();//对应grid的id属性
+		//1.清空所有QueryDTO中的查询条件
+		Ext.apply(store.proxy.extraParams, {
+			assetsName:'',
+			assetsType:'',
+			assetsNumber:''
+			//assetsUsedTime:''
+		});
+		//2.按照所选字段进行查询参数（条件）的扩展
+		if(searchField=='assetsNumber'){
+			Ext.apply(store.proxy.extraParams, {
+				assetsNumber:searchText,
+			});
+		}
+		if(searchField=='assetsName'){
+			Ext.apply(store.proxy.extraParams, {
+				assetsName:searchText
+			});
+		}
+		if(searchField=='assetsType'){
+			Ext.apply(store.proxy.extraParams, {
+				assetsType:searchText
+			});
+		}
+		store.load();
+	},
+
+	showAssetsSearchWindow:function(btn){
+		Ext.widget('assetsSearchWindow').show();//autoShow
+		},
+
+	assetsSearchFormSubmit:function(btn){
+		var store = Ext.getCmp('assetsGrid').getStore();
+		//1.清空所有查询条件
+		Ext.apply(store.proxy.extraParams, {
+			assetsNumber:'',
+			assetsName:'',
+//			assetsType:'',
+			lowPrice:'',
+			highPrice:'',
+			beginDate:'',
+			endDate:''
+		});
+		//2.按照所选字段进行查询参数（条件）的扩展
+		Ext.apply(store.proxy.extraParams, {
+			assetsNumber:this.lookupReference('assetsSearchForm-assetsNumber').getValue(),
+			assetsName:this.lookupReference('assetsSearchForm-assetsName').getValue(),
+			//assetsType:this.lookupReference('assetsSearchForm-assetsType').getValue(),
+			lowPrice:this.lookupReference('assetsSearchForm-lowPrice').getValue(),
+			highPrice:this.lookupReference('assetsSearchForm-highPrice').getValue(),
+			beginDate:Ext.util.Format.date(this.lookupReference('assetsSearchForm-beginDate').getValue(), 'Y/m/d H:i:s'),
+			endDate:Ext.util.Format.date(this.lookupReference('assetsSearchForm-endDate').getValue(), 'Y/m/d H:i:s')
+		});
+		store.load();
+		btn.up('window').hide();
+	},
+
+	assetsGridWindowClose: function(btn) {
+		var win = btn.up('window');
+		if(win){
+			win.close();
+		}
+    }
+});
+/**
+1.绑定到主视图
+2.通过bind属性绑定到具体的子视图
+8*/
+Ext.define('Admin.view.assets.AssetsViewModel', {
+extend: 'Ext.app.ViewModel',
+alias: 'viewmodel.assetsViewModel',
+stores: {
+assetsLists: {
+    type: 'assetsStore',//Store reference ==Store的属性 alias: 'store.assetsStore',		
+    autoLoad: true //Auto load
+}
+}
+});
+
+Ext.define('Admin.view.assets.Assets', {      //1.修改文件路径
+    extend: 'Ext.container.Container',    //2.继承的组件类型
+  //3.重写继承组件的属性：
+  xtype: 'assets',
+
+  controller: 'assetsViewController',      //视图绑定viewController
+  viewModel : {type: 'assetsViewModel'},   //视图绑定viewModel
+
+
+  layout:'fit',
+  margin: '20 20 20 20',
+  items: [{
+      xtype: 'assetsGrid',
+      assetsGrid:'assetsGrid'
+  }]
+});
+Ext.define('Admin.view.profile.ProfileForm', {
+    extend: 'Ext.form.Panel',
+    xtype: 'profileForm',
+    width: 500,
+    height: 300,
+    title: "个人信息",
+    controller: 'profileViewController',
+    layout: {
+        type:'vbox',
+        align:'stretch'
+    },
+    renderTo: Ext.getBody(),
+    bodyPadding: 5,
+    bodyPadding: 10,
+    scrollable: true,
+    defaultType: 'textfield',
+    defaults: {
+        labelWidth: 60,
+        labelSeparator: ''
+    },
+    items: [{
+       fieldLabel: 'First Name',
+        name: 'first',
+        allowBlank:false
+    },{
+        fieldLabel: 'Last Name',
+        name: 'last'
+    },{
+        fieldLabel: 'Company',
+        name: 'company'
+    }, {
+        fieldLabel: 'Email',
+        name: 'email',
+        vtype:'email'
+    }, {
+        fieldLabel: 'DOB',
+        name: 'dob',
+        xtype: 'datefield'
+    }, {
+        fieldLabel: 'Age',
+        name: 'age',
+        xtype: 'numberfield',
+        minValue: 0,
+        maxValue: 100
+    }, {
+        xtype: 'timefield',
+        fieldLabel: 'Time',
+        name: 'time',
+        minValue: '8:00am',
+        maxValue: '6:00pm'
+    }]
+});
+
