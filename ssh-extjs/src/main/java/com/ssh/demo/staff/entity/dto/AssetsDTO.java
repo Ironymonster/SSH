@@ -22,7 +22,7 @@ public class AssetsDTO {
 	private Integer assetsId;
 	private String assetsNumber; //资产编号
 	private String assetsName;   //资产名称
-	private AssetsType assetsType;     //资产类型
+	private String assetsType;     //资产类型
 	private Double assetsPrice;  //资产估价
 	private Date assetsUsedTime; //使用时间
 	
@@ -89,7 +89,7 @@ public class AssetsDTO {
 	}
 	
 
-	public AssetsType getAssetsType() {
+	public String getAssetsType() {
 		return assetsType;
 	}
 
@@ -140,7 +140,7 @@ public class AssetsDTO {
 	}
 
 	
-	public void setAssetsType(AssetsType assetsType) {
+	public void setAssetsType(String assetsType) {
 		this.assetsType = assetsType;
 	}
 

@@ -1,46 +1,59 @@
 Ext.define('Admin.view.profile.ProfileForm', {
     extend: 'Ext.form.Panel',
     xtype: 'profileForm',
-    width: 500,
-    height: 300,
-    title: "个人信息",
     controller: 'profileViewController',
+
+    title: "个人信息",
+    width: 620,
+    bodyPadding: '5 5 0',
+    frame: true,
+
     layout: {
-        type:'vbox',
+        type:'hbox',
         align:'stretch'
     },
+
+    defaults: {
+        border: false,
+        xtype: 'panel',
+        flex: 1,
+        layout: 'anchor'
+    },
+
     renderTo: Ext.getBody(),
     bodyPadding: 5,
     defaultType: 'textfield',
-    items: [{
-       fieldLabel: 'First Name',
-        name: 'first',
-        allowBlank:false
-    },{
-        fieldLabel: 'Last Name',
-        name: 'last'
-    },{
-        fieldLabel: 'Company',
-        name: 'company'
+     items: [{
+        items: [{
+            xtype: 'textfield',
+            fieldLabel: 'First Name',
+            anchor: '-5',
+            name: 'first'
+        }, {
+            xtype:'textfield',
+            fieldLabel: 'Company',
+            anchor: '-5',
+            name: 'company'
+        }]
     }, {
-        fieldLabel: 'Email',
-        name: 'email',
-        vtype:'email'
+        items: [{
+            xtype: 'textfield',
+            fieldLabel: 'Last Name',
+            anchor: '100%',
+            name: 'last'
+        },{
+            xtype: 'textfield',
+            fieldLabel: 'Email',
+            anchor: '100%',
+            name: 'email',
+            vtype: 'email'
+        }]
+    }],
+
+    buttons: ['->', {
+        text: 'Save'
     }, {
-        fieldLabel: 'DOB',
-        name: 'dob',
-        xtype: 'datefield'
-    }, {
-        fieldLabel: 'Age',
-        name: 'age',
-        xtype: 'numberfield',
-        minValue: 0,
-        maxValue: 100
-    }, {
-        xtype: 'timefield',
-        fieldLabel: 'Time',
-        name: 'time',
-        minValue: '8:00am',
-        maxValue: '6:00pm'
+        text: 'Cancel'
     }]
 });
+

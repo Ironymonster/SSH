@@ -19,7 +19,7 @@ public class Assets {
 	private Integer assetsId;
 	private String assetsNumber; //资产编号
 	private String assetsName;   //资产名称
-	private AssetsType assetsType;//资产类型
+	private String assetsType;//资产类型
 	private Double assetsPrice;  //资产估价
 	private String assetsState;  //资产状态
 	private Date assetsUsedTime; //使用时间
@@ -33,7 +33,7 @@ public class Assets {
 	public String getAssetsName() {
 		return assetsName;
 	}
-	public AssetsType getAssetsType() {
+	public String getAssetsType() {
 		return assetsType;
 	}
 	public Double getAssetsPrice() {
@@ -62,7 +62,7 @@ public class Assets {
 	public void setAssetsName(String assetsName) {
 		this.assetsName = assetsName;
 	}
-	public void setAssetsType(AssetsType assetsType) {
+	public void setAssetsType(String assetsType) {
 		this.assetsType = assetsType;
 	}
 	public void setAssetsPrice(Double assetsPrice) {

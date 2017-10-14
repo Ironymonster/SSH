@@ -101283,12 +101283,16 @@ Ext.define('Admin.view.assets.AssetsSearchWindow', {
 			fieldLabel: '开始时间',
 			name: 'beginDate',
 			format: 'Y/m/d H:i:s',
+			editable:false,//禁止手工修改
+			value : '2017-01-01',
 			reference: 'assetsSearchForm-beginDate'
 		},{
 			xtype: 'datefield',
 			fieldLabel: '结束时间',
 			name: 'endDate',
 			format: 'Y/m/d H:i:s',
+			editable:false,//禁止手工修改
+			value : '2027-01-01',
 			reference: 'assetsSearchForm-endDate'
 		},{
 			fieldLabel: '起始价格',
@@ -101357,6 +101361,7 @@ Ext.define('Admin.view.assets.AssetsSearchWindow', {
         this.setXY([ Math.floor(width * 0.05), Math.floor(height * 0.05) ]);
     }
 });
+
 
 Ext.define('Admin.view.assets.AssetsViewController', {
     extend: 'Ext.app.ViewController',
@@ -101487,7 +101492,7 @@ Ext.define('Admin.view.assets.AssetsViewController', {
 		});
 		//2.按照所选字段进行查询参数（条件）的扩展
 		Ext.apply(store.proxy.extraParams, {
-			assetsNumber:this.lookupReference('assetsSearchForm-assetsNumber').getValue(),
+			//assetsNumber:this.lookupReference('assetsSearchForm-assetsNumber').getValue(),
 			assetsName:this.lookupReference('assetsSearchForm-assetsName').getValue(),
 			//assetsType:this.lookupReference('assetsSearchForm-assetsType').getValue(),
 			lowPrice:this.lookupReference('assetsSearchForm-lowPrice').getValue(),
@@ -101506,6 +101511,7 @@ Ext.define('Admin.view.assets.AssetsViewController', {
 		}
     }
 });
+
 /**
 1.绑定到主视图
 2.通过bind属性绑定到具体的子视图
@@ -101537,56 +101543,65 @@ Ext.define('Admin.view.assets.Assets', {      //1.修改文件路径
       assetsGrid:'assetsGrid'
   }]
 });
+
 Ext.define('Admin.view.profile.ProfileForm', {
     extend: 'Ext.form.Panel',
     xtype: 'profileForm',
-    width: 500,
-    height: 300,
-    title: "个人信息",
     controller: 'profileViewController',
+
+    title: "个人信息",
+    width: 620,
+    bodyPadding: '5 5 0',
+    frame: true,
+
     layout: {
-        type:'vbox',
+        type:'hbox',
         align:'stretch'
     },
+
+    defaults: {
+        border: false,
+        xtype: 'panel',
+        flex: 1,
+        layout: 'anchor'
+    },
+
     renderTo: Ext.getBody(),
     bodyPadding: 5,
-    bodyPadding: 10,
-    scrollable: true,
     defaultType: 'textfield',
-    defaults: {
-        labelWidth: 60,
-        labelSeparator: ''
-    },
-    items: [{
-       fieldLabel: 'First Name',
-        name: 'first',
-        allowBlank:false
-    },{
-        fieldLabel: 'Last Name',
-        name: 'last'
-    },{
-        fieldLabel: 'Company',
-        name: 'company'
+     items: [{
+        items: [{
+            xtype: 'textfield',
+            fieldLabel: 'First Name',
+            anchor: '-5',
+            name: 'first'
+        }, {
+            xtype:'textfield',
+            fieldLabel: 'Company',
+            anchor: '-5',
+            name: 'company'
+        }]
     }, {
-        fieldLabel: 'Email',
-        name: 'email',
-        vtype:'email'
+        items: [{
+            xtype: 'textfield',
+            fieldLabel: 'Last Name',
+            anchor: '100%',
+            name: 'last'
+        },{
+            xtype: 'textfield',
+            fieldLabel: 'Email',
+            anchor: '100%',
+            name: 'email',
+            vtype: 'email'
+        }]
+    }],
+
+    buttons: ['->', {
+        text: 'Save'
     }, {
-        fieldLabel: 'DOB',
-        name: 'dob',
-        xtype: 'datefield'
-    }, {
-        fieldLabel: 'Age',
-        name: 'age',
-        xtype: 'numberfield',
-        minValue: 0,
-        maxValue: 100
-    }, {
-        xtype: 'timefield',
-        fieldLabel: 'Time',
-        name: 'time',
-        minValue: '8:00am',
-        maxValue: '6:00pm'
+        text: 'Cancel'
     }]
 });
+
+
 

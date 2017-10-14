@@ -29,12 +29,16 @@ Ext.define('Admin.view.assets.AssetsSearchWindow', {
 			fieldLabel: '开始时间',
 			name: 'beginDate',
 			format: 'Y/m/d H:i:s',
+			editable:false,//禁止手工修改
+			value : '2017/01/01',
 			reference: 'assetsSearchForm-beginDate'
 		},{
 			xtype: 'datefield',
 			fieldLabel: '结束时间',
 			name: 'endDate',
 			format: 'Y/m/d H:i:s',
+			editable:false,//禁止手工修改
+			value : '2027/01/01',
 			reference: 'assetsSearchForm-endDate'
 		},{
 			fieldLabel: '起始价格',

@@ -54,18 +54,18 @@ public class AppTest {
 	public  void initData() 
 	{				
 		for (int i = 0; i < 100; i++) {
-			Assets assets = new Assets();
+			AssetsDTO assets = new AssetsDTO();
 			assets.setAssetsNumber("No."+i);
 			assets.setAssetsName("my assets" + i);
 			assets.setAssetsUsedTime(new Date());
 			if(i%2==0) {
-				assets.setAssetsType(AssetsType.eProduct);			
+				assets.setAssetsType("交通工具");			
 			}else if (i%3==0) {
-				assets.setAssetsType(AssetsType.oAppliances);				
+				assets.setAssetsType("办公用具");				
 			}else if (i%5==0){
-				assets.setAssetsType(AssetsType.bEquipment);
+				assets.setAssetsType("基本设备");
 			}else {
-				assets.setAssetsType(AssetsType.transportation);
+				assets.setAssetsType("交通工具");
 			}
 			assets.setAssetsPrice((Double)Math.random()*10000);				
 			assetsService.save(assets);
