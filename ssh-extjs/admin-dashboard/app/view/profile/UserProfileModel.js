@@ -34,7 +34,7 @@ Ext.define('Admin.view.profile.UserProfileModel', {
             proxy: {
                 type: 'api',
                 url: '~api/usershareditems'
-            }            
+            }
         },
 
         userTimeline: {

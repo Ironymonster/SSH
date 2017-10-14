@@ -2,12 +2,12 @@
 	1.绑定到主视图
 	2.通过bind属性绑定到具体的子视图
 8*/
-Ext.define('Admin.view.profile.ProfileViewModel', {
+Ext.define('Admin.view.assets.AssetsViewModel', {
 extend: 'Ext.app.ViewModel',
-alias: 'viewmodel.profileViewModel',
+alias: 'viewmodel.assetsViewModel',
 stores: {
-    profileLists: {
-        type: 'profileStore',//Store reference ==Store的属性 alias: 'store.profileStore',		
+    assetsLists: {
+        type: 'assetsStore',//Store reference ==Store的属性 alias: 'store.assetsStore',		
         autoLoad: true //Auto load
     }
 }

@@ -101203,7 +101203,7 @@ Ext.define('Admin.store.assets.AssetsStore', {
 		},
 		simpleSortMode: true	//简单排序模式
 	},
-	pageSize: 20,
+	pageSize: 15,
 	autoLoad: true,
 	remoteSort: true,//全局排序
     sorters: {
@@ -101273,11 +101273,8 @@ Ext.define('Admin.view.assets.AssetsSearchWindow', {
 			labelSeparator: ''
 		},
              defaultType: 'textfield',
-		items:[{
-			name: 'assetsNumber',
-			fieldLabel: '资产编号',
-			reference: 'assetsSearchForm-assetsNumber'
-		},{
+		items:[
+		{
 			name: 'assetsName',
 			fieldLabel: '资产名称',
 			reference: 'assetsSearchForm-assetsName'
@@ -101308,10 +101305,10 @@ Ext.define('Admin.view.assets.AssetsSearchWindow', {
 			store: Ext.create('Ext.data.Store', {
 			    fields: ['value', 'name'],
 			    data : [
-			    {"value":"0", 	    "name":"电子产品"},
-				{"value":"1",     "name":"办公用具"},
-				{"value":"2", 	    "name":"基本设备"},
-				{"value":"3", 	"name":"交通工具"}
+			    {"value":"电子产品", 	    "name":"电子产品"},
+				{"value":"办公用具",     "name":"办公用具"},
+				{"value":"基本设备", 	    "name":"基本设备"},
+				{"value":"交通工具", 	"name":"交通工具"}
 			    ]
 			}),
 			//emptyText : '请选择...',
@@ -101322,13 +101319,9 @@ Ext.define('Admin.view.assets.AssetsSearchWindow', {
 			queryMode: 'local',
 			valueField: 'value',
             displayField: 'name',
-            value : 'eProduct'// 默认值,要设置为提交给后台的值，不要设置为显示文本,可选
-		},{
-			xtype: 'textarea',
-			name: 'remarks',
-			anchor: '100% -47',
-			fieldLabel: 'Remarks'
-		}],
+            value : '电子产品'// 默认值,要设置为提交给后台的值，不要设置为显示文本,可选
+		}
+		],
 		buttons: [{
             text: 'Search',
             handler: 'assetsSearchFormSubmit'
@@ -101364,6 +101357,7 @@ Ext.define('Admin.view.assets.AssetsSearchWindow', {
         this.setXY([ Math.floor(width * 0.05), Math.floor(height * 0.05) ]);
     }
 });
+
 Ext.define('Admin.view.assets.AssetsViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.assetsViewController',

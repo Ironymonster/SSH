@@ -1,32 +1,32 @@
-Ext.define('Admin.view.profile.ProfileViewController', {
+Ext.define('Admin.view.assets.AssetsViewController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.profileViewController',
+    alias: 'controller.assetsViewController',
 
-    profileGridOpenAddWindow: function(btn) {
-			Ext.widget('profileGridWindow',{
+    assetsGridOpenAddWindow: function(btn) {
+			Ext.widget('assetsGridWindow',{
 				title:'新建资产',
-				items: [Ext.apply({xtype: 'profileGridForm'})]
+				items: [Ext.apply({xtype: 'assetsGridForm'})]
 			});
     },
 
-	profileGridOpenEditWindow: function(btn) {
+	assetsGridOpenEditWindow: function(btn) {
 		var grid = btn.up('gridpanel');//获取Grid视图
 		var selModel = grid.getSelectionModel();//获取Grid的SelectionModel
         if (selModel.hasSelection()) {//判断是否选中记录
            var record = selModel.getSelection()[0];//获取选中的第一条记录
            //创建修改window和form
-		   var profileGridWindow = Ext.widget('profileGridWindow',{
+		   var assetsGridWindow = Ext.widget('assetsGridWindow',{
 				title:'修改资产',
-				items: [{xtype: 'profileGridForm'}]
+				items: [{xtype: 'assetsGridForm'}]
 			});
 		   //让form加载选中记录
-           profileGridWindow.down("form").getForm().loadRecord(record);
+           assetsGridWindow.down("form").getForm().loadRecord(record);
         }else{
         	Ext.Msg.alert('提示',"请选择一行数据进行编辑!");
         }
     },
 
-    profileGridOpenDeleteDate: function(btn) {
+    assetsGridOpenDeleteDate: function(btn) {
 		var grid = btn.up('gridpanel');
 		var selModel = grid.getSelectionModel();
         if (selModel.hasSelection()) {
@@ -59,11 +59,11 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 		}
     },
 
-	profileGridFormSubmit: function(btn) {
-		var profileGridForm = btn.up('form').getForm();
+	assetsGridFormSubmit: function(btn) {
+		var assetsGridForm = btn.up('form').getForm();
 		var win = btn.up('window');
-			//this.lookupReference('profileGrid').store.reload();  //lookupReference配合reference属性
-			profileGridForm.submit( {
+			//this.lookupReference('assetsGrid').store.reload();  //lookupReference配合reference属性
+			assetsGridForm.submit( {
 				//waitTitle : '请稍后...',
 				//waitMsg : '正在保存订单信息,请稍后...',
 				url : 'assets/saveOrUpdate',
@@ -71,7 +71,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 				success : function(form, action) {
 					Ext.Msg.alert("提示",action.result.msg);
 					win.close();
-					Ext.getCmp("profileGrid").store.reload();
+					Ext.getCmp("assetsGrid").store.reload();
 				},
 				failure : function(form, action) {
 					Ext.Msg.alert("提示",action.result.msg);
@@ -82,7 +82,7 @@ Ext.define('Admin.view.profile.ProfileViewController', {
     assetsPanelSearch:function(btn){
 		var searchField = this.lookupReference('assetsSearchField').getValue();
 		var searchText = this.lookupReference('assetsSearchText').getValue();
-		var store = Ext.getCmp('profileGrid').getStore();//对应grid的id属性
+		var store = Ext.getCmp('assetsGrid').getStore();//对应grid的id属性
 		//1.清空所有QueryDTO中的查询条件
 		Ext.apply(store.proxy.extraParams, {
 			assetsName:'',
@@ -110,11 +110,11 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 	},
 
 	showAssetsSearchWindow:function(btn){
-		Ext.widget('profileSearchWindow').show();//autoShow
+		Ext.widget('assetsSearchWindow').show();//autoShow
 		},
 
 	assetsSearchFormSubmit:function(btn){
-		var store = Ext.getCmp('profileGrid').getStore();
+		var store = Ext.getCmp('assetsGrid').getStore();
 		//1.清空所有查询条件
 		Ext.apply(store.proxy.extraParams, {
 			assetsNumber:'',
@@ -127,19 +127,19 @@ Ext.define('Admin.view.profile.ProfileViewController', {
 		});
 		//2.按照所选字段进行查询参数（条件）的扩展
 		Ext.apply(store.proxy.extraParams, {
-			assetsNumber:this.lookupReference('profileSearchForm-assetsNumber').getValue(),
-			assetsName:this.lookupReference('profileSearchForm-assetsName').getValue(),
-			//assetsType:this.lookupReference('profileSearchForm-assetsType').getValue(),
-			lowPrice:this.lookupReference('profileSearchForm-lowPrice').getValue(),
-			highPrice:this.lookupReference('profileSearchForm-highPrice').getValue(),
-			beginDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-beginDate').getValue(), 'Y/m/d H:i:s'),
-			endDate:Ext.util.Format.date(this.lookupReference('profileSearchForm-endDate').getValue(), 'Y/m/d H:i:s')
+			assetsNumber:this.lookupReference('assetsSearchForm-assetsNumber').getValue(),
+			assetsName:this.lookupReference('assetsSearchForm-assetsName').getValue(),
+			//assetsType:this.lookupReference('assetsSearchForm-assetsType').getValue(),
+			lowPrice:this.lookupReference('assetsSearchForm-lowPrice').getValue(),
+			highPrice:this.lookupReference('assetsSearchForm-highPrice').getValue(),
+			beginDate:Ext.util.Format.date(this.lookupReference('assetsSearchForm-beginDate').getValue(), 'Y/m/d H:i:s'),
+			endDate:Ext.util.Format.date(this.lookupReference('assetsSearchForm-endDate').getValue(), 'Y/m/d H:i:s')
 		});
 		store.load();
 		btn.up('window').hide();
 	},
 
-	profileGridWindowClose: function(btn) {
+	assetsGridWindowClose: function(btn) {
 		var win = btn.up('window');
 		if(win){
 			win.close();

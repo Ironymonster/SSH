@@ -76,36 +76,34 @@ public class AppTest {
 	@Rollback(true)
 	@Test
 	public void AssetsTest() {
-		try {
 			
-			int page = 0;
-			int size = 25;
-			Pageable pageable = new PageRequest(page, size);			
-			AssetsDTO assetsDTO = new AssetsDTO();
+		int page = 0;
+		int size = 25;
+		Pageable pageable = new PageRequest(page, size);			
+		AssetsDTO assetsDTO = new AssetsDTO();
 //			String assetsName = "my assets10";
 //			String assetsNumber = "No.20";
-//			Double assetsPrice = 5000.0;
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss
-			Date assetsUsedTime = df.parse("2017-10-09");			
+		Double lowPrice = 5000.0;
+		Double highPrice = 6000.0;
+//			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss
+//			Date assetsUsedTime = df.parse("2017-10-09");			
 //			Date beginDate;
 //			beginDate = df.parse("2017-10-09 19:27:56");
 //			Date endDate = df.parse("2017-10-09 19:27:57");
 //			assetsDTO.setAssetsName(assetsName);
 //			assetsDTO.setBeginDate(beginDate);
 //			assetsDTO.setEndDate(endDate);
-			assetsDTO.setAssetsUsedTime(assetsUsedTime);
+//			assetsDTO.setAssetsUsedTime(assetsUsedTime);
 //			assetsDTO.setAssetsNumber(assetsNumber);
-//			assetsDTO.setAssetsPrice(assetsPrice);
-			
-			Page<AssetsDTO> pages = assetsService.findAll(AssetsDTO.getWhereClause(assetsDTO), pageable);
+		assetsDTO.setLowPrice(lowPrice);
+		assetsDTO.setHighPrice(highPrice);
+		
+		Page<AssetsDTO> pages = assetsService.findAll(AssetsDTO.getWhereClause(assetsDTO), pageable);
 //			System.out.println("资产名称：" + assetsName);
 //			System.out.println("资产编号：" + assetsNumber);
-			System.out.println("使用时间：" + assetsUsedTime);
-			System.out.println("总记录数：" + pages.getTotalElements());
-			
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+//			System.out.println("使用时间：" + assetsUsedTime);
+		System.out.println("总记录数：" + pages.getTotalElements());
+		
 		
 	}
 }

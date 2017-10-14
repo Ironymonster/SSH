@@ -1,6 +1,6 @@
-Ext.define('Admin.view.profile.ProfileGridWindow', {
+Ext.define('Admin.view.assets.AssetsGridWindow', {
     extend: 'Ext.window.Window',
-    alias: 'widget.profileGridWindow',
+    alias: 'widget.assetsGridWindow',
     autoShow: true,
     modal: true,
     layout: 'fit',

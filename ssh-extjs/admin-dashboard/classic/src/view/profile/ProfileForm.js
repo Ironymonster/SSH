@@ -11,13 +11,7 @@ Ext.define('Admin.view.profile.ProfileForm', {
     },
     renderTo: Ext.getBody(),
     bodyPadding: 5,
-    bodyPadding: 10,
-    scrollable: true,
-
-    defaults: {
-        labelWidth: 60,
-        labelSeparator: ''
-    },
+    defaultType: 'textfield',
     items: [{
        fieldLabel: 'First Name',
         name: 'first',
